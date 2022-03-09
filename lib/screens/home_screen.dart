@@ -4,31 +4,49 @@ import 'package:google_fonts/google_fonts.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Tecni Repuestos Tilarán',
-            style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w500)),
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.menu),
-          iconSize: 35,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppbarMethod(),
+        body: const Center(
+          child: Text('Tecni Repuestos Tilarán'),
         ),
-        backgroundColor: Color(0xffD6271F),
-        elevation: 3,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.shopping_cart),
-            iconSize: 35,
-            onPressed: () {},
+      ),
+    );
+  }
+
+//
+  AppBar AppbarMethod() {
+    return AppBar(
+      title: Container(
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(25)),
+        width: 250,
+        height: 40,
+
+        //   icon:Icon(Icons.search),
+        child: TextFormField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            hintText: 'Busca un Producto',
           ),
-        ],
+        ),
       ),
-      body: const Center(
-        child: Text('Tecni Repuestos Tilarán'),
+      leading: IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.menu),
+        iconSize: 37,
       ),
+      backgroundColor: Color(0xffD6271F),
+      elevation: 3,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.shopping_cart),
+          iconSize: 37,
+          onPressed: () {},
+        ),
+      ],
     );
   }
 }
