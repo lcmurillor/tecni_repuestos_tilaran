@@ -28,7 +28,10 @@ class HomeScreen extends StatelessWidget {
           child: TextFormField(
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
-              hintStyle: GoogleFonts.poppins(color: Colors.black),
+              hintStyle: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
               prefixIcon: Image.asset(
                   'assets/lupa24.ico'), // AssetImage('assets/lupa.ico'),
               border: OutlineInputBorder(
