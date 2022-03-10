@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
               prefixIcon: Image.asset(
-                  'assets/lupa24.ico'), // AssetImage('assets/lupa.ico'),
+                  'assets/lupa22.ico'), // AssetImage('assets/lupa.ico'),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -43,17 +43,17 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       leading: IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.menu_rounded),
-        iconSize: 45,
-      ),
+          onPressed: () {},
+          icon: Icon(Icons.menu_rounded),
+          iconSize: 50,
+          padding: EdgeInsets.only(left: 12)),
       backgroundColor: Color(0xffD6271F),
       elevation: 3,
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.shopping_cart),
-          iconSize: 40,
-          padding: EdgeInsets.only(right: 12, left: 0),
+          iconSize: 38,
+          padding: EdgeInsets.only(right: 12),
           onPressed: () {},
         ),
       ],
