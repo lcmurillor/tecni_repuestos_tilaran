@@ -17,33 +17,40 @@ class HomeScreen extends StatelessWidget {
 //
   AppBar AppbarMethod() {
     return AppBar(
-      title: Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(25)),
-        width: 250,
-        height: 40,
+      title: Center(
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(15)),
+          width: 290,
+          height: 40,
 
-        //   icon:Icon(Icons.search),
-        child: TextFormField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
+          //   icon:Icon(Icons.search),
+          child: TextFormField(
+            textAlignVertical: TextAlignVertical.bottom,
+            decoration: InputDecoration(
+              hintStyle: GoogleFonts.poppins(color: Colors.black),
+              prefixIcon: Image.asset(
+                  'assets/lupa24.ico'), // AssetImage('assets/lupa.ico'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              hintText: 'Busca un Producto',
             ),
-            hintText: 'Busca un Producto',
           ),
         ),
       ),
       leading: IconButton(
         onPressed: () {},
-        icon: Icon(Icons.menu),
-        iconSize: 37,
+        icon: Icon(Icons.menu_rounded),
+        iconSize: 45,
       ),
       backgroundColor: Color(0xffD6271F),
       elevation: 3,
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.shopping_cart),
-          iconSize: 37,
+          iconSize: 40,
+          padding: EdgeInsets.only(right: 12, left: 0),
           onPressed: () {},
         ),
       ],
