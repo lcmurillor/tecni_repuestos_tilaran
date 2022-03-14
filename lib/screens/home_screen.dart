@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
+  ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -15,53 +16,81 @@ class HomeScreen extends StatelessWidget {
 
   ListView MethodListView() {
     return ListView(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {}
+        }),
       children: [
-        Container(
-          height: 337,
-          width: 346,
-          margin: EdgeInsets.symmetric(vertical: 3.5, horizontal: 25),
-          child: Card(
-            elevation: 12,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            clipBehavior: Clip.antiAlias,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ContainerCustomImageCard(),
-                  Container(
-                    child: ListTile(
-                      title: FittedBox(
-                          child: Text("Título del artículo publicado",
-                              style: GoogleFonts.roboto())),
-                      subtitle: FittedBox(
-                        alignment: Alignment.centerLeft,
-                        fit: BoxFit.contain,
-                        child: Text(
-                          "Previsualización de los detalles del artículo con información en formato completo",
-                          style: GoogleFonts.roboto(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: Text("C99,500.00",
-                        style: GoogleFonts.roboto(
-                            color: Colors.red[700],
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500)),
+        CustomContainerCard(),
+      ],
+    );
+  }
 
-                    //color: Colors.amberAccent,
-                    alignment: Alignment.bottomLeft,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  ),
-                  Image.asset('assets/carrito.ico')
-                ],
+  Container CustomContainerCard() {
+    return Container(
+      height: 337,
+      width: 346,
+      margin: EdgeInsets.symmetric(vertical: 3.5, horizontal: 25),
+      child: Card(
+        elevation: 12,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        clipBehavior: Clip.antiAlias,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ContainerCustomImageCard(),
+              CustomInfoProduct("Titulo del artículo publicado",
+                  "MisticFyah Burnidsajdsklsdbastic"),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      child: Text("C99,500.00",
+                          style: GoogleFonts.roboto(
+                              color: Colors.red[700],
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500)),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                    ),
+                    Container(
+                        child: IconButton(
+                          alignment: Alignment.bottomRight,
+                          icon: Image.asset(
+                            'assets/carrito.ico',
+                          ),
+                          iconSize: 47,
+                          onPressed: () {},
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 12))
+                  ],
+                ),
+                alignment: Alignment.bottomLeft,
               ),
-            ),
+            ],
           ),
         ),
-      ],
+      ),
+    );
+  }
+
+  Container CustomInfoProduct(String titulo, String subtitulo) {
+    return Container(
+      child: ListTile(
+        title: Text(titulo,
+            style:
+                GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.w600)),
+        subtitle: Container(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: Text(
+            subtitulo,
+            overflow: TextOverflow.visible,
+            style: GoogleFonts.roboto(fontSize: 13),
+            maxLines: 5,
+          ),
+        ),
+      ),
     );
   }
 
