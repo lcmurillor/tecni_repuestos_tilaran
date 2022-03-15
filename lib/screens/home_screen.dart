@@ -7,8 +7,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: CustomDrawer(),
         resizeToAvoidBottomInset: false,
-        appBar: AppbarMethod(),
+        appBar: AppbarMethod(context),
         body: MethodListView(),
       ),
     );
@@ -136,7 +137,7 @@ class HomeScreen extends StatelessWidget {
   }
 
 //
-  AppBar AppbarMethod() {
+  AppBar AppbarMethod(BuildContext context) {
     return AppBar(
       title: Center(
         child: Container(
@@ -161,11 +162,12 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.menu_rounded),
-          iconSize: 50,
-          padding: EdgeInsets.only(left: 10)),
+      leading: Builder(
+          builder: (context) => IconButton(
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              icon: Icon(Icons.menu_rounded),
+              iconSize: 50,
+              padding: EdgeInsets.only(left: 10))),
       backgroundColor: Color(0xffD6271F),
       elevation: 3,
       actions: <Widget>[
@@ -177,5 +179,33 @@ class HomeScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class CustomDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+        child: ListView(
+      children: [
+        DrawerHeader(
+          padding: EdgeInsets.zero,
+          margin: EdgeInsets.zero,
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/Drawer.png'), fit: BoxFit.cover)),
+          ),
+        ),
+        ListTile(
+          title: Text('Inicio'),
+          onTap: () {},
+        ),
+        ListTile(
+          title: Text('Repuestos'),
+          onTap: () {},
+        )
+      ],
+    ));
   }
 }
