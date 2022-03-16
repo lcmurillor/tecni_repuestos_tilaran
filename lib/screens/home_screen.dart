@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -197,15 +198,24 @@ class CustomDrawer extends StatelessWidget {
                     image: AssetImage('assets/Drawer.png'), fit: BoxFit.cover)),
           ),
         ),
-        ListTile(
-          title: Text('Inicio'),
-          onTap: () {},
-        ),
-        ListTile(
-          title: Text('Repuestos'),
-          onTap: () {},
-        )
+        MoldeListile('Inicio', Icons.home, Colors.black),
+        MoldeListile('Repuestos', Icons.settings, Colors.black),
+        MoldeListile(
+            'Accesorios', Icons.sports_motorsports_rounded, Colors.black),
+        MoldeListile('Inicia sesión', Icons.login_rounded, Colors.black),
+        MoldeListile('Regístrate', Icons.person_add, Colors.black),
+        MoldeListile('Acerca de', Icons.info, Colors.black),
       ],
     ));
+  }
+
+  ListTile MoldeListile(String titulo, IconData icono, Color color) {
+    return ListTile(
+      title: Text(titulo,
+          style:
+              GoogleFonts.roboto(fontSize: 16.68, fontWeight: FontWeight.w600)),
+      leading: Icon(icono, color: color, size: 35),
+      onTap: () {},
+    );
   }
 }
