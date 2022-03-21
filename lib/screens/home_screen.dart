@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  //este método no está en función, era prueba para el scroll infinito
   ListView MethodListView() {
     return ListView(
       controller: _scrollController
@@ -209,6 +210,7 @@ class CustomDrawer extends StatelessWidget {
     ));
   }
 
+//sub proceso de ListTile dado que se repetía muchas veces lo mismo
   ListTile MoldeListile(String titulo, IconData icono, Color color) {
     return ListTile(
       title: Text(titulo,
