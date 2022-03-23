@@ -1,145 +1,28 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
+
+  ///Corresponde a la pantalla principal donde se pueden ver varios articulos de la tienda
+  ///no es necesario estar con una cuenta iniciada para poder ver esta pantalla
+  HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        drawer: CustomDrawer(),
-        resizeToAvoidBottomInset: false,
-        appBar: AppbarMethod(context),
-        body: MethodListView(),
+    return Scaffold(
+      drawer: const CustomDrawer(),
+      //resizeToAvoidBottomInset: false,
+      appBar: appbarMethod(context),
+      body: ListView.builder(
+        itemBuilder: (_, index) => const CustomItemCard(),
+        itemCount: 5,
       ),
     );
   }
 
-  //este método no está en función, era prueba para el scroll infinito
-  ListView MethodListView() {
-    return ListView(
-      controller: _scrollController
-        ..addListener(() {
-          if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent) {}
-        }),
-      children: [
-        CustomContainerCard(),
-      ],
-    );
-  }
-
-  Container CustomContainerCard() {
-    return Container(
-      height: 337,
-      width: 346,
-      margin: EdgeInsets.symmetric(vertical: 3.5, horizontal: 25),
-      child: Card(
-        elevation: 12,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        clipBehavior: Clip.antiAlias,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ContainerCustomImageCard(),
-              CustomInfoProduct("Titulo del artículo publicado",
-                  "MisticFyah Burnidsajdsklsdbastic"),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Text("C99,500.00",
-                          style: GoogleFonts.roboto(
-                              color: Colors.red[700],
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500)),
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                    ),
-                    Container(
-                        child: IconButton(
-                          alignment: Alignment.bottomRight,
-                          icon: Image.asset(
-                            'assets/carrito.ico',
-                          ),
-                          iconSize: 47,
-                          onPressed: () {},
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 12))
-                  ],
-                ),
-                alignment: Alignment.bottomLeft,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container CustomInfoProduct(String titulo, String subtitulo) {
-    return Container(
-      child: ListTile(
-        title: Text(titulo,
-            style:
-                GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.w600)),
-        subtitle: Container(
-          padding: EdgeInsets.symmetric(vertical: 5),
-          child: Text(
-            subtitulo,
-            overflow: TextOverflow.visible,
-            style: GoogleFonts.roboto(fontSize: 13),
-            maxLines: 5,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container ContainerCustomImageCard() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
-        color: Color.fromARGB(106, 253, 253, 253),
-        boxShadow: [
-          new BoxShadow(
-            color: Colors.black26,
-            spreadRadius: -1,
-            offset: new Offset(1, 3.0),
-            blurRadius: 0.5,
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Color.fromARGB(106, 253, 253, 253),
-            boxShadow: [
-              new BoxShadow(
-                color: Colors.black26,
-                offset: new Offset(1, 3.0),
-                blurRadius: 0.5,
-              ),
-            ],
-          ),
-          margin: EdgeInsets.symmetric(vertical: 2.0),
-          child: FadeInImage(
-            placeholder: NetworkImage('https://via.placeholder.com/315x189'),
-            image: NetworkImage('https://via.placeholder.com/315x189'),
-          ),
-
-          // decoration: BoxDecoration(color: Colors.black),
-        ),
-      ),
-    );
-  }
-
-//
-  AppBar AppbarMethod(BuildContext context) {
+  AppBar appbarMethod(BuildContext context) {
     return AppBar(
       title: Center(
         child: Container(
@@ -150,12 +33,15 @@ class HomeScreen extends StatelessWidget {
           child: TextFormField(
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
+              //TODO cambiar la tipografia
               hintStyle: GoogleFonts.poppins(
                   color: Colors.black,
                   fontSize: 14,
                   fontWeight: FontWeight.w600),
-              prefixIcon: Image.asset(
-                  'assets/lupa22.ico'), // AssetImage('assets/lupa.ico'),
+              prefixIcon: SvgPicture.asset(
+                'assets/search.svg',
+                height: 20,
+              ), // AssetImage('assets/lupa.ico'),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -167,16 +53,16 @@ class HomeScreen extends StatelessWidget {
       leading: Builder(
           builder: (context) => IconButton(
               onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: Icon(Icons.menu_rounded),
+              icon: const Icon(Icons.menu_rounded),
               iconSize: 50,
-              padding: EdgeInsets.only(left: 10))),
-      backgroundColor: Color(0xffD6271F),
+              padding: const EdgeInsets.only(left: 10))),
+      backgroundColor: const Color(0xffD6271F),
       elevation: 3,
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.shopping_cart),
+          icon: const Icon(Icons.shopping_cart),
           iconSize: 38,
-          padding: EdgeInsets.only(right: 12),
+          padding: const EdgeInsets.only(right: 12),
           onPressed: () {},
         ),
       ],
@@ -185,6 +71,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class CustomDrawer extends StatelessWidget {
+  const CustomDrawer({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -194,24 +82,24 @@ class CustomDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/Drawer.png'), fit: BoxFit.cover)),
           ),
         ),
-        MoldeListile('Inicio', Icons.home, Colors.black),
-        MoldeListile('Repuestos', Icons.settings, Colors.black),
-        MoldeListile(
+        moldeListile('Inicio', Icons.home, Colors.black),
+        moldeListile('Repuestos', Icons.settings, Colors.black),
+        moldeListile(
             'Accesorios', Icons.sports_motorsports_rounded, Colors.black),
-        MoldeListile('Inicia sesión', Icons.login_rounded, Colors.black),
-        MoldeListile('Regístrate', Icons.person_add, Colors.black),
-        MoldeListile('Acerca de', Icons.info, Colors.black),
+        moldeListile('Inicia sesión', Icons.login_rounded, Colors.black),
+        moldeListile('Regístrate', Icons.person_add, Colors.black),
+        moldeListile('Acerca de', Icons.info, Colors.black),
       ],
     ));
   }
 
-//sub proceso de ListTile dado que se repetía muchas veces lo mismo
-  ListTile MoldeListile(String titulo, IconData icono, Color color) {
+  //sub proceso de ListTile dado que se repetía muchas veces lo mismo
+  ListTile moldeListile(String titulo, IconData icono, Color color) {
     return ListTile(
       title: Text(titulo,
           style:
