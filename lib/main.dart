@@ -13,8 +13,7 @@ class MyApp extends StatelessWidget {
         title: 'Tecni repuestos Tilarán',
         initialRoute: 'home',
         routes: {
-          'home': (_) => HomeScreen(),
-        },
-        home: HomeScreen());
+          'home': (_) => const HomeScreen(),
+        });
   }
 }

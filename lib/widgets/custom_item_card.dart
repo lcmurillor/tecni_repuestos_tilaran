@@ -17,12 +17,7 @@ class CustomItemCard extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  offset: const Offset(0, 10),
-                  blurRadius: 10)
-            ]),
+            boxShadow: [MainTheme.cardShadow]),
 
         ///Construcción de los elementos dentro del contenedor
         child: Column(children: [
@@ -93,13 +88,7 @@ class CustomItemCard extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                offset: const Offset(0, 10),
-                blurRadius: 10,
-              )
-            ]),
+            boxShadow: [MainTheme.cardShadow]),
 
         ///Este es el widget que se encarga de crear la imagen.
         child: ClipRRect(

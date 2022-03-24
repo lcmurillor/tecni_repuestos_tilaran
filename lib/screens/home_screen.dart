@@ -1,71 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
-  final ScrollController _scrollController = ScrollController();
-
   ///Corresponde a la pantalla principal donde se pueden ver varios articulos de la tienda
   ///no es necesario estar con una cuenta iniciada para poder ver esta pantalla
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(),
       drawer: const CustomDrawer(),
-      //resizeToAvoidBottomInset: false,
-      appBar: appbarMethod(context),
       body: ListView.builder(
         itemBuilder: (_, index) => const CustomItemCard(),
-        itemCount: 5,
+        itemCount: 10,
       ),
-    );
-  }
-
-  AppBar appbarMethod(BuildContext context) {
-    return AppBar(
-      title: Center(
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(15)),
-          width: 280,
-          height: 40,
-          child: TextFormField(
-            textAlignVertical: TextAlignVertical.bottom,
-            decoration: InputDecoration(
-              //TODO cambiar la tipografia
-              hintStyle: GoogleFonts.poppins(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600),
-              prefixIcon: SvgPicture.asset(
-                'assets/search.svg',
-                height: 20,
-              ), // AssetImage('assets/lupa.ico'),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              hintText: 'Busca un Producto',
-            ),
-          ),
-        ),
-      ),
-      leading: Builder(
-          builder: (context) => IconButton(
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: const Icon(Icons.menu_rounded),
-              iconSize: 50,
-              padding: const EdgeInsets.only(left: 10))),
-      backgroundColor: const Color(0xffD6271F),
-      elevation: 3,
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.shopping_cart),
-          iconSize: 38,
-          padding: const EdgeInsets.only(right: 12),
-          onPressed: () {},
-        ),
-      ],
     );
   }
 }
