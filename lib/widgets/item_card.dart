@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tecni_repuestos/theme/app_theme.dart';
 
-class CustomItemCard extends StatelessWidget {
+class ItemCard extends StatelessWidget {
   ///Contenedor que construye el card de producto con todo su contenido
-  const CustomItemCard({Key? key}) : super(key: key);
+  const ItemCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
