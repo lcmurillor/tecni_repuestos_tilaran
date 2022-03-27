@@ -11,6 +11,7 @@ class HomeScreen extends StatelessWidget {
       appBar: const CustomAppBar(),
       drawer: const CustomDrawer(),
       body: ListView.builder(
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (_, index) => const ItemCard(),
         itemCount: 10,
       ),

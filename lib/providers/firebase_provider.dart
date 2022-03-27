@@ -5,6 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseProvider extends ChangeNotifier {
+  ///Método cosntructor del firebaseprovider
+  FirebaseProvider() {
+    
+    print('Estoy en el metodo constructor');
+    getUsers();
+  }
+
   void getUsers() async {
     CollectionReference colletionReference =
         FirebaseFirestore.instance.collection("pruebausuarios");
