@@ -2,9 +2,10 @@
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:tecni_repuestos/screens/screens.dart';
 
 class CustomDrawer extends StatelessWidget {
-  ///Éste widget corresponde al menú lateral desplegable que permite la navegación 
+  ///Éste widget corresponde al menú lateral desplegable que permite la navegación
   ///por la palicación.
   const CustomDrawer({Key? key}) : super(key: key);
 
@@ -23,12 +24,17 @@ class CustomDrawer extends StatelessWidget {
                       fit: BoxFit.cover)),
             ),
           ),
-          moldeListile('Inicio', Icons.home_outlined),
-          moldeListile('Repuestos', Icons.settings_outlined),
-          moldeListile('Accesorios', Icons.sports_motorsports_outlined),
-          moldeListile('Inicia sesión', Icons.login_outlined),
-          moldeListile('Regístrate', Icons.person_add_outlined),
-          moldeListile('Acerca de', Icons.info_outline),
+          moldeListile(
+              'Inicio', Icons.home_outlined, const HomeScreen(), context),
+          moldeListile(
+              'Repuestos', Icons.settings_outlined, LoginScreen(), context),
+          moldeListile('Accesorios', Icons.sports_motorsports_outlined,
+              LoginScreen(), context),
+          moldeListile(
+              'Inicia sesión', Icons.login_outlined, LoginScreen(), context),
+          moldeListile(
+              'Regístrate', Icons.person_add_outlined, LoginScreen(), context),
+          moldeListile('Acerca de', Icons.info_outline, LoginScreen(), context),
         ],
       )),
     );
@@ -38,13 +44,18 @@ class CustomDrawer extends StatelessWidget {
   ListTile moldeListile(
     String titulo,
     IconData icono,
+    Widget pagina,
+    BuildContext context,
   ) {
     return ListTile(
       title: Text(titulo,
           style:
               GoogleFonts.roboto(fontSize: 16.68, fontWeight: FontWeight.w600)),
       leading: Icon(icono, color: Colors.black, size: 35),
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => pagina));
+      },
     );
   }
 }
