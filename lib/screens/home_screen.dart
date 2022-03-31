@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,13 +8,36 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final firebaseProvider = Provider.of<FirebaseProvider>(context);
     return Scaffold(
       appBar: const CustomAppBar(),
       drawer: const CustomDrawer(),
-      body: ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (_, index) => const ItemCard(),
-        itemCount: 10,
+      body: StreamBuilder(
+        stream: firebaseProvider.getHomeProducts(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('ESTE ES EL ERROR \n' + snapshot.error.toString()),
+            );
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final data = snapshot.data;
+
+          return ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return ItemCard(
+                  title: data[index].description,
+                  total: data[index].total,
+                  img: data[index].img);
+            },
+          );
+        },
       ),
     );
   }

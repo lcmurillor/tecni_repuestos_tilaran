@@ -3,21 +3,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tecni_repuestos/models/models.dart';
 
 class FirebaseProvider extends ChangeNotifier {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
   ///Método cosntructor del firebaseprovider
   FirebaseProvider() {
-    
     print('Estoy en el metodo constructor');
-    getUsers();
+    getHomeProducts();
+  }
+
+  Stream<List<Product>> getHomeProducts() {
+    final ref = db.collection('accesorios');
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Product.fromFirebase(doc)).toList());
   }
 
   void getUsers() async {
     CollectionReference colletionReference =
-        FirebaseFirestore.instance.collection("pruebausuarios");
+        FirebaseFirestore.instance.collection("accesorios");
 
     QuerySnapshot users = await colletionReference.get();
-
     if (users.docs.isNotEmpty) {
       for (var doc in users.docs) {
         print(doc.data());
@@ -49,6 +56,7 @@ class FirebaseProvider extends ChangeNotifier {
   /* PROBANDO AUTENTIFICACIÓN */
   signInWithEmailAndPassword() async {
     try {
+      // ignore: unused_local_variable
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: "usuario@correo.com", password: "111111");

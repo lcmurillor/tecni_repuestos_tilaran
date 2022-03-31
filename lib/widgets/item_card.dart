@@ -4,7 +4,12 @@ import 'package:tecni_repuestos/theme/app_theme.dart';
 
 class ItemCard extends StatelessWidget {
   ///Contenedor que construye el card de producto con todo su contenido
-  const ItemCard({Key? key}) : super(key: key);
+  const ItemCard(
+      {Key? key, required this.title, required this.total, required this.img})
+      : super(key: key);
+  final String title;
+  final double total;
+  final String img;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +26,13 @@ class ItemCard extends StatelessWidget {
 
         ///Construcción de los elementos dentro del contenedor
         child: Column(children: [
-          productImage(size),
-          productInfo("Título del artículo publicado",
-              "Mollit Lorem adipisicing anim est excepteur aliqua nulla adipisicing commodo dolor qui occaecat pariatur.Mollit Lorem adipisicing anim est excepteur aliqua nulla adipisicing commodo dolor qui occaecat pariatur."),
-          SizedBox(height: size.height * 0.02),
+          productImage(size, img),
+          productInfo(title),
+          const Spacer(),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             ///Cambia la tipografía para que sea compatible con el signo de colones.
             Text(
-              "₡99,500.00",
+              "₡${total.toStringAsFixed(0)}",
               style: TextStyle(
                   color: MainTheme.mainRed,
                   fontSize: 26,
@@ -52,38 +56,31 @@ class ItemCard extends StatelessWidget {
                   ),
                   color: MainTheme.mainRed,
                 ))
-          ])
+          ]),
+          const SizedBox(height: 15)
         ]));
   }
 
   ///Éste médoto constuye la información que correspone al artículo.
-  ListTile productInfo(String title, String subtitle) {
+  ListTile productInfo(String title) {
     return ListTile(
         contentPadding: const EdgeInsets.all(0),
         title: Text(title,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style:
-                GoogleFonts.roboto(fontSize: 22, fontWeight: FontWeight.w600)),
-        subtitle: Container(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Text(
-              subtitle,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.roboto(fontSize: 13),
-              maxLines: 3,
-            )));
+                GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600)));
   }
 
   ///Éste método construye la imagen dentro del card de productos con todos los
   ///aspectos decorativos.
-  Container productImage(Size size) {
+  Container productImage(Size size, String url) {
     ///Este conetendor disponde de un tamaño fijo para la imagen según el tamaño
     ///del disposito además esta parte del código contiene todos los elementos
     ///decorativos.
     return Container(
         width: double.infinity,
-        height: size.height * 0.25,
+        height: size.height * 0.32,
         margin: const EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -92,12 +89,16 @@ class ItemCard extends StatelessWidget {
 
         ///Este es el widget que se encarga de crear la imagen.
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: const FadeInImage(
-              placeholder: AssetImage('assets/placeholder-image.png'),
-              image: NetworkImage('https://via.placeholder.com/350x200'),
-              placeholderFit: BoxFit.cover,
-              fit: BoxFit.cover),
-        ));
+            borderRadius: BorderRadius.circular(10),
+            child: url.startsWith('http')
+                ? FadeInImage(
+                    placeholder:
+                        const AssetImage('assets/placeholder-image.png'),
+                    image: NetworkImage(url),
+                    placeholderFit: BoxFit.cover,
+                    fit: BoxFit.contain)
+                : const Image(
+                    image: AssetImage('assets/placeholder-image.png'),
+                    fit: BoxFit.cover)));
   }
 }
