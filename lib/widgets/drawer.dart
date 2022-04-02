@@ -42,19 +42,18 @@ class CustomDrawer extends StatelessWidget {
 
   ///Método que construye los elementos listados del menú lateral.
   ListTile moldeListile(
-    String titulo,
-    IconData icono,
-    Widget pagina,
+    String title,
+    IconData icon,
+    Widget page,
     BuildContext context,
   ) {
     return ListTile(
-      title: Text(titulo,
+      title: Text(title,
           style:
               GoogleFonts.roboto(fontSize: 16.68, fontWeight: FontWeight.w600)),
-      leading: Icon(icono, color: Colors.black, size: 35),
+      leading: Icon(icon, color: Colors.black, size: 35),
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => pagina));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
     );
   }

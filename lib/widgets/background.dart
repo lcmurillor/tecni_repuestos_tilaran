@@ -11,7 +11,7 @@ class Background extends StatelessWidget {
       children: [
         Container(
           width: 500,
-          height: 280,
+          height: 350,
           decoration: boxDecoration,
         ),
         Positioned(top: -45, left: 15, child: _LineBlacks1()),
