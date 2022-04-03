@@ -33,7 +33,8 @@ class _LineBlacks1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Transform.rotate(
       angle: -pi / -6.5,
-      child: Container(width: 90, height: 405, color: Colors.black26),
+      child: Container(
+          width: 90, height: 405, color: Color.fromRGBO(209, 34, 27, 1)),
     );
   }
 }
