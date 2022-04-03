@@ -10,9 +10,21 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
-    return Scaffold(
-        body: Stack(
-      children: [Background(), CardLogin()],
-    ));
+    return SafeArea(
+      child: Scaffold(
+          body: Stack(
+        children: [
+          Background(),
+          Container(
+            width: double.infinity,
+            height: 220,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/logo.png'), scale: 0.80)),
+          ),
+          CardLogin()
+        ],
+      )),
+    );
   }
 }
