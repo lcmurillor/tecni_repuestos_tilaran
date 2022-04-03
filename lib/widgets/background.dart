@@ -3,15 +3,21 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class Background extends StatelessWidget {
-  final boxDecoration = BoxDecoration(color: Colors.red);
+  final boxDecoration = BoxDecoration(
+      gradient: LinearGradient(colors: [
+    Color.fromRGBO(246, 18, 8, 1),
+    Color.fromRGBO(216, 48, 41, 1),
+    //246 18 8 100
+  ]));
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Stack(
       children: [
         Container(
-          width: 500,
-          height: 350,
+          width: double.infinity,
+          height: size.height * 0.42,
           decoration: boxDecoration,
         ),
         Positioned(top: -45, left: 15, child: _LineBlacks1()),
