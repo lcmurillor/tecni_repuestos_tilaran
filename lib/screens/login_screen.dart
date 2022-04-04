@@ -44,8 +44,9 @@ class LoginScreen extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(left: 70),
                     child: Text(
-                      '¿No tienes una cuenta?',
-                      style: GoogleFonts.roboto(fontWeight: FontWeight.w500),
+                      '¿No tienes cuenta?',
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w800, fontSize: 16),
                     ),
                   ),
                   Container(
@@ -53,7 +54,8 @@ class LoginScreen extends StatelessWidget {
                     child: Text(
                       ' Regístrate ahora',
                       style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
                           color: Color.fromRGBO(0, 152, 181, 1)),
                     ),
                   )
