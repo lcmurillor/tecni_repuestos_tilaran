@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tecni_repuestos/theme/app_theme.dart';
 
 class CardContainer extends StatelessWidget {
   final Widget child;
@@ -18,13 +19,7 @@ class CardContainer extends StatelessWidget {
   }
 
   BoxDecoration _createCardShape() => BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 15,
-              offset: Offset(0, 5),
-            )
-          ]);
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(25),
+      boxShadow: [MainTheme.cardShadow]);
 }

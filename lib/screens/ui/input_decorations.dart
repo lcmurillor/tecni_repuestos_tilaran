@@ -9,15 +9,15 @@ class InputDecorations {
   }) {
     return InputDecoration(
         prefixIcon: Padding(
-            padding: const EdgeInsets.all(7),
+            padding: const EdgeInsets.all(10),
             child: SvgPicture.asset(
               directionIcon,
               fit: BoxFit.contain,
             )),
         hintText: hintText,
-        hintStyle:
-            GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w600),
-        fillColor: Color.fromRGBO(143, 143, 143, 207),
+        hintStyle: GoogleFonts.roboto(
+            fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey[500]),
+        fillColor: Color.fromRGBO(143, 143, 143, 220),
         filled: true,
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),

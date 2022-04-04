@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            SizedBox(height: 250),
+            SizedBox(height: 220),
             CardContainer(
               child: Column(
                 children: [
@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 30),
             Center(
               child: Row(
                 children: [
@@ -86,7 +86,7 @@ class _LoginForm extends StatelessWidget {
             obscureText: true,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecorations.loginScreen(
-                hintText: 'Contraseña', directionIcon: 'assets/pass.svg'),
+                hintText: 'Contraseña', directionIcon: 'assets/search.svg'),
           ),
           SizedBox(
             height: 30,
@@ -101,10 +101,19 @@ class _LoginForm extends StatelessWidget {
                 child: Text(
                   'Iniciar sesión',
                   style: GoogleFonts.roboto(
-                      color: Colors.white, fontWeight: FontWeight.w600),
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w400),
                 ),
               ),
-              onPressed: () {})
+              onPressed: () {}),
+          SizedBox(height: 20),
+          Text(
+            '¿Olvidaste tu contraseña?',
+            style: GoogleFonts.roboto(
+                color: Color.fromRGBO(0, 152, 181, 1),
+                fontWeight: FontWeight.w600),
+          )
         ],
       ),
     );
