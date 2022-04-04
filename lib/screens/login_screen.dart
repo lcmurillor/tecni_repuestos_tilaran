@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            SizedBox(height: 220),
+            SizedBox(height: 180),
             CardContainer(
               child: Column(
                 children: [
