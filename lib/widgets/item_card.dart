@@ -3,11 +3,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tecni_repuestos/theme/app_theme.dart';
 
 class ItemCard extends StatelessWidget {
-  ///Contenedor que construye el card de producto con todo su contenido
+  ///Contenedor que construye el card de producto con todo su contenido.
   const ItemCard(
-      {Key? key, required this.title, required this.total, required this.img})
+      {Key? key,
+      required this.title,
+      required this.total,
+      required this.img,
+      required this.quantity})
       : super(key: key);
   final String title;
+  final int quantity;
   final double total;
   final String img;
 
@@ -24,11 +29,11 @@ class ItemCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
             boxShadow: [MainTheme.cardShadow]),
 
-        ///Construcción de los elementos dentro del contenedor
+        ///Construcción de los elementos dentro del contenedor.
         child: Column(children: [
           productImage(size, img),
           productInfo(title),
-          const Spacer(),
+          //const Spacer(),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             ///Cambia la tipografía para que sea compatible con el signo de colones.
             Text(
@@ -57,7 +62,7 @@ class ItemCard extends StatelessWidget {
                   color: MainTheme.mainRed,
                 ))
           ]),
-          const SizedBox(height: 15)
+          // const SizedBox(height: 1)
         ]));
   }
 
@@ -69,7 +74,12 @@ class ItemCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style:
-                GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600)));
+                GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600)),
+        subtitle: Text('Disponibles: $quantity',
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style:
+                GoogleFonts.roboto(fontSize: 12, fontWeight: FontWeight.w600)));
   }
 
   ///Éste método construye la imagen dentro del card de productos con todos los
@@ -80,7 +90,7 @@ class ItemCard extends StatelessWidget {
     ///decorativos.
     return Container(
         width: double.infinity,
-        height: size.height * 0.32,
+        height: size.height * 0.30,
         margin: const EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),

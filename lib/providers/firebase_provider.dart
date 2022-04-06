@@ -8,12 +8,15 @@ import 'package:tecni_repuestos/models/models.dart';
 class FirebaseProvider extends ChangeNotifier {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  ///Método cosntructor del firebaseprovider
+  ///Método cosntructor. Éste métod es el primer metodo llamdo al construir la aplicación,
+  ///si fuera necesario hacer un llamdo a auna instancia, clase o función de firebase antes de
+  ///la cosntrucción de los widgets, se puede hacer acá.
   FirebaseProvider() {
-    print('Estoy en el metodo constructor');
-    getHomeProducts();
+    null;
   }
 
+  ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
+  ///la base de datos mediante la libreria de firebase
   Stream<List<Product>> getHomeProducts() {
     final ref = db.collection('accesorios');
     return ref.snapshots().map(
