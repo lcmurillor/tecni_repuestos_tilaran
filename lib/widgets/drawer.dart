@@ -20,21 +20,22 @@ class CustomDrawer extends StatelessWidget {
             child: Container(
               decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/Drawer.png'),
+                      image: AssetImage('assets/logo-drawer.png'),
                       fit: BoxFit.cover)),
             ),
           ),
           moldeListile(
               'Inicio', Icons.home_outlined, const HomeScreen(), context),
-          moldeListile(
-              'Repuestos', Icons.settings_outlined, const LoginScreen(), context),
+          moldeListile('Repuestos', Icons.settings_outlined,
+              const LoginScreen(), context),
           moldeListile('Accesorios', Icons.sports_motorsports_outlined,
               const LoginScreen(), context),
+          moldeListile('Inicia sesión', Icons.login_outlined,
+              const LoginScreen(), context),
+          moldeListile('Regístrate', Icons.person_add_outlined,
+              const LoginScreen(), context),
           moldeListile(
-              'Inicia sesión', Icons.login_outlined, const LoginScreen(), context),
-          moldeListile(
-              'Regístrate', Icons.person_add_outlined, const LoginScreen(), context),
-          moldeListile('Acerca de', Icons.info_outline, const LoginScreen(), context),
+              'Acerca de', Icons.info_outline, const AboutUsScreen(), context),
         ],
       )),
     );
