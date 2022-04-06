@@ -34,11 +34,12 @@ class Background extends StatelessWidget {
   }
 
   BoxDecoration HeaderLogo() {
-    return BoxDecoration(
+    return const BoxDecoration(
         image:
             DecorationImage(image: AssetImage('assets/logo.png'), scale: 0.80));
   }
 
+  // ignore: non_constant_identifier_names
   Container ContainerHeightWidthBackground(Size size) {
     return Container(
       width: double.infinity,

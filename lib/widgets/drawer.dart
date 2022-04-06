@@ -32,8 +32,8 @@ class CustomDrawer extends StatelessWidget {
               LoginScreen(), context),
           moldeListile(
               'Inicia sesión', Icons.login_outlined, LoginScreen(), context),
-          moldeListile(
-              'Regístrate', Icons.person_add_outlined, LoginScreen(), context),
+          moldeListile('Regístrate', Icons.person_add_outlined,
+              RegisterScreen(), context),
           moldeListile('Acerca de', Icons.info_outline, LoginScreen(), context),
         ],
       )),
