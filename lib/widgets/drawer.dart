@@ -27,9 +27,9 @@ class CustomDrawer extends StatelessWidget {
           moldeListile(
               'Inicio', Icons.home_outlined, const HomeScreen(), context),
           moldeListile('Repuestos', Icons.settings_outlined,
-              const LoginScreen(), context),
+              const SparesScreen(), context),
           moldeListile('Accesorios', Icons.sports_motorsports_outlined,
-              const LoginScreen(), context),
+              const AccessoriesScreen(), context),
           moldeListile('Inicia sesión', Icons.login_outlined,
               const LoginScreen(), context),
           moldeListile('Regístrate', Icons.person_add_outlined,

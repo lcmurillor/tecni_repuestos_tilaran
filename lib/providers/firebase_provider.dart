@@ -23,6 +23,28 @@ class FirebaseProvider extends ChangeNotifier {
         (list) => list.docs.map((doc) => Product.fromFirebase(doc)).toList());
   }
 
+  ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
+  ///a la categoria de accesorios.
+  Stream<List<Category>> getAccessoriesCategory() {
+    final ref = db
+        .collection('categories')
+        .where('type', isEqualTo: 'accesorios')
+        .orderBy('category_label');
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Category.fromFirebase(doc)).toList());
+  }
+
+    ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
+  ///a la categoria de repuestos.
+  Stream<List<Category>> getSparesCategory() {
+    final ref = db
+        .collection('categories')
+        .where('type', isEqualTo: 'repuesto')
+        .orderBy('category_label');
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Category.fromFirebase(doc)).toList());
+  }
+
   void getUsers() async {
     CollectionReference colletionReference =
         FirebaseFirestore.instance.collection("accesorios");
