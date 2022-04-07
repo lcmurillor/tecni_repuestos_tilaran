@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
@@ -27,9 +28,9 @@ class CustomDrawer extends StatelessWidget {
           moldeListile(
               'Inicio', Icons.home_outlined, const HomeScreen(), context),
           moldeListile('Repuestos', Icons.settings_outlined,
-              const SparesScreen(), context),
+              const CategorySparesScreen(), context),
           moldeListile('Accesorios', Icons.sports_motorsports_outlined,
-              const AccessoriesScreen(), context),
+              const CategoryAccessoriesScreen(), context),
           moldeListile('Inicia sesión', Icons.login_outlined,
               const LoginScreen(), context),
           moldeListile('Regístrate', Icons.person_add_outlined,
@@ -54,7 +55,8 @@ class CustomDrawer extends StatelessWidget {
               GoogleFonts.roboto(fontSize: 16.68, fontWeight: FontWeight.w600)),
       leading: Icon(icon, color: Colors.black, size: 35),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+        Route route = CupertinoPageRoute(builder: (context) => page);
+        Navigator.pushReplacement(context, route);
       },
     );
   }

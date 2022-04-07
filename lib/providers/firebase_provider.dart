@@ -34,7 +34,7 @@ class FirebaseProvider extends ChangeNotifier {
         (list) => list.docs.map((doc) => Category.fromFirebase(doc)).toList());
   }
 
-    ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
+  ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
   ///a la categoria de repuestos.
   Stream<List<Category>> getSparesCategory() {
     final ref = db
@@ -43,6 +43,14 @@ class FirebaseProvider extends ChangeNotifier {
         .orderBy('category_label');
     return ref.snapshots().map(
         (list) => list.docs.map((doc) => Category.fromFirebase(doc)).toList());
+  }
+
+  ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
+  ///la base de datos mediante la libreria de firebase
+  Stream<List<Product>> getfilteredProducts(String type, String category) {
+    final ref = db.collection(type).where('category', isEqualTo: category);
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Product.fromFirebase(doc)).toList());
   }
 
   void getUsers() async {
