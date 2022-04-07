@@ -16,7 +16,7 @@ class AppState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///Dentro del arreglo en este metodo se van instanciando e inicailiando
+    ///Dentro del arreglo en este metodo se van instan2ciando e inicailiando
     ///los diferentes proveedores de servicios que la aplicacion necesite.
     return MultiProvider(
       providers: [

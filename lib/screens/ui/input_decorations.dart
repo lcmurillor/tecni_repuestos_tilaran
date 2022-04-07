@@ -8,6 +8,8 @@ class InputDecorations {
     required String directionIcon,
   }) {
     return InputDecoration(
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 16.9, horizontal: 15),
         prefixIcon: Padding(
             padding: const EdgeInsets.all(10),
             child: SvgPicture.asset(

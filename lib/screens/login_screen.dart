@@ -10,6 +10,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Background(
+      useImg: true,
       child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -81,7 +82,7 @@ class _LoginForm extends StatelessWidget {
             obscureText: true,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecorations.loginScreen(
-                hintText: 'Contraseña', directionIcon: 'assets/search.svg'),
+                hintText: 'Contraseña', directionIcon: 'assets/person.svg'),
           ),
           const SizedBox(
             height: 30,
@@ -93,7 +94,7 @@ class _LoginForm extends StatelessWidget {
               color: const Color.fromRGBO(214, 39, 31, 1),
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
                 child: Text(
                   'Iniciar sesión',
                   style: GoogleFonts.roboto(
@@ -109,7 +110,8 @@ class _LoginForm extends StatelessWidget {
             style: GoogleFonts.roboto(
                 color: const Color.fromRGBO(0, 152, 181, 1),
                 fontWeight: FontWeight.w600),
-          )
+          ),
+          const SizedBox(height: 14)
         ],
       ),
     );
