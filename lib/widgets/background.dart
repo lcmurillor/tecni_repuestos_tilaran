@@ -44,7 +44,7 @@ class Background extends StatelessWidget {
         Container(
             color: const Color.fromRGBO(250, 250, 250, 1),
             width: double.infinity,
-            height: size.height * 0.58)
+            height: size.height * 0.51)
       ]),
       child,
     ]);

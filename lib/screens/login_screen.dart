@@ -8,6 +8,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
         body: Background(
       useImg: true,
@@ -24,7 +25,8 @@ class LoginScreen extends StatelessWidget {
                     ),
                     Text('Iniciar Sesion',
                         style: GoogleFonts.roboto(
-                            fontSize: 45, fontWeight: FontWeight.w600)),
+                            fontSize: size.width * 0.10,
+                            fontWeight: FontWeight.w600)),
                     const SizedBox(
                       height: 30,
                     ),
@@ -46,12 +48,15 @@ class LoginScreen extends StatelessWidget {
                     ),
                     Container(
                       padding: const EdgeInsets.all(2),
-                      child: Text(
-                        ' Regístrate ahora',
-                        style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 16,
-                            color: const Color.fromRGBO(0, 152, 181, 1)),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Regístrate ahora',
+                          style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
+                              color: const Color.fromRGBO(0, 152, 181, 1)),
+                        ),
                       ),
                     )
                   ],
@@ -66,6 +71,7 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Form(
       child: Column(
         children: [
@@ -78,6 +84,15 @@ class _LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Ingrese su contraseña';
+              }
+              if (value.length < 6) {
+                return 'La contraseña debe de tener más de 6 caracteres';
+              }
+              return null;
+            },
             autocorrect: false,
             obscureText: true,
             keyboardType: TextInputType.emailAddress,
@@ -99,17 +114,21 @@ class _LoginForm extends StatelessWidget {
                   'Iniciar sesión',
                   style: GoogleFonts.roboto(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: size.width * 0.04,
                       fontWeight: FontWeight.w500),
                 ),
               ),
               onPressed: () {}),
           const SizedBox(height: 20),
-          Text(
-            '¿Olvidaste tu contraseña?',
-            style: GoogleFonts.roboto(
-                color: const Color.fromRGBO(0, 152, 181, 1),
-                fontWeight: FontWeight.w600),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              '¿Olvidaste tu contraseña?',
+              style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 16,
+                  color: const Color.fromRGBO(0, 152, 181, 1)),
+            ),
           ),
           const SizedBox(height: 14)
         ],
