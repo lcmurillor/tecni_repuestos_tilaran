@@ -53,22 +53,19 @@ class ProductsFilterScreen extends StatelessWidget {
               icon: icon,
               text: title,
             ),
-            SizedBox(
-                height: (size.height -
-                        Scaffold.of(context).appBarMaxHeight!.toDouble()) *
-                    0.90,
-                width: double.infinity,
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return ItemCard(
-                        title: data[index].description,
-                        quantity: data[index].quantity,
-                        total: data[index].total,
-                        img: data[index].img);
-                  },
-                ))
+            Flexible(
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return ItemCard(
+                      title: data[index].description,
+                      quantity: data[index].quantity,
+                      total: data[index].total,
+                      img: data[index].img);
+                },
+              ),
+            )
           ]);
         },
       ),
