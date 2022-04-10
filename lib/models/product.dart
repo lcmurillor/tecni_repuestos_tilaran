@@ -31,7 +31,7 @@ class Product {
       required this.img});
 
   /// Éste método resibe un objeto de la base de datos firebese, ya sea un "accesosrio"
-  /// o un "repuesto" extrae la información a un Map y returna un Product con todos sus 
+  /// o un "repuesto" extrae la información a un Map y returna un Product con todos sus
   /// atributos cargados.
   factory Product.fromFirebase(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
