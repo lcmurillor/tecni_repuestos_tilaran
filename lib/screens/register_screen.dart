@@ -10,57 +10,59 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
     return SafeArea(
-      child: Scaffold(
-          body: Background(
-        useImg: false,
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            const SizedBox(height: 180),
-            CardContainer(
+      child: Flexible(
+        child: Scaffold(
+            body: Background(
+          useImg: false,
+          child: SingleChildScrollView(
               child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text('Regístrate',
-                      style: GoogleFonts.roboto(
-                          fontSize: 45, fontWeight: FontWeight.w600)),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  _RegisterForm()
-                ],
-              ),
-            ),
-            const SizedBox(height: 15),
-            Center(
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 70),
-                    child: Text(
-                      '¿No tienes cuenta?',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w800, fontSize: 16),
+            children: [
+              const SizedBox(height: 180),
+              CardContainer(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    child: Text(
-                      ' Regístrate ahora',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
-                          color: const Color.fromRGBO(0, 152, 181, 1)),
+                    Text('Regístrate',
+                        style: GoogleFonts.roboto(
+                            fontSize: 45, fontWeight: FontWeight.w600)),
+                    const SizedBox(
+                      height: 15,
                     ),
-                  ),
-                ],
+                    _RegisterForm()
+                  ],
+                ),
               ),
-            )
-          ],
+              const SizedBox(height: 15),
+              Center(
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(left: 70),
+                      child: Text(
+                        '¿No tienes cuenta?',
+                        style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w800, fontSize: 16),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(2),
+                      child: Text(
+                        ' Regístrate ahora',
+                        style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 16,
+                            color: const Color.fromRGBO(0, 152, 181, 1)),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )),
         )),
-      )),
+      ),
     );
   }
 }
