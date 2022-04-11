@@ -87,17 +87,16 @@ class FirebaseProvider extends ChangeNotifier {
   }
 
   /* PROBANDO AUTENTIFICACIÓN */
-  signInWithEmailAndPassword() async {
+  signInWithEmailAndPassword(String email, String password) async {
     try {
       // ignore: unused_local_variable
       UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: "usuario@correo.com", password: "111111");
+          .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        print('Usuario no encontrado para este email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        print('Contraseña no coincide con el email.');
       }
     }
   }

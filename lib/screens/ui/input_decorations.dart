@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tecni_repuestos/theme/app_theme.dart';
 
 class InputDecorations {
   static InputDecoration loginScreen({
     required String hintText,
-    required String directionIcon,
+    required IconData icon,
   }) {
     return InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 16.9, horizontal: 15),
         prefixIcon: Padding(
             padding: const EdgeInsets.all(10),
-            child: SvgPicture.asset(
-              directionIcon,
-              fit: BoxFit.contain,
+            child: Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: MainTheme.mainRed),
+              child: Icon(
+                icon,
+                size: 18,
+                color: Colors.white,
+              ),
             )),
         hintText: hintText,
         hintStyle: GoogleFonts.roboto(
