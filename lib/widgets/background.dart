@@ -45,7 +45,11 @@ class Background extends StatelessWidget {
           child: Container(
               color: const Color.fromRGBO(250, 250, 250, 1),
               width: double.infinity,
+<<<<<<< HEAD
               height: size.height * 0.51),
+=======
+              height: size.height * 0.58),
+>>>>>>> brach-luis
         )
       ]),
       child,

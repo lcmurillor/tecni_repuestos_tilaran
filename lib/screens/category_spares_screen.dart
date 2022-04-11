@@ -47,35 +47,32 @@ class CategorySparesScreen extends StatelessWidget {
                   icon: Icons.settings,
                   text: 'Repuestos',
                 ),
-                SizedBox(
-                    height: (size.height -
-                            Scaffold.of(context).appBarMaxHeight!.toDouble()) *
-                        0.90,
-                    width: double.infinity,
-                    child: ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: data.length,
-                        itemBuilder: (context, index) => ListTile(
-                              title: Text(
-                                data[index].categoryLabel,
-                                style: GoogleFonts.roboto(
-                                    fontSize: 18, fontWeight: FontWeight.w500),
-                              ),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                color: MainTheme.mainRed,
-                              ),
-                              onTap: () {
-                                Route route = CupertinoPageRoute(
-                                    builder: (context) => ProductsFilterScreen(
-                                          category: data[index],
-                                          icon: Icons.settings,
-                                          title: data[index].categoryLabel,
-                                        ));
-                                Navigator.push(context, route);
-                              },
+                Flexible(
+                  child: ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: data.length,
+                      itemBuilder: (context, index) => ListTile(
+                            title: Text(
+                              data[index].categoryLabel,
+                              style: GoogleFonts.roboto(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
                             ),
-                        separatorBuilder: (_, __) => const Divider()))
+                            trailing: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: MainTheme.mainRed,
+                            ),
+                            onTap: () {
+                              Route route = CupertinoPageRoute(
+                                  builder: (context) => ProductsFilterScreen(
+                                        category: data[index],
+                                        icon: Icons.settings,
+                                        title: data[index].categoryLabel,
+                                      ));
+                              Navigator.push(context, route);
+                            },
+                          ),
+                      separatorBuilder: (_, __) => const Divider()),
+                )
               ]);
             }));
   }

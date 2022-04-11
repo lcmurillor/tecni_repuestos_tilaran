@@ -41,17 +41,14 @@ class CategoryAccessoriesScreen extends StatelessWidget {
 
               final data = snapshot.data;
 
-              return Column(children: [
-                CategoryTitle(
-                  size: size,
-                  icon: Icons.sports_motorsports,
-                  text: 'Accesorios',
-                ),
-                SizedBox(
-                    height: (size.height -
-                            Scaffold.of(context).appBarMaxHeight!.toDouble()) *
-                        0.90,
-                    width: double.infinity,
+              return Column(
+                children: [
+                  CategoryTitle(
+                    size: size,
+                    icon: Icons.sports_motorsports,
+                    text: 'Accesorios',
+                  ),
+                  Flexible(
                     child: ListView.separated(
                         physics: const BouncingScrollPhysics(),
                         itemCount: data.length,
@@ -75,8 +72,10 @@ class CategoryAccessoriesScreen extends StatelessWidget {
                                 Navigator.push(context, route);
                               },
                             ),
-                        separatorBuilder: (_, __) => const Divider()))
-              ]);
+                        separatorBuilder: (_, __) => const Divider()),
+                  ),
+                ],
+              );
             }));
   }
 }
