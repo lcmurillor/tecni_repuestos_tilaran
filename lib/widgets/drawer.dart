@@ -56,7 +56,7 @@ class CustomDrawer extends StatelessWidget {
       leading: Icon(icon, color: Colors.black, size: 35),
       onTap: () {
         Route route = CupertinoPageRoute(builder: (context) => page);
-        Navigator.pushReplacement(context, route);
+        Navigator.push(context, route);
       },
     );
   }

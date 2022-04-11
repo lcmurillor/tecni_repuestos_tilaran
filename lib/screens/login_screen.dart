@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/screens/ui/input_decorations.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
@@ -25,7 +26,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     Text('Iniciar Sesion',
                         style: GoogleFonts.roboto(
-                            fontSize: size.width * 0.10,
+                            fontSize: size.width * 0.11,
                             fontWeight: FontWeight.w600)),
                     const SizedBox(
                       height: 30,

@@ -41,10 +41,12 @@ class Background extends StatelessWidget {
       ///Corresponde al fondo gris claro que abarca toda la mitad inferir del fondo.
       Column(children: [
         Container(height: size.height * 0.42),
-        Container(
-            color: const Color.fromRGBO(250, 250, 250, 1),
-            width: double.infinity,
-            height: size.height * 0.51)
+        Flexible(
+          child: Container(
+              color: const Color.fromRGBO(250, 250, 250, 1),
+              width: double.infinity,
+              height: size.height * 0.51),
+        )
       ]),
       child,
     ]);

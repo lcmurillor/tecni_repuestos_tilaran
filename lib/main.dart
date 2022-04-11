@@ -21,10 +21,9 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => FirebaseProvider(),
-          //Por defecto está en true pero ahora en folse si o si va a construir el objeto
-          lazy: false,
-        )
+            create: (_) => FirebaseProvider(),
+            //Por defecto está en true pero ahora en folse si o si va a construir el objeto
+            lazy: false),
       ],
       child: const MyApp(),
     );

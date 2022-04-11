@@ -40,7 +40,7 @@ class RegisterScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.only(left: 70),
                     child: Text(
-                      '¿No tienes cuenta?',
+                      '¿Ya tienes una cuenta?',
                       style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w800, fontSize: 16),
                     ),
@@ -48,7 +48,7 @@ class RegisterScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(2),
                     child: Text(
-                      ' Regístrate ahora',
+                      ' Inicia Sesión',
                       style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w800,
                           fontSize: 16,
