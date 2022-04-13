@@ -24,6 +24,11 @@ class AppState extends StatelessWidget {
           create: (_) => FirebaseCloudProvider(),
           //Por defecto está en true pero ahora en folse si o si va a construir el objeto
           lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FirebaseAuthProvicer(),
+          //Por defecto está en true pero ahora en folse si o si va a construir el objeto
+          lazy: false,
         )
       ],
       child: const MyApp(),
@@ -40,9 +45,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Tecni repuestos Tilarán',
         theme: MainTheme.lightTheme,
-        initialRoute: 'home',
+        initialRoute: 'login',
         routes: {
           'home': (_) => const HomeScreen(),
+          'login': (_) => const LoginScreen(),
         });
   }
 }
