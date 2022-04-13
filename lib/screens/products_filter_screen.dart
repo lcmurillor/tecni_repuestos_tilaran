@@ -19,7 +19,8 @@ class ProductsFilterScreen extends StatelessWidget {
   final Category category;
   @override
   Widget build(BuildContext context) {
-    final firebaseProvider = Provider.of<FirebaseProvider>(context);
+    final firebaseCloudProvider =
+        Provider.of<FirebaseCloudProvider>(context, listen: false);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -29,7 +30,7 @@ class ProductsFilterScreen extends StatelessWidget {
       body: StreamBuilder(
         ///Hace un llamdo a la base de datos y resive una lista de productos filtrado por el tipo
         ///(pude ser tanto un repuesto como un accesorio) y por la categoria especifica de cada uno.
-        stream: firebaseProvider.getfilteredProducts(
+        stream: firebaseCloudProvider.getfilteredProducts(
             category.type, category.categoryName),
 
         ///Construye los objetos en base a lo resivido en la base de datos.

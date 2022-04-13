@@ -5,15 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
 
-class FirebaseProvider extends ChangeNotifier {
+class FirebaseCloudProvider extends ChangeNotifier {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
   ///Método cosntructor. Éste métod es el primer metodo llamdo al construir la aplicación,
   ///si fuera necesario hacer un llamdo a auna instancia, clase o función de firebase antes de
   ///la cosntrucción de los widgets, se puede hacer acá.
-  FirebaseProvider() {
-    null;
-  }
+  // FirebaseCloudProvider() {
+  //   null;
+  // }
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
   ///la base de datos mediante la libreria de firebase
@@ -84,21 +84,5 @@ class FirebaseProvider extends ChangeNotifier {
         .collection("pruebausuarios")
         .doc('VimDJ1bLgs1VGQfBr8ms') // en el doc se manda el id a eliminar
         .delete();
-  }
-
-  /* PROBANDO AUTENTIFICACIÓN */
-  signInWithEmailAndPassword() async {
-    try {
-      // ignore: unused_local_variable
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: "usuario@correo.com", password: "111111");
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    }
   }
 }

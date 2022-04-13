@@ -14,7 +14,8 @@ class CategorySparesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firebaseProvider = Provider.of<FirebaseProvider>(context);
+    final firebaseCloudProvider =
+        Provider.of<FirebaseCloudProvider>(context, listen: false);
     final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: const CustomAppBar(),
@@ -24,7 +25,7 @@ class CategorySparesScreen extends StatelessWidget {
         body: StreamBuilder(
 
             ///Hace un llamdo a la base de datos y resive una lista de categorias.
-            stream: firebaseProvider.getSparesCategory(),
+            stream: firebaseCloudProvider.getSparesCategory(),
 
             ///Construye los objetos en base a lo resivido en la base de datos.
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

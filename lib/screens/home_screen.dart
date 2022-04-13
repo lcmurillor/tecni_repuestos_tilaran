@@ -9,7 +9,8 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final firebaseProvider = Provider.of<FirebaseProvider>(context);
+    final firebaseCloudProvider =
+        Provider.of<FirebaseCloudProvider>(context, listen: false);
     return Scaffold(
       appBar: const CustomAppBar(),
       drawer: const CustomDrawer(),
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
       ///Construción de la lista de articulos para la pantalla principal.
       body: StreamBuilder(
         ///Hace un llamdo a la base de datos y resive una lista de productos.
-        stream: firebaseProvider.getHomeProducts(),
+        stream: firebaseCloudProvider.getHomeProducts(),
 
         ///Construye los objetos en base a lo resivido en la base de datos.
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
