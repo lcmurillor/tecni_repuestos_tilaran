@@ -81,7 +81,7 @@ class _RegisterForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
-            onChanged: (value) => registerFormProvider.name = value,
+            onChanged: (value) => registerFormProvider.email = value,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'El email es obligatorio';
