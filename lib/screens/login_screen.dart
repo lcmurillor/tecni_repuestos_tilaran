@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
+import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/screens/ui/input_decorations.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
@@ -78,6 +79,8 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final FirebaseProvider firebaseProvider =
+        Provider.of<FirebaseProvider>(context);
     final size = MediaQuery.of(context).size;
     final loginFormProvider =
         Provider.of<LoginFormProvider>(context, listen: false);
@@ -86,8 +89,10 @@ class _LoginForm extends StatelessWidget {
       key: loginFormProvider.formKey,
       child: Column(
         children: [
+          //email
           TextFormField(
-            //email
+            onFieldSubmitted: (_) =>
+                onFormSubmit(loginFormProvider, firebaseProvider),
             validator: (value) {
               if (!EmailValidator.validate(value ?? '')) {
                 return 'Email no válido';
@@ -104,6 +109,8 @@ class _LoginForm extends StatelessWidget {
           const SizedBox(height: 30),
           //password
           TextFormField(
+            onFieldSubmitted: (_) =>
+                onFormSubmit(loginFormProvider, firebaseProvider),
             onChanged: (value) => loginFormProvider.password = value,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -140,7 +147,8 @@ class _LoginForm extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                loginFormProvider.validateForm();
+                onFormSubmit(loginFormProvider, firebaseProvider);
+                Navigator.pushNamed(context, 'home');
               }),
           const SizedBox(height: 20),
           TextButton(
@@ -157,5 +165,15 @@ class _LoginForm extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void onFormSubmit(
+      LoginFormProvider loginFormProvider, FirebaseProvider authentication) {
+    final isValid = loginFormProvider.validateForm();
+
+    if (isValid) {
+      authentication.signInWithEmailAndPassword(
+          loginFormProvider.email, loginFormProvider.password);
+    }
   }
 }
