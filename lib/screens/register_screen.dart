@@ -50,18 +50,26 @@ class RegisterScreen extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(2),
-                          child: Text(
-                            ' Inicia Sesión',
-                            style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 16,
-                                color: const Color.fromRGBO(0, 152, 181, 1)),
+                          padding: const EdgeInsets.all(1),
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, 'login');
+                            },
+                            child: Text(
+                              'Inicia Sesión',
+                              style: GoogleFonts.roboto(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 16,
+                                  color: const Color.fromRGBO(0, 152, 181, 1)),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                 ],
               )),
             )),
@@ -221,7 +229,7 @@ class _RegisterForm extends StatelessWidget {
                 ),
               ),
               Text(
-                'Términos y condicones',
+                'Términos y condiciones',
                 style: GoogleFonts.roboto(
                     color: const Color.fromRGBO(0, 152, 181, 1),
                     fontWeight: FontWeight.w600),
@@ -247,12 +255,16 @@ class _RegisterForm extends StatelessWidget {
               onPressed: () {
                 registerFormProvider.validateForm();
               }),
-          const SizedBox(height: 15),
-          Text(
-            '¿Olvidaste tu contraseña?',
-            style: GoogleFonts.roboto(
-                color: const Color.fromRGBO(0, 152, 181, 1),
-                fontWeight: FontWeight.w600),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              '¿Olvidaste tu contraseña?',
+              style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                  color: const Color.fromRGBO(0, 152, 181, 1)),
+            ),
           ),
           const SizedBox(height: 14)
         ],

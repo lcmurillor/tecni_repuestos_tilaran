@@ -30,7 +30,7 @@ class InputDecorations {
         fillColor: const Color.fromRGBO(143, 143, 143, 220),
         filled: true,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(

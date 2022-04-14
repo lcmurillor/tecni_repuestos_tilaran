@@ -54,7 +54,10 @@ class LoginScreen extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(2),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                    context, 'register');
+                              },
                               child: Text(
                                 'Regístrate ahora',
                                 style: GoogleFonts.roboto(
