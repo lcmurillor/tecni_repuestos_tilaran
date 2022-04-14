@@ -3,13 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/screens/ui/input_decorations.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
     return ChangeNotifierProvider(
         create: (_) => RegisterFormProvider(),
         child: Builder(builder: (context) {
@@ -71,6 +71,7 @@ class RegisterScreen extends StatelessWidget {
 }
 
 class _RegisterForm extends StatelessWidget {
+  final _dateController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final registerFormProvider =
@@ -138,6 +139,29 @@ class _RegisterForm extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           TextFormField(
+            controller: _dateController,
+            readOnly: true,
+            onTap: () async {
+              await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime(2080),
+                  locale: Locale('es'),
+                  builder: (BuildContext context, child) {
+                    return Theme(
+                        data: ThemeData.light().copyWith(
+                            colorScheme: const ColorScheme.light(
+                          primary: Color.fromRGBO(214, 39, 31, 1),
+                        )),
+                        child: child!);
+                  }).then((selectedDate) {
+                if (selectedDate != null) {
+                  _dateController.text =
+                      DateFormat('yyyy-MM-dd').format(selectedDate);
+                }
+              });
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'La fecha de nacimiento es obligatoria';

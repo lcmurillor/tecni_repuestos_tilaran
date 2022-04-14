@@ -29,6 +29,10 @@ class InputDecorations {
             fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey[500]),
         fillColor: const Color.fromRGBO(143, 143, 143, 220),
         filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: const BorderSide(color: Colors.transparent)),
