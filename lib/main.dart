@@ -43,15 +43,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        localizationsDelegates: [
+        localizationsDelegates: const[
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: [
-          const Locale('es', 'ES'),
-          const Locale('en', 'US'),
+        supportedLocales: const [
+          Locale('es', 'ES'),
+          Locale('en', 'US'),
         ],
-        locale: Locale('zh'),
+        locale: const Locale('zh'),
         debugShowCheckedModeBanner: false,
         title: 'Tecni repuestos Tilarán',
         theme: MainTheme.lightTheme,
