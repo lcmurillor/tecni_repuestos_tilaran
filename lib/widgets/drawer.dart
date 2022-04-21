@@ -44,7 +44,9 @@ class CustomDrawer extends StatelessWidget {
                   icon: Icons.sports_motorsports),
               context),
 
-          //TODO agregar documentación
+          ///Pirmera condición para evaluar el estado de usuario. Si no se encuentra
+          ///ningún usuario registrado en los archivos del dispositivo el menú solo
+          ///va a mostrar loas funciones más basicas.
           if (FirebaseAuthService.auth.currentUser == null ||
               FirebaseAuthService.auth.currentUser!.isAnonymous) ...{
             moldelListTile('Inicia sesión', MdiIcons.arrowRightBox,
@@ -52,7 +54,10 @@ class CustomDrawer extends StatelessWidget {
             moldelListTile(
                 'Regístrate', Icons.person_add, const RegisterScreen(), context)
           },
-          //TODO agregar documentación
+
+          ///Segunda condición para evaluar el estado de usuario. Si existe la instancia
+          ///de un usario en la aplicación evaluará el rango de este usuario y ahora
+          ///dispone de la opción de cerrar la sesión.
           if (FirebaseAuthService.auth.currentUser != null) ...{
             StreamBuilder(
               stream: FirebaseCloudService.getUser(
@@ -68,7 +73,11 @@ class CustomDrawer extends StatelessWidget {
                 }
 
                 final data = snapshot.data!;
-                //TODO agregar documentación
+
+                ///Ultima condición para evaluar el estado de usuario. Si existe la instancia
+                ///de un usario en la aplicación evaluará el rango de este usuario, si el usuario
+                ///es administrador o vendedor, dispondrá de mas o menos opciones administrativas
+                ///respetivamnete.
                 return Column(children: [
                   if (data[0].administrator) ...[
                     moldelListTile('Administrar pedidos', MdiIcons.archiveCog,
