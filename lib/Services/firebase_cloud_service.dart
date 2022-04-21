@@ -1,11 +1,10 @@
-// ignore_for_file: avoid_print
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
 
-class FirebaseCloudProvider extends ChangeNotifier {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+///Ésta clase corresponde a la conexión a la base datos Firebase y su respectivo
+///traslado de datos a los modelos correspondientes.
+class FirebaseCloudService {
+  static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   ///Método cosntructor. Éste métod es el primer metodo llamdo al construir la aplicación,
   ///si fuera necesario hacer un llamdo a auna instancia, clase o función de firebase antes de
@@ -15,17 +14,17 @@ class FirebaseCloudProvider extends ChangeNotifier {
   // }
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
-  ///la base de datos mediante la libreria de firebase
-  Stream<List<Product>> getHomeProducts() {
-    final ref = db.collection('accesorios');
+  ///la base de datos mediante la libreria de firebase.
+  static Stream<List<Product>> getHomeProducts() {
+    final ref = _db.collection('accesorios');
     return ref.snapshots().map(
         (list) => list.docs.map((doc) => Product.fromFirebase(doc)).toList());
   }
 
   ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
   ///a la categoria de accesorios.
-  Stream<List<Category>> getAccessoriesCategory() {
-    final ref = db
+  static Stream<List<Category>> getAccessoriesCategory() {
+    final ref = _db
         .collection('categories')
         .where('type', isEqualTo: 'accesorios')
         .orderBy('category_label');
@@ -35,8 +34,8 @@ class FirebaseCloudProvider extends ChangeNotifier {
 
   ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
   ///a la categoria de repuestos.
-  Stream<List<Category>> getSparesCategory() {
-    final ref = db
+  static Stream<List<Category>> getSparesCategory() {
+    final ref = _db
         .collection('categories')
         .where('type', isEqualTo: 'repuesto')
         .orderBy('category_label');
@@ -46,23 +45,32 @@ class FirebaseCloudProvider extends ChangeNotifier {
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
   ///la base de datos mediante la libreria de firebase
-  Stream<List<Product>> getfilteredProducts(String type, String category) {
-    final ref = db.collection(type).where('category', isEqualTo: category);
+  static Stream<List<Product>> getfilteredProducts(
+      String type, String category) {
+    final ref = _db.collection(type).where('category', isEqualTo: category);
     return ref.snapshots().map(
         (list) => list.docs.map((doc) => Product.fromFirebase(doc)).toList());
   }
 
-  void getUsers() async {
-    CollectionReference colletionReference =
-        FirebaseFirestore.instance.collection("accesorios");
-
-    QuerySnapshot users = await colletionReference.get();
-    if (users.docs.isNotEmpty) {
-      for (var doc in users.docs) {
-        print(doc.data());
-      }
-    }
+  ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
+  ///y hace el llamado al método de conversión para retornar un usuario con todos sus
+  ///atributos.
+  static Stream<User> getUser(String uid) {
+    final ref = _db.collection('users').where('uid', isEqualTo: uid);
+    return ref.snapshots().map((doc) => User.fromFirebase(doc.docs.first));
   }
+
+  // void getUsers() async {
+  //   CollectionReference colletionReference =
+  //       FirebaseFirestore.instance.collection("accesorios");
+
+  //   QuerySnapshot users = await colletionReference.get();
+  //   if (users.docs.isNotEmpty) {
+  //     for (var doc in users.docs) {
+  //       //print(doc.data());
+  //     }
+  //   }
+  // }
 
 //haciendo prueba de agregar
   void addPruebaUsuarios() {

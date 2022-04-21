@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/theme/app_theme.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,16 +8,14 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final firebaseCloudProvider =
-        Provider.of<FirebaseCloudProvider>(context, listen: false);
     return Scaffold(
       appBar: const CustomAppBar(),
       drawer: const CustomDrawer(),
 
       ///Construción de la lista de articulos para la pantalla principal.
       body: StreamBuilder(
-        ///Hace un llamdo a la base de datos y resive una lista de productos.
-        stream: firebaseCloudProvider.getHomeProducts(),
+        ///Hace un llamado a la base de datos y resive una lista de productos.
+        stream: FirebaseCloudService.getHomeProducts(),
 
         ///Construye los objetos en base a lo resivido en la base de datos.
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -29,8 +26,7 @@ class HomeScreen extends StatelessWidget {
           }
 
           if (!snapshot.hasData) {
-            return Center(
-                child: CircularProgressIndicator(color: MainTheme.mainRed));
+            return const CustomProgressIndicator();
           }
 
           final data = snapshot.data;

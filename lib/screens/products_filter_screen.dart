@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
-import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/theme/app_theme.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class ProductsFilterScreen extends StatelessWidget {
@@ -19,8 +19,6 @@ class ProductsFilterScreen extends StatelessWidget {
   final Category category;
   @override
   Widget build(BuildContext context) {
-    final firebaseCloudProvider =
-        Provider.of<FirebaseCloudProvider>(context, listen: false);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -30,7 +28,7 @@ class ProductsFilterScreen extends StatelessWidget {
       body: StreamBuilder(
         ///Hace un llamdo a la base de datos y resive una lista de productos filtrado por el tipo
         ///(pude ser tanto un repuesto como un accesorio) y por la categoria especifica de cada uno.
-        stream: firebaseCloudProvider.getfilteredProducts(
+        stream: FirebaseCloudService.getfilteredProducts(
             category.type, category.categoryName),
 
         ///Construye los objetos en base a lo resivido en la base de datos.
@@ -43,7 +41,7 @@ class ProductsFilterScreen extends StatelessWidget {
 
           if (!snapshot.hasData) {
             return Center(
-                child: CircularProgressIndicator(color: MainTheme.mainRed));
+                child: CircularProgressIndicator(color: ColorStyle.mainRed));
           }
 
           final data = snapshot.data;

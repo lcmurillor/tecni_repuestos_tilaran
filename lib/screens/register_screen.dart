@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/screens/ui/input_decorations.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -99,7 +99,7 @@ class _RegisterForm extends StatelessWidget {
             },
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecorations.loginScreen(
+            decoration: InputStyle.mainInput(
                 hintText: 'Correo Electrónico', icon: Icons.email_rounded),
           ),
           const SizedBox(height: 15),
@@ -114,8 +114,8 @@ class _RegisterForm extends StatelessWidget {
             autocorrect: false,
             obscureText: false,
             keyboardType: TextInputType.name,
-            decoration: InputDecorations.loginScreen(
-                hintText: 'Nombre', icon: Icons.person),
+            decoration:
+                InputStyle.mainInput(hintText: 'Nombre', icon: Icons.person),
           ),
           const SizedBox(height: 15),
           TextFormField(
@@ -128,7 +128,7 @@ class _RegisterForm extends StatelessWidget {
             autocorrect: false,
             obscureText: false,
             keyboardType: TextInputType.name,
-            decoration: InputDecorations.loginScreen(
+            decoration: InputStyle.mainInput(
                 hintText: 'Apellidos', icon: Icons.person),
           ),
           const SizedBox(height: 15),
@@ -142,8 +142,8 @@ class _RegisterForm extends StatelessWidget {
             autocorrect: false,
             obscureText: false,
             keyboardType: TextInputType.phone,
-            decoration: InputDecorations.loginScreen(
-                hintText: 'Teléfono', icon: Icons.phone),
+            decoration:
+                InputStyle.mainInput(hintText: 'Teléfono', icon: Icons.phone),
           ),
           const SizedBox(height: 15),
           TextFormField(
@@ -155,7 +155,7 @@ class _RegisterForm extends StatelessWidget {
                   initialDate: DateTime.now(),
                   firstDate: DateTime(1900),
                   lastDate: DateTime(2080),
-                  locale: Locale('es'),
+                  locale: const Locale('es'),
                   builder: (BuildContext context, child) {
                     return Theme(
                         data: ThemeData.light().copyWith(
@@ -179,7 +179,7 @@ class _RegisterForm extends StatelessWidget {
             autocorrect: false,
             obscureText: false,
             keyboardType: TextInputType.datetime,
-            decoration: InputDecorations.loginScreen(
+            decoration: InputStyle.mainInput(
                 hintText: 'Fecha de nacimiento',
                 icon: Icons.calendar_month_rounded),
           ),
@@ -197,7 +197,7 @@ class _RegisterForm extends StatelessWidget {
             autocorrect: false,
             obscureText: true,
             keyboardType: TextInputType.name,
-            decoration: InputDecorations.loginScreen(
+            decoration: InputStyle.mainInput(
                 hintText: 'Contraseña', icon: Icons.lock),
           ),
           const SizedBox(height: 15),
@@ -214,7 +214,7 @@ class _RegisterForm extends StatelessWidget {
             autocorrect: false,
             obscureText: true,
             keyboardType: TextInputType.name,
-            decoration: InputDecorations.loginScreen(
+            decoration: InputStyle.mainInput(
                 hintText: 'Confirmar contraseña', icon: Icons.lock),
           ),
           const SizedBox(height: 15),

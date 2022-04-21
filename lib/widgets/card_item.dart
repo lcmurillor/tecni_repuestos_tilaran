@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tecni_repuestos/theme/app_theme.dart';
+import 'package:intl/intl.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 
 class ItemCard extends StatelessWidget {
   ///Contenedor que construye el card de producto con todo su contenido.
@@ -19,6 +20,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final formatCurrency = NumberFormat.currency(locale: "es_ES", symbol: "");
     return Container(
         height: size.height * 0.52,
         width: double.infinity,
@@ -37,9 +39,9 @@ class ItemCard extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             ///Cambia la tipografía para que sea compatible con el signo de colones.
             Text(
-              "₡${total.toStringAsFixed(0)}",
+              "₡ ${formatCurrency.format(total)}",
               style: TextStyle(
-                  color: MainTheme.mainRed,
+                  color: ColorStyle.mainRed,
                   fontSize: 26,
                   fontWeight: FontWeight.w500),
             ),
@@ -50,7 +52,7 @@ class ItemCard extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                    color: MainTheme.mainRed,
+                    color: ColorStyle.mainRed,
                     borderRadius: BorderRadius.circular(100)),
                 child: IconButton(
                   onPressed: () {},
@@ -59,7 +61,7 @@ class ItemCard extends StatelessWidget {
                     color: Colors.white,
                     size: 30.0,
                   ),
-                  color: MainTheme.mainRed,
+                  color: ColorStyle.mainRed,
                 ))
           ]),
           // const SizedBox(height: 1)
@@ -73,8 +75,7 @@ class ItemCard extends StatelessWidget {
         title: Text(title,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style:
-                GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600)),
+            style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 18)),
         subtitle: Text('Disponibles: $quantity',
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

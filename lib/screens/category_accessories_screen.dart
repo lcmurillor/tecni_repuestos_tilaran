@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tecni_repuestos/providers/providers.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
-import 'package:tecni_repuestos/theme/app_theme.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class CategoryAccessoriesScreen extends StatelessWidget {
@@ -14,8 +14,6 @@ class CategoryAccessoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firebaseCloudProvider =
-        Provider.of<FirebaseCloudProvider>(context, listen: false);
     final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: const CustomAppBar(),
@@ -25,7 +23,7 @@ class CategoryAccessoriesScreen extends StatelessWidget {
         body: StreamBuilder(
 
             ///Hace un llamdo a la base de datos y resive una lista de categorias.
-            stream: firebaseCloudProvider.getAccessoriesCategory(),
+            stream: FirebaseCloudService.getAccessoriesCategory(),
 
             ///Construye los objetos en base a lo resivido en la base de datos.
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -37,7 +35,8 @@ class CategoryAccessoriesScreen extends StatelessWidget {
 
               if (!snapshot.hasData) {
                 return Center(
-                    child: CircularProgressIndicator(color: MainTheme.mainRed));
+                    child:
+                        CircularProgressIndicator(color: ColorStyle.mainRed));
               }
 
               final data = snapshot.data;
@@ -61,7 +60,7 @@ class CategoryAccessoriesScreen extends StatelessWidget {
                               ),
                               trailing: Icon(
                                 Icons.arrow_forward_ios_outlined,
-                                color: MainTheme.mainRed,
+                                color: ColorStyle.mainRed,
                               ),
                               onTap: () {
                                 Route route = CupertinoPageRoute(

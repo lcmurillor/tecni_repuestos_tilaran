@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tecni_repuestos/theme/app_theme.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 
-class InputDecorations {
-  static InputDecoration loginScreen({
+class InputStyle {
+  static InputDecoration mainInput({
     required String hintText,
     required IconData icon,
   }) {
@@ -17,7 +17,7 @@ class InputDecorations {
               width: 25,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: MainTheme.mainRed),
+                  color: ColorStyle.mainRed),
               child: Icon(
                 icon,
                 size: 18,

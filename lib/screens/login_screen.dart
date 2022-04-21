@@ -1,25 +1,34 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/screens/ui/input_decorations.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
+  const LoginScreen({Key? key, this.hasError = false}) : super(key: key);
+  final bool hasError;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return ChangeNotifierProvider(
         create: (_) => LoginFormProvider(),
         child: Builder(builder: (context) {
+          Future.delayed(Duration.zero, () {
+            if (hasError) {
+              NotificationsService.showSnackbar(
+                  'Ha ocurrido un error al iniciar sesión.');
+            }
+          });
           return Scaffold(
               body: Background(
             useImg: true,
             child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 180),
                     CardContainer(
@@ -40,34 +49,23 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    Center(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: Row(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.only(left: 70),
-                            child: Text(
-                              '¿No tienes cuenta?',
-                              style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w800, fontSize: 16),
-                            ),
+                          Text(
+                            '¿No tienes cuenta?',
+                            style: CustomTextStyle.robotoSemiBold,
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(2),
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                    context, 'register');
-                              },
-                              child: Text(
-                                'Regístrate ahora',
-                                style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 16,
-                                    color:
-                                        const Color.fromRGBO(0, 152, 181, 1)),
-                              ),
-                            ),
-                          )
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, 'register');
+                            },
+                            child: Text('Regístrate ahora',
+                                style: CustomTextStyle.robotoSemiBold
+                                    .copyWith(color: ColorStyle.mainBlue)),
+                          ),
                         ],
                       ),
                     )
@@ -81,20 +79,18 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuthProvicer firebaseAuthProvicer =
-        Provider.of<FirebaseAuthProvicer>(context);
     final size = MediaQuery.of(context).size;
     final loginFormProvider =
         Provider.of<LoginFormProvider>(context, listen: false);
     return Form(
-      autovalidateMode: AutovalidateMode.always,
+      autovalidateMode: AutovalidateMode.disabled,
       key: loginFormProvider.formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           //email
           TextFormField(
-            onFieldSubmitted: (_) =>
-                onFormSubmit(loginFormProvider, firebaseAuthProvicer, context),
+            onFieldSubmitted: (_) => onFormSubmit(loginFormProvider, context),
             validator: (value) {
               if (!EmailValidator.validate(value ?? '')) {
                 return 'Email no válido';
@@ -105,14 +101,13 @@ class _LoginForm extends StatelessWidget {
             onChanged: (value) => loginFormProvider.email = value,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecorations.loginScreen(
+            decoration: InputStyle.mainInput(
                 hintText: 'Correo Electrónico', icon: Icons.email),
           ),
           const SizedBox(height: 30),
           //password
           TextFormField(
-            onFieldSubmitted: (_) =>
-                onFormSubmit(loginFormProvider, firebaseAuthProvicer, context),
+            onFieldSubmitted: (_) => onFormSubmit(loginFormProvider, context),
             onChanged: (value) => loginFormProvider.password = value,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -126,8 +121,8 @@ class _LoginForm extends StatelessWidget {
             autocorrect: false,
             obscureText: true,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecorations.loginScreen(
-                hintText: 'Contraseña', icon: Icons.lock),
+            decoration:
+                InputStyle.mainInput(hintText: 'Contraseña', icon: Icons.lock),
           ),
           const SizedBox(
             height: 30,
@@ -149,7 +144,7 @@ class _LoginForm extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                onFormSubmit(loginFormProvider, firebaseAuthProvicer, context);
+                onFormSubmit(loginFormProvider, context);
               }),
           const SizedBox(height: 20),
           TextButton(
@@ -168,12 +163,11 @@ class _LoginForm extends StatelessWidget {
     );
   }
 
-  void onFormSubmit(LoginFormProvider loginFormProvider,
-      FirebaseAuthProvicer authentication, context) {
+  void onFormSubmit(LoginFormProvider loginFormProvider, context) {
     final isValid = loginFormProvider.validateForm();
 
     if (isValid) {
-      authentication.signIn(
+      FirebaseAuthService.signIn(
           loginFormProvider.email, loginFormProvider.password, context);
     }
   }

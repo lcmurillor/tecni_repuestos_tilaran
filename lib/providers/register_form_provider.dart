@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+///Ésta clase se encarga de cargar los valors de los formularios de registro de usuario
+///y validar que cumpla con los requerimientos mínimos.
 class RegisterFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -11,12 +13,12 @@ class RegisterFormProvider extends ChangeNotifier {
   String password = '';
   String confirmpassword = '';
 
-  validateForm() {
+  ///Valida si el formulario cumple con las condiciones mínimas para registar al ususario.
+  bool validateForm() {
     if (formKey.currentState!.validate()) {
-      print('Form valid ... Login');
-      print('$email === $password === $name');
+      return true;
     } else {
-      print('Form not valid');
+      return true;
     }
   }
 }

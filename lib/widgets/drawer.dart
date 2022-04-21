@@ -26,6 +26,7 @@ class CustomDrawer extends StatelessWidget {
                       fit: BoxFit.cover)),
             ),
           ),
+          //TODO Agregar las rutas al main y cambiar eel tipo de enrutamiento.
           moldeListile(
               'Inicio', Icons.home_outlined, const HomeScreen(), context),
           moldeListile('Repuestos', Icons.settings_outlined,
