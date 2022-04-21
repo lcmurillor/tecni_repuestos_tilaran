@@ -1,16 +1,16 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/cupertino.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 
 class CustomDrawer extends StatelessWidget {
   ///Éste widget corresponde al menú lateral desplegable que permite la navegación
   ///por la palicación.
   const CustomDrawer({Key? key}) : super(key: key);
-  final String user = 'admin';
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,58 +26,96 @@ class CustomDrawer extends StatelessWidget {
                       fit: BoxFit.cover)),
             ),
           ),
-          //TODO Agregar las rutas al main y cambiar eel tipo de enrutamiento.
-          moldeListile(
-              'Inicio', Icons.home_outlined, const HomeScreen(), context),
-          moldeListile('Repuestos', Icons.settings_outlined,
-              const CategorySparesScreen(), context),
-          moldeListile('Accesorios', Icons.sports_motorsports_outlined,
-              const CategoryAccessoriesScreen(), context),
+          moldelListTile('Inicio', Icons.home, const HomeScreen(), context),
+          moldelListTile(
+              'Repuestos',
+              Icons.settings,
+              CategoryScreen(
+                  stream: FirebaseCloudService.getSparesCategory(),
+                  title: 'Repuestos',
+                  icon: Icons.settings),
+              context),
+          moldelListTile(
+              'Accesorios',
+              Icons.sports_motorsports,
+              CategoryScreen(
+                  stream: FirebaseCloudService.getAccessoriesCategory(),
+                  title: 'Repuestos',
+                  icon: Icons.sports_motorsports),
+              context),
 
-          ///Ésta condición permite agregar más elementos a la lista dem nenú latera si se cumple
-          ///la condición.
-          if (user == 'user' || user == 'admin') ...{
-            moldeListile(
-                'Mi carrito', Icons.home_outlined, const HomeScreen(), context),
-            moldeListile('Mis Pedidos', Icons.home_outlined, const HomeScreen(),
-                context),
+          //TODO agregar documentación
+          if (FirebaseAuthService.auth.currentUser == null ||
+              FirebaseAuthService.auth.currentUser!.isAnonymous) ...{
+            moldelListTile('Inicia sesión', MdiIcons.arrowRightBox,
+                const LoginScreen(), context),
+            moldelListTile(
+                'Regístrate', Icons.person_add, const RegisterScreen(), context)
           },
-          if (user == 'admin') ...{
-            moldeListile('Administrar pedidos', MdiIcons.archiveCogOutline,
-                const HomeScreen(), context),
-            moldeListile('Administrar usuarios', MdiIcons.accountCogOutline,
-                const HomeScreen(), context),
-            moldeListile('Mi perfil', MdiIcons.accountOutline,
-                const HomeScreen(), context),
-            moldeListile('Cerrar sesión', Icons.home_outlined,
-                const HomeScreen(), context),
+          //TODO agregar documentación
+          if (FirebaseAuthService.auth.currentUser != null) ...{
+            StreamBuilder(
+              stream: FirebaseCloudService.getUser(
+                  FirebaseAuthService.auth.currentUser!.uid),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+                if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                }
+
+                if (!snapshot.hasData) {
+                  return const SizedBox();
+                }
+
+                final data = snapshot.data!;
+                //TODO agregar documentación
+                return Column(children: [
+                  if (data[0].administrator) ...[
+                    moldelListTile('Administrar pedidos', MdiIcons.archiveCog,
+                        const HomeScreen(), context),
+                    moldelListTile('Administrar usuarios', MdiIcons.accountCog,
+                        const HomeScreen(), context)
+                  ] else if (data[0].vendor) ...[
+                    moldelListTile('Administrar pedidos', MdiIcons.archiveCog,
+                        const HomeScreen(), context),
+                  ],
+                  moldelListTile('Mi carrito', Icons.shopping_cart,
+                      const HomeScreen(), context),
+                  moldelListTile('Mis Pedidos', MdiIcons.archive,
+                      const HomeScreen(), context),
+                  moldelListTile('Mi perfil', MdiIcons.account,
+                      const HomeScreen(), context),
+                  moldelListTile(
+                      'Cerrar sesión', MdiIcons.arrowLeftBox, null, context),
+                ]);
+              },
+            ),
           },
-          moldeListile('Inicia sesión', Icons.login_outlined,
-              const LoginScreen(), context),
-          moldeListile('Regístrate', Icons.person_add_outlined,
-              const RegisterScreen(), context),
-          moldeListile(
-              'Acerca de', Icons.info_outline, const AboutUsScreen(), context),
+          moldelListTile(
+              'Acerca de', Icons.info, const AboutUsScreen(), context),
         ],
       )),
     );
   }
 
   ///Método que construye los elementos listados del menú lateral.
-  ListTile moldeListile(
+  ListTile moldelListTile(
     String title,
     IconData icon,
-    Widget page,
+    Widget? page,
     BuildContext context,
   ) {
     return ListTile(
       title: Text(title,
-          style:
-              GoogleFonts.roboto(fontSize: 16.68, fontWeight: FontWeight.w600)),
+          style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 20)),
       leading: Icon(icon, color: Colors.black, size: 35),
       onTap: () {
-        Route route = CupertinoPageRoute(builder: (context) => page);
-        Navigator.push(context, route);
+        if (page != null) {
+          Route route = CupertinoPageRoute(builder: (context) => page);
+          Navigator.push(context, route);
+        } else {
+          FirebaseAuthService.signOut(context);
+        }
       },
     );
   }

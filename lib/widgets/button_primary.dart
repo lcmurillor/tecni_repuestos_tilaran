@@ -15,7 +15,7 @@ class PrimaryButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         color: ColorStyle.mainRed,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 85, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 85, vertical: 15),
           child: Text(text,
               style: CustomTextStyle.robotoExtraBold
                   .copyWith(fontSize: size, color: Colors.white)),

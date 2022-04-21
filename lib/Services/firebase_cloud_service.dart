@@ -6,13 +6,6 @@ import 'package:tecni_repuestos/models/models.dart';
 class FirebaseCloudService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  ///Método cosntructor. Éste métod es el primer metodo llamdo al construir la aplicación,
-  ///si fuera necesario hacer un llamdo a auna instancia, clase o función de firebase antes de
-  ///la cosntrucción de los widgets, se puede hacer acá.
-  // FirebaseCloudProvider() {
-  //   null;
-  // }
-
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
   ///la base de datos mediante la libreria de firebase.
   static Stream<List<Product>> getHomeProducts() {
@@ -55,9 +48,11 @@ class FirebaseCloudService {
   ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Stream<User> getUser(String uid) {
-    final ref = _db.collection('users').where('uid', isEqualTo: uid);
-    return ref.snapshots().map((doc) => User.fromFirebase(doc.docs.first));
+  static Stream<List<User>> getUser(String uid) {
+    final ref = _db.collection('users').where('id', isEqualTo: uid);
+    return ref
+        .snapshots()
+        .map((list) => list.docs.map((doc) => User.fromFirebase(doc)).toList());
   }
 
   // void getUsers() async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,18 +19,17 @@ class HomeScreen extends StatelessWidget {
         stream: FirebaseCloudService.getHomeProducts(),
 
         ///Construye los objetos en base a lo resivido en la base de datos.
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+            return NotificationsService.showSnackbar(
+                'Ha ocurrido un error a la hora de cargar los datos.');
           }
 
           if (!snapshot.hasData) {
             return const CustomProgressIndicator();
           }
 
-          final data = snapshot.data;
+          final data = snapshot.data!;
 
           return ListView.builder(
             physics: const BouncingScrollPhysics(),
