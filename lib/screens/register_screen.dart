@@ -51,8 +51,16 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatelessWidget {
+class _RegisterForm extends StatefulWidget {
+  @override
+  State<_RegisterForm> createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<_RegisterForm> {
+  bool _isactived = false;
+
   final _dateController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final registerFormProvider =
@@ -186,8 +194,12 @@ class _RegisterForm extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 40),
                 child: Checkbox(
                   activeColor: ColorStyle.mainRed,
-                  onChanged: (bool? value) {},
-                  value: true,
+                  value: _isactived,
+                  onChanged: (bool? valueIn) {
+                    setState(() {
+                      _isactived = valueIn!;
+                    });
+                  },
                 ),
               ),
               Text('Términos y condiciones',
@@ -198,7 +210,7 @@ class _RegisterForm extends StatelessWidget {
           //TODO Crear el metodo de validación y cración de usuarios.
           PrimaryButton(
               text: 'Crear cuenta',
-              onPressed: () => registerFormProvider.validateForm())
+              onPressed: () => registerFormProvider.validateForm(_isactived))
         ],
       ),
     );

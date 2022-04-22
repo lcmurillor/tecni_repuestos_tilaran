@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
 class PrimaryButton extends StatelessWidget {
-  ///Corresponde al botón rojo principal que se encuentra al final de diversos formularios 
+  ///Corresponde al botón rojo principal que se encuentra al final de diversos formularios
   ///de la aplicación.
   const PrimaryButton(
       {Key? key,
