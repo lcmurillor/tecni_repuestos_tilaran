@@ -33,7 +33,7 @@ class FirebaseAuthService {
   ///principal y con esto actualiza las opciones disponibles en el menú laterañ.
   static signOut(context) async {
     try {
-      await FirebaseAuth.instance.signOut();
+      await auth.signOut();
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     } on FirebaseAuthException catch (e) {

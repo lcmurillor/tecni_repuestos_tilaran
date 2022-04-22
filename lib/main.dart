@@ -63,7 +63,7 @@ class TecniRepuestoTilaran extends StatelessWidget {
             } else if (snapshot.hasData) {
               return const HomeScreen();
             } else {
-              return const LoginScreen();
+              return const HomeScreen();
             }
           },
         ),

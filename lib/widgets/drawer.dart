@@ -16,6 +16,7 @@ class CustomDrawer extends StatelessWidget {
     return SafeArea(
       child: Drawer(
           child: ListView(
+        physics: const BouncingScrollPhysics(),
         children: [
           DrawerHeader(
             padding: EdgeInsets.zero,
@@ -80,20 +81,29 @@ class CustomDrawer extends StatelessWidget {
                 ///respetivamnete.
                 return Column(children: [
                   if (data[0].administrator) ...[
-                    moldelListTile('Administrar pedidos', MdiIcons.archiveCog,
-                        const HomeScreen(), context),
-                    moldelListTile('Administrar usuarios', MdiIcons.accountCog,
-                        const HomeScreen(), context)
+                    moldelListTile(
+                        'Administrar pedidos',
+                        MdiIcons.archiveCog,
+                        const PlaceholderScreen(text: 'Administrar pedidos'),
+                        context),
+                    moldelListTile(
+                        'Administrar usuarios',
+                        MdiIcons.accountCog,
+                        const PlaceholderScreen(text: 'Adminitrar usuarios'),
+                        context)
                   ] else if (data[0].vendor) ...[
-                    moldelListTile('Administrar pedidos', MdiIcons.archiveCog,
-                        const HomeScreen(), context),
+                    moldelListTile(
+                        'Administrar pedidos',
+                        MdiIcons.archiveCog,
+                        const PlaceholderScreen(text: 'Administrar pedidos'),
+                        context),
                   ],
                   moldelListTile('Mi carrito', Icons.shopping_cart,
-                      const HomeScreen(), context),
-                  moldelListTile('Mis Pedidos', MdiIcons.archive,
-                      const HomeScreen(), context),
+                      const PlaceholderScreen(text: 'Mi carrito'), context),
+                  moldelListTile('Mis pedidos', MdiIcons.archive,
+                      const PlaceholderScreen(text: 'Mis pedidos'), context),
                   moldelListTile('Mi perfil', MdiIcons.account,
-                      const HomeScreen(), context),
+                      const PlaceholderScreen(text: 'Mi perfil'), context),
                   moldelListTile(
                       'Cerrar sesión', MdiIcons.arrowLeftBox, null, context),
                 ]);
