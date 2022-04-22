@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-///Ésteobjeto corresponde a un usuario de la base de datos con todos sus respectivos
+///Éste objeto corresponde a un usuario de la base de datos con todos sus respectivos
 ///atributos.
 class User {
   bool administrator;
