@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "883806792949",
+    "firebase_url": "https://tecni-repuestos.firebaseio.com",
+    "project_id": "tecni-repuestos",
+    "storage_bucket": "tecni-repuestos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883806792949:android:73a15e88ab04b230",
+        "android_client_info": {
+          "package_name": "co.cr.tecnirepuestos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "883806792949-ki0151q63kkoife3jhh9o63hh5bde6m7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.cr.tecnirepuestos",
+            "certificate_hash": "749e6f062a5f2f9dedb16d43cb624939d65dbad8"
+          }
+        },
+        {
+          "client_id": "883806792949-08pddvl7ra6a05ohivjp3ribtvun2h1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWb9So1JE4k8pi6u1LtYrS8VxSmvwtUmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "883806792949-08pddvl7ra6a05ohivjp3ribtvun2h1u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "883806792949-kifhm07a6dg5vcsln3435r9ipldptp3a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.cr.tecnirepuesto"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

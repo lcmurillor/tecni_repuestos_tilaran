@@ -1,4 +1,4 @@
-package com.example.tecni_repuestos
+package co.cr.tecnirepuestos
 
 import io.flutter.embedding.android.FlutterActivity
 
