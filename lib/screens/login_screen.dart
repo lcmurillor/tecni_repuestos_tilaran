@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
-import 'package:tecni_repuestos/widgets/button_tertiary.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
