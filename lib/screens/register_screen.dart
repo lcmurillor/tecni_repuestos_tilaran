@@ -3,6 +3,8 @@ import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -202,9 +204,10 @@ class _RegisterFormState extends State<_RegisterForm> {
                   },
                 ),
               ),
-              Text('Términos y condiciones',
-                  style: CustomTextStyle.robotoSemiBold
-                      .copyWith(color: ColorStyle.mainBlue)),
+              const SecundaryButton(
+                  text: "Términos y condiciones",
+                  fontSize: 16,
+                  onPressed: _launchURL)
             ],
           ),
           //TODO Crear el metodo de validación y cración de usuarios.
@@ -214,5 +217,14 @@ class _RegisterFormState extends State<_RegisterForm> {
         ],
       ),
     );
+  }
+}
+
+_launchURL() async {
+  const url = 'https://es.lipsum.com/';
+  if (await canLaunchUrlString(url)) {
+    await launchUrlString(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }

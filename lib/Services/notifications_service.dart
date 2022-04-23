@@ -11,10 +11,10 @@ class NotificationsService {
         content: Text(message,
             textAlign: TextAlign.center,
             style: CustomTextStyle.robotoMedium
-                .copyWith(fontSize: 20, color: Colors.black)),
+                .copyWith(fontSize: 20, color: Colors.white)),
         duration: const Duration(milliseconds: 2500),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 250, 0, 0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)));
 
