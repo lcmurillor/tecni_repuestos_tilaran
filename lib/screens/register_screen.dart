@@ -3,8 +3,9 @@ import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+external int get millisecondsSinceEpoch;
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -154,6 +155,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                     //TODO evaluar si es en este formato, como se guardan los datos en la base de datos.
                     _dateController.text =
                         DateFormat('yyyy-MM-dd').format(selectedDate);
+                    print(selectedDate.millisecondsSinceEpoch);
+                    var dateSelectedInMiliseconds =
+                        selectedDate.millisecondsSinceEpoch;
                   }
                 });
               }),
