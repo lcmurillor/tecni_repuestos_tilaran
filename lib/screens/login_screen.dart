@@ -118,6 +118,7 @@ class _LoginForm extends StatelessWidget {
 
   void onFormSubmit(LoginFormProvider loginFormProvider, context) {
     final isValid = loginFormProvider.validateForm();
+    //StreamBuilder(builder: ,);
 
     if (isValid) {
       FirebaseAuthService.signIn(

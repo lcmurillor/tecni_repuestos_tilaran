@@ -64,7 +64,7 @@ class CustomDrawer extends StatelessWidget {
               stream: FirebaseCloudService.getUser(
                   FirebaseAuthService.auth.currentUser!.uid),
               builder: (BuildContext context,
-                  AsyncSnapshot<List<dynamic>> snapshot) {
+                  AsyncSnapshot<List<UserModel>> snapshot) {
                 if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
                 }

@@ -48,28 +48,26 @@ class FirebaseCloudService {
   ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Stream<List<User>> getUser(String uid) {
+  static Stream<List<UserModel>> getUser(String uid) {
     final ref = _db.collection('users').where('id', isEqualTo: uid);
-    return ref
-        .snapshots()
-        .map((list) => list.docs.map((doc) => User.fromFirebase(doc)).toList());
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => UserModel.fromFirebase(doc)).toList());
   }
 
-  // void getUsers() async {
-  //   CollectionReference colletionReference =
-  //       FirebaseFirestore.instance.collection("accesorios");
-
-  //   QuerySnapshot users = await colletionReference.get();
-  //   if (users.docs.isNotEmpty) {
-  //     for (var doc in users.docs) {
-  //       //print(doc.data());
-  //     }
-  //   }
-  // }
-
-//haciendo prueba de agregar
-  void addPruebaUsuarios() {
-    FirebaseFirestore.instance.collection("users").add({'nombre': 'Pedro'});
+  ///Éste método permite crear un uevo usario en la base de datos, es solo requerido cuando
+  ///un usuario es registrado por primera vez.
+  static void setUser(UserModel user) {
+    _db.collection("users").doc(user.id).set({
+      'administrator': user.administrator,
+      'birthdate': user.birthdate,
+      'disabled': user.disabled,
+      'email': user.email,
+      'id': user.id,
+      'lastname': user.lastname,
+      'name': user.name,
+      'phone': user.phone,
+      'vendor': user.vendor
+    });
   }
 
   void updateUsuarios() {
