@@ -155,7 +155,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     //TODO evaluar si es en este formato, como se guardan los datos en la base de datos.
                     _dateController.text =
                         DateFormat('yyyy-MM-dd').format(selectedDate);
-                    print(selectedDate.millisecondsSinceEpoch);
+                    print(selectedDate.millisecondsSinceEpoch + 86400000);
                     var dateSelectedInMiliseconds =
                         selectedDate.millisecondsSinceEpoch;
                   }
