@@ -6,8 +6,23 @@ class InputStyle {
   static InputDecoration mainInput({
     required String hintText,
     required IconData icon,
+    IconData? suffixIcon,
   }) {
     return InputDecoration(
+        suffixIcon: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: Colors.transparent),
+              child: Icon(
+                suffixIcon,
+                size: 30,
+                color: Colors.grey[500],
+              ),
+            )),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 16.9, horizontal: 15),
         prefixIcon: Padding(

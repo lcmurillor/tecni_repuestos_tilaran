@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
-import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
@@ -102,8 +101,8 @@ class CustomDrawer extends StatelessWidget {
                       const PlaceholderScreen(text: 'Mi carrito'), context),
                   moldelListTile('Mis pedidos', MdiIcons.archive,
                       const PlaceholderScreen(text: 'Mis pedidos'), context),
-                  moldelListTile('Mi perfil', MdiIcons.account,
-                      const PlaceholderScreen(text: 'Mi perfil'), context),
+                  moldelListTile(
+                      'Mi perfil', MdiIcons.account, ProfileScreen(), context),
                   moldelListTile(
                       'Cerrar sesión', MdiIcons.arrowLeftBox, null, context),
                 ]);
