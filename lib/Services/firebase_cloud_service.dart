@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tecni_repuestos/models/models.dart';
 
@@ -48,13 +50,33 @@ class FirebaseCloudService {
   ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Stream<List<UserModel>> getUser(String uid) {
-    final ref = _db.collection('users').where('id', isEqualTo: uid);
-    return ref.snapshots().map(
-        (list) => list.docs.map((doc) => UserModel.fromFirebase(doc)).toList());
+  // static Stream<List<UserModel>> getUserByUid(String uid) {
+  //   final ref = _db.collection('users').where('id', isEqualTo: uid);
+  //   return ref.snapshots().map((list) =>
+  //       list.docs.map((doc) => UserModel.fromFirebase(doc.data())).toList());
+  // }
+
+  ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
+  ///y hace el llamado al método de conversión para retornar un usuario con todos sus
+  ///atributos.
+  static Future<UserModel?> getUserByUid(String uid) {
+    return _db.collection('users').where('uid', isEqualTo: uid).get().then(
+        (snapshot) => 0 == snapshot.size
+            ? null
+            : UserModel.fromFirebase(snapshot.docs[0].data()));
   }
 
-  ///Éste método permite crear un uevo usario en la base de datos, es solo requerido cuando
+  ///Éste método seleciona un usuario de la base de datos Firebase por medio del correo
+  ///y hace el llamado al método de conversión para retornar un usuario con todos sus
+  ///atributos.
+  static Future<UserModel?> getUserByEmail(String email) {
+    return _db.collection('users').where('email', isEqualTo: email).get().then(
+        (snapshot) => 0 == snapshot.size
+            ? null
+            : UserModel.fromFirebase(snapshot.docs[0].data()));
+  }
+
+  ///Éste método permite crear un nuevo usuario en la base de datos. Es solo requerido cuando
   ///un usuario es registrado por primera vez.
   static void setUser(UserModel user) {
     _db.collection("users").doc(user.id).set({

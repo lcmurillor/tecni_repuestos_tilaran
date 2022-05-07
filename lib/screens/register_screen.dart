@@ -215,14 +215,14 @@ class _RegisterFormState extends State<_RegisterForm> {
           PrimaryButton(
               text: 'Crear cuenta',
               onPressed: () =>
-                  onFormSubmit(registerFormProvider, context, _isActived))
+                  _onFormSubmit(registerFormProvider, context, _isActived))
         ],
       ),
     );
   }
 }
 
-void onFormSubmit(
+void _onFormSubmit(
     RegisterFormProvider registerFormProvider, context, bool isActived) {
   final isValid = registerFormProvider.validateForm(isActived);
   UserModel user = UserModel(
@@ -232,7 +232,6 @@ void onFormSubmit(
       lastname: registerFormProvider.lastname,
       name: registerFormProvider.name,
       phone: registerFormProvider.phone);
-  print(registerFormProvider.lastname);
   if (isValid) {
     FirebaseAuthService.logIn(registerFormProvider.email,
         registerFormProvider.password, user, context);

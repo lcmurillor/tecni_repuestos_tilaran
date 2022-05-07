@@ -11,7 +11,7 @@ class PrimaryButton extends StatelessWidget {
       this.fontSize = 18})
       : super(key: key);
   final String text;
-  final Function onPressed;
+  final void Function()? onPressed;
   final double fontSize;
 
   @override
@@ -29,6 +29,6 @@ class PrimaryButton extends StatelessWidget {
                     .copyWith(fontSize: fontSize, color: Colors.white)),
           ),
         ),
-        onPressed: () => onPressed());
+        onPressed: onPressed);
   }
 }

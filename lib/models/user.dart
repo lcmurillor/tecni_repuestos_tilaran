@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 ///Éste objeto corresponde a un usuario de la base de datos con todos sus respectivos
 ///atributos.
@@ -28,8 +27,8 @@ class UserModel {
   /// Éste método resibe un objeto de la base de datos firebese, extrae la
   /// información a un Map y returna un User con todos sus
   /// atributos cargados.
-  factory UserModel.fromFirebase(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+  factory UserModel.fromFirebase(Map<String, dynamic> data) {
+    // Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
     return UserModel(
         administrator: data['administrator'] ?? false,
         disabled: data['disabled'] ?? false,

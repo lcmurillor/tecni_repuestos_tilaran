@@ -17,7 +17,6 @@ class FirebaseAuthService {
   ///Guarda los datos en un objeto de tipo User.
   static signIn(String email, String password, context) async {
     try {
-      
       await auth.signInWithEmailAndPassword(email: email, password: password);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
@@ -44,19 +43,21 @@ class FirebaseAuthService {
     }
   }
 
-  ///Permite crear nuevos usuarios, primeramente los registra con los sistemas de
-  ///autentificacion de firebase y luego guarda datos adicionales en la base de datos
-  ///asociados con el UID. al final guarda el usario en la memoria y abre el menu principal.
+  ///Permite crear un nuevos usuarios. Primeramente los registra con los sistemas de
+  ///autentificación de firebase y luego guarda datos adicionales a este en la base de datos
+  ///asociados con el UID. Al final guarda el usuario en la memoria y muestra la pantalla principal.
   static logIn(
       String email, String password, UserModel userModel, context) async {
     try {
-      ///Proceso de creación de un nuevo usario en el apartado de "Autentificación" de Firebase.
+      ///Proceso de creación de un nuevo usuario en el apartado de "Autentificación" de Firebase.
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+
+      ///Asigna el UID al objeto de tipo usuario y manda este objeto a la base de datos.
       userModel.id = userCredential.user!.uid;
+      FirebaseCloudService.setUser(userModel);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-      FirebaseCloudService.setUser(userModel);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         NotificationsService.showSnackbar(
