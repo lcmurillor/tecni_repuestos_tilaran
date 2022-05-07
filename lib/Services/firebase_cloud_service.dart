@@ -50,20 +50,10 @@ class FirebaseCloudService {
   ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  // static Stream<List<UserModel>> getUserByUid(String uid) {
-  //   final ref = _db.collection('users').where('id', isEqualTo: uid);
-  //   return ref.snapshots().map((list) =>
-  //       list.docs.map((doc) => UserModel.fromFirebase(doc.data())).toList());
-  // }
-
-  ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
-  ///y hace el llamado al método de conversión para retornar un usuario con todos sus
-  ///atributos.
-  static Future<UserModel?> getUserByUid(String uid) {
-    return _db.collection('users').where('uid', isEqualTo: uid).get().then(
-        (snapshot) => 0 == snapshot.size
-            ? null
-            : UserModel.fromFirebase(snapshot.docs[0].data()));
+  static Stream<List<UserModel>> getUserByUid(String uid) {
+    final ref = _db.collection('users').where('id', isEqualTo: uid);
+    return ref.snapshots().map((list) =>
+        list.docs.map((doc) => UserModel.fromFirebase(doc.data())).toList());
   }
 
   ///Éste método seleciona un usuario de la base de datos Firebase por medio del correo

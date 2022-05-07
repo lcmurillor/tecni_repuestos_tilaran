@@ -20,7 +20,8 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final formatCurrency = NumberFormat.currency(locale: "es_ES", symbol: "");
+    final formatCurrency = NumberFormat.currency(symbol: "₡ ");
+
     return Container(
         height: size.height * 0.52,
         width: double.infinity,
@@ -39,7 +40,7 @@ class ItemCard extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             ///Cambia la tipografía para que sea compatible con el signo de colones.
             Text(
-              "₡ ${formatCurrency.format(total)}",
+              formatCurrency.format(total),
               style: TextStyle(
                   color: ColorStyle.mainRed,
                   fontSize: 26,
@@ -80,13 +81,13 @@ class ItemCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style:
-                GoogleFonts.roboto(fontSize: 12, fontWeight: FontWeight.w600)));
+                GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w600)));
   }
 
   ///Éste método construye la imagen dentro del card de productos con todos los
   ///aspectos decorativos.
   Container productImage(Size size, String url) {
-    ///Este conetendor disponde de un tamaño fijo para la imagen según el tamaño
+    ///Este contendor disponde de un tamaño fijo para la imagen según el tamaño
     ///del disposito además esta parte del código contiene todos los elementos
     ///decorativos.
     return Container(

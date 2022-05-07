@@ -120,20 +120,23 @@ class _LoginForm extends StatelessWidget {
   }
 }
 
-///Función de evalución final, evalua que el formulario cumpla con los requerimientos
-///mínimos y si el usuario registrado está activo en el sistema. Si se cumplen las condiciones
-///se puede iniciar la sesión.
+///Función intermedia que hace una llamado a la base de datos para optener un usuario
+///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
 void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
   FirebaseCloudService.getUserByEmail(loginFormProvider.email).then(
       (UserModel? user) => _validateData(user, loginFormProvider, context));
 }
 
+///Función de evalución final, evalua que el formulario cumpla con los requerimientos
+///mínimos y si el usuario registrado está activo en el sistema. Si se cumplen las condiciones
+///se puede iniciar la sesión.
 void _validateData(UserModel? user, LoginFormProvider loginFormProvider,
     BuildContext context) {
-  final isValid = loginFormProvider.validateForm();
-  if (null != user && !user.disabled && isValid) {
+  if (null != user && !user.disabled && loginFormProvider.validateForm()) {
     FirebaseAuthService.signIn(
         loginFormProvider.email, loginFormProvider.password, context);
+  } else {
+    NotificationsService.showSnackbar(
+        'El ususario indicado no está registrado.');
   }
-  //NotificationsService.showSnackbar('Usuario no existe.');
 }
