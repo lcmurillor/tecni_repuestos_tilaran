@@ -104,7 +104,7 @@ class CustomDrawer extends StatelessWidget {
                   _moldelListTile('Mis pedidos', MdiIcons.archive,
                       const PlaceholderScreen(text: 'Mis pedidos'), context),
                   _moldelListTile('Mi perfil', MdiIcons.account,
-                      const PlaceholderScreen(text: 'Mi perfil'), context),
+                      const ProfileScreen(), context),
                   _moldelListTile(
                       'Cerrar sesión', MdiIcons.arrowLeftBox, null, context),
                 ]);
