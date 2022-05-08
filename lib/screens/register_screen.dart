@@ -181,7 +181,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               hintText: 'Confirmar contraseña',
               icon: Icons.lock,
               onChanged: (value) =>
-                  registerFormProvider.confirmpassword = value,
+                  registerFormProvider.confirmPassword = value,
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
