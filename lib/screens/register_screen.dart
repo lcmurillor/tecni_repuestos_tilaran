@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
@@ -77,10 +78,11 @@ class _RegisterFormState extends State<_RegisterForm> {
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) => registerFormProvider.email = value,
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'El email es obligatorio';
+                if (!EmailValidator.validate(value ?? '')) {
+                  return 'El correo no es válido.';
+                } else {
+                  return null;
                 }
-                return null;
               }),
 
           ///Input correspondiente al nombre  para registrar el nuevo usuario.
@@ -91,6 +93,8 @@ class _RegisterFormState extends State<_RegisterForm> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'El nombre es obligatorio';
+                } else if (value.length < 2) {
+                  return 'EL nombre debe tener 2 o más caracteres.';
                 }
                 return null;
               }),
@@ -103,6 +107,8 @@ class _RegisterFormState extends State<_RegisterForm> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'El apellido es obligatorio';
+                } else if (value.length < 2) {
+                  return 'El apellido debe tener 2 o más caracteres.';
                 }
                 return null;
               }),
@@ -115,7 +121,9 @@ class _RegisterFormState extends State<_RegisterForm> {
               keyboardType: TextInputType.phone,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El teléfono es obligatorio';
+                  return 'El teléfono es obligatorio.';
+                } else if (value.length > 8) {
+                  return 'El teléfono no es valido.';
                 }
                 return null;
               }),
@@ -131,7 +139,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               readOnly: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'La fecha de nacimiento es obligatoria';
+                  return 'La fecha de nacimiento es obligatoria.';
                 }
                 return null;
               },
@@ -171,7 +179,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   return 'Ingrese su contraseña';
                 }
                 if (value.length < 6) {
-                  return 'La contraseña debe de tener más de 6 caracteres';
+                  return 'La contraseña debe de tener más de 6 caracteres.';
                 }
                 return null;
               }),
@@ -188,7 +196,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   return 'Ingrese su contraseña';
                 }
                 if (value.length < 6) {
-                  return 'La contraseña debe de tener más de 6 caracteres';
+                  return 'La contraseña debe de tener más de 6 caracteres.';
                 }
                 return null;
               }),
