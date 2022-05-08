@@ -13,6 +13,7 @@ class ProfileScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          toolbarHeight: 87,
           iconTheme: IconThemeData(color: ColorStyle.mainGrey),
           backgroundColor: Colors.white,
           elevation: 0,
