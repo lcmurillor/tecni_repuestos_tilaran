@@ -17,7 +17,6 @@ class CustomTextInput extends StatelessWidget {
       this.obscureText = false,
       this.onFieldSubmitted,
       this.onTap,
-      this.suffixIcon,
       this.readOnly = false})
       : super(key: key);
 
@@ -33,7 +32,6 @@ class CustomTextInput extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function()? onTap;
   final TextEditingController? controller;
-  final IconData? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +39,7 @@ class CustomTextInput extends StatelessWidget {
       TextFormField(
           autocorrect: autocorrect,
           controller: controller,
-          decoration: InputStyle.mainInput(
-              hintText: hintText, icon: icon, suffixIcon: suffixIcon),
+          decoration: InputStyle.mainInput(hintText: hintText, icon: icon),
           keyboardType: keyboardType,
           obscureText: obscureText,
           onChanged: onChanged,

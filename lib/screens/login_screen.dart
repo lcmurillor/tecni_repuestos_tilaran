@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
@@ -78,7 +79,8 @@ class _LoginForm extends StatelessWidget {
               icon: Icons.email,
               onChanged: (value) => loginFormProvider.email = value,
               keyboardType: TextInputType.emailAddress,
-              onFieldSubmitted: (_) => onFormSubmit(loginFormProvider, context),
+              onFieldSubmitted: (_) =>
+                  _onFormSubmit(loginFormProvider, context),
               validator: (value) {
                 if (!EmailValidator.validate(value ?? '')) {
                   return 'Email no válido';
@@ -92,7 +94,8 @@ class _LoginForm extends StatelessWidget {
               hintText: 'Contraseña',
               icon: Icons.lock,
               obscureText: true,
-              onFieldSubmitted: (_) => onFormSubmit(loginFormProvider, context),
+              onFieldSubmitted: (_) =>
+                  _onFormSubmit(loginFormProvider, context),
               onChanged: (value) => loginFormProvider.password = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -105,7 +108,7 @@ class _LoginForm extends StatelessWidget {
               }),
           PrimaryButton(
               text: 'Iniciar sesión',
-              onPressed: () => onFormSubmit(loginFormProvider, context)),
+              onPressed: () => _onFormSubmit(loginFormProvider, context)),
           const SizedBox(height: 10),
           SecundaryButton(
               text: '¿Olvidaste tu contraseña?',
@@ -115,13 +118,25 @@ class _LoginForm extends StatelessWidget {
       ),
     );
   }
+}
 
-  void onFormSubmit(LoginFormProvider loginFormProvider, context) {
-    final isValid = loginFormProvider.validateForm();
+///Función intermedia que hace una llamado a la base de datos para optener un usuario
+///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
+void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
+  FirebaseCloudService.getUserByEmail(loginFormProvider.email).then(
+      (UserModel? user) => _validateData(user, loginFormProvider, context));
+}
 
-    if (isValid) {
-      FirebaseAuthService.signIn(
-          loginFormProvider.email, loginFormProvider.password, context);
-    }
+///Función de evalución final, evalua que el formulario cumpla con los requerimientos
+///mínimos y si el usuario registrado está activo en el sistema. Si se cumplen las condiciones
+///se puede iniciar la sesión.
+void _validateData(UserModel? user, LoginFormProvider loginFormProvider,
+    BuildContext context) {
+  if (null != user && !user.disabled && loginFormProvider.validateForm()) {
+    FirebaseAuthService.signIn(
+        loginFormProvider.email, loginFormProvider.password, context);
+  } else {
+    NotificationsService.showSnackbar(
+        'El ususario indicado no está registrado.');
   }
 }

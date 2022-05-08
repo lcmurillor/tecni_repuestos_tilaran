@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
 
 ///Ésta clase corresponde a la conección que se tiene con la base de datos Firebase
@@ -39,6 +40,32 @@ class FirebaseAuthService {
     } on FirebaseAuthException catch (e) {
       NotificationsService.showSnackbar(
           'Ha ocurrodo un error al cerrar la sesión: $e');
+    }
+  }
+
+  ///Permite crear un nuevos usuarios. Primeramente los registra con los sistemas de
+  ///autentificación de firebase y luego guarda datos adicionales a este en la base de datos
+  ///asociados con el UID. Al final guarda el usuario en la memoria y muestra la pantalla principal.
+  static logIn(
+      String email, String password, UserModel userModel, context) async {
+    try {
+      ///Proceso de creación de un nuevo usuario en el apartado de "Autentificación" de Firebase.
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      ///Asigna el UID al objeto de tipo usuario y manda este objeto a la base de datos.
+      userModel.id = userCredential.user!.uid;
+      FirebaseCloudService.setUser(userModel);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        NotificationsService.showSnackbar(
+            'La contraseña indica no cumple con los requerimintos mínimos.');
+      } else if (e.code == 'email-already-in-use') {
+        NotificationsService.showSnackbar(
+            'Ya existe una cuenta registrada con este correo.');
+      }
     }
   }
 }
