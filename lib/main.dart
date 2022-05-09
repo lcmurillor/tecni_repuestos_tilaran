@@ -12,20 +12,6 @@ void main() async {
   runApp(const TecniRepuestoTilaran());
 }
 
-// class AppState extends StatelessWidget {
-//   const AppState({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     ///Dentro del arreglo en este metodo se van instan2ciando e inicailiando
-//     ///los diferentes proveedores de servicios que la aplicacion necesite.
-//     return MultiProvider(
-//       providers: const [],
-//       child: const TecniRepuestoTilaran(),
-//     );
-//   }
-// }
-
 class TecniRepuestoTilaran extends StatelessWidget {
   ///Widget principal que se encarga de la inicación y contrución del apartado visual
   ///de la aplicación.

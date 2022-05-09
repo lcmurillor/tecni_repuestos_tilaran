@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 ///Éste objeto corresponde a las diferentes categorias que existen en la aplicación,
 ///coresponde dato para las caegorias de artículos como la categoría de repuestos.
 class Category {
@@ -18,8 +16,7 @@ class Category {
   /// Éste método resibe un objeto de la base de datos firebese, extrae la
   /// información a un Map y returna una Category con todos sus
   /// atributos cargados.
-  factory Category.fromFirebase(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+  factory Category.fromFirebase(Map<String, dynamic> data) {
     return Category(
         categoryLabel: data['category_label'] ?? 'undefined',
         categoryName: data['category_name'] ?? 'undefined',

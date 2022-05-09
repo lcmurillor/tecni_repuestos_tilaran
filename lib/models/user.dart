@@ -1,4 +1,3 @@
-
 ///Éste objeto corresponde a un usuario de la base de datos con todos sus respectivos
 ///atributos.
 class UserModel {
@@ -28,7 +27,6 @@ class UserModel {
   /// información a un Map y returna un User con todos sus
   /// atributos cargados.
   factory UserModel.fromFirebase(Map<String, dynamic> data) {
-    // Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
     return UserModel(
         administrator: data['administrator'] ?? false,
         disabled: data['disabled'] ?? false,

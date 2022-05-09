@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 ///Este objeto disponde de todos los atributos de un "accesorio" o "repuesto" de la
 ///base de datos, por lo tanto se puede usar este tipo "Product" como modelo.
@@ -33,8 +32,7 @@ class Product {
   /// Éste método resibe un objeto de la base de datos firebese, ya sea un "accesosrio"
   /// o un "repuesto" extrae la información a un Map y returna un Product con todos sus
   /// atributos cargados.
-  factory Product.fromFirebase(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+  factory Product.fromFirebase(Map<String, dynamic> data) {
     return Product(
         id: data['id'] ?? 'undefined',
         cost: double.parse(data['cost'] ?? 0.0),

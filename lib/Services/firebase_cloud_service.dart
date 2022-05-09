@@ -12,8 +12,8 @@ class FirebaseCloudService {
   ///la base de datos mediante la libreria de firebase.
   static Stream<List<Product>> getHomeProducts() {
     final ref = _db.collection('accesorios');
-    return ref.snapshots().map(
-        (list) => list.docs.map((doc) => Product.fromFirebase(doc)).toList());
+    return ref.snapshots().map((list) =>
+        list.docs.map((doc) => Product.fromFirebase(doc.data())).toList());
   }
 
   ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
@@ -23,8 +23,8 @@ class FirebaseCloudService {
         .collection('categories')
         .where('type', isEqualTo: 'accesorios')
         .orderBy('category_label');
-    return ref.snapshots().map(
-        (list) => list.docs.map((doc) => Category.fromFirebase(doc)).toList());
+    return ref.snapshots().map((list) =>
+        list.docs.map((doc) => Category.fromFirebase(doc.data())).toList());
   }
 
   ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
@@ -34,8 +34,8 @@ class FirebaseCloudService {
         .collection('categories')
         .where('type', isEqualTo: 'repuesto')
         .orderBy('category_label');
-    return ref.snapshots().map(
-        (list) => list.docs.map((doc) => Category.fromFirebase(doc)).toList());
+    return ref.snapshots().map((list) =>
+        list.docs.map((doc) => Category.fromFirebase(doc.data())).toList());
   }
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
@@ -43,8 +43,8 @@ class FirebaseCloudService {
   static Stream<List<Product>> getfilteredProducts(
       String type, String category) {
     final ref = _db.collection(type).where('category', isEqualTo: category);
-    return ref.snapshots().map(
-        (list) => list.docs.map((doc) => Product.fromFirebase(doc)).toList());
+    return ref.snapshots().map((list) =>
+        list.docs.map((doc) => Product.fromFirebase(doc.data())).toList());
   }
 
   ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
