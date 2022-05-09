@@ -11,17 +11,22 @@ class RegisterFormProvider extends ChangeNotifier {
   String name = '';
   String lastname = '';
   String phone = '';
-  String dateofbirth = '';
+  int dateofbirth = 0;
   String password = '';
-  String confirmpassword = '';
+  String confirmPassword = '';
 
   ///Valida si el formulario cumple con las condiciones mínimas para registar al ususario.
   bool validateForm(bool validated) {
-    if (formKey.currentState!.validate() && validated == true) {
+    if (formKey.currentState!.validate() &&
+        validated == true &&
+        password == confirmPassword) {
       return true;
     } else if (validated == false) {
-      NotificationsService.showSnackbar('Debe aceptar términos y condiciones.');
+      NotificationsService.showErrorSnackbar(
+          'Debe aceptar términos y condiciones.');
       return false;
+    } else if (password != confirmPassword) {
+      NotificationsService.showErrorSnackbar('La contraseña no concide.');
     }
     return false;
   }

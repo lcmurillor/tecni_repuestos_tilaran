@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AboutUsScreen extends StatelessWidget {
   ///Ésta pantalla muestra la información general de la tienda, horario, ubicación e información
@@ -48,12 +49,26 @@ class AboutUsScreen extends StatelessWidget {
                       ///Botón para llamar a la tienda, al ser precionado debe salir de la aplicación
                       ///y enviar el número de telefono al apartado de llamdas del usario para que llame a
                       ///la tienda.
-                      PrimaryButton(text: 'Llamar', onPressed: () {}),
+                      PrimaryButton(
+                          text: 'Llamar',
+                          onPressed: () async {
+                            const String phone = 'tel:+50626955837';
+                            if (await canLaunchUrlString(phone)) {
+                              await launchUrlString(phone);
+                            }
+                          }),
 
                       ///Botón para enviar un correo, al ser precionado, debe salir de la aplicación y
                       ///abrir el cliente de correos electronicos para empezar a redactar un correo a la tienda.
                       SecundaryButton(
-                          text: 'Enviar un correo', onPressed: () {})
+                          text: 'Enviar un correo',
+                          onPressed: () async {
+                            const String emial =
+                                'mailto:tecnirepuestostilaran@gmail.com?subject=Consulta&body=Saludos\nTengo una consulta:\n';
+                            if (await canLaunchUrlString(emial)) {
+                              await launchUrlString(emial);
+                            }
+                          })
                     ])),
                   ],
                 ))));

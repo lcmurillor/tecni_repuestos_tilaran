@@ -34,7 +34,7 @@ class CategoryScreen extends StatelessWidget {
             builder:
                 (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
               if (snapshot.hasError) {
-                return NotificationsService.showSnackbar(
+                return NotificationsService.showErrorSnackbar(
                     'Ha ocurrido un error a la hora de cargar los datos.');
               }
 

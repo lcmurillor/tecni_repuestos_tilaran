@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tecni_repuestos/models/models.dart';
 
@@ -48,28 +50,36 @@ class FirebaseCloudService {
   ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Stream<List<User>> getUser(String uid) {
+  static Stream<List<UserModel>> getUserByUid(String uid) {
     final ref = _db.collection('users').where('id', isEqualTo: uid);
-    return ref
-        .snapshots()
-        .map((list) => list.docs.map((doc) => User.fromFirebase(doc)).toList());
+    return ref.snapshots().map((list) =>
+        list.docs.map((doc) => UserModel.fromFirebase(doc.data())).toList());
   }
 
-  // void getUsers() async {
-  //   CollectionReference colletionReference =
-  //       FirebaseFirestore.instance.collection("accesorios");
+  ///Éste método seleciona un usuario de la base de datos Firebase por medio del correo
+  ///y hace el llamado al método de conversión para retornar un usuario con todos sus
+  ///atributos.
+  static Future<UserModel?> getUserByEmail(String email) {
+    return _db.collection('users').where('email', isEqualTo: email).get().then(
+        (snapshot) => 0 == snapshot.size
+            ? null
+            : UserModel.fromFirebase(snapshot.docs[0].data()));
+  }
 
-  //   QuerySnapshot users = await colletionReference.get();
-  //   if (users.docs.isNotEmpty) {
-  //     for (var doc in users.docs) {
-  //       //print(doc.data());
-  //     }
-  //   }
-  // }
-
-//haciendo prueba de agregar
-  void addPruebaUsuarios() {
-    FirebaseFirestore.instance.collection("users").add({'nombre': 'Pedro'});
+  ///Éste método permite crear un nuevo usuario en la base de datos. Es solo requerido cuando
+  ///un usuario es registrado por primera vez.
+  static void setUser(UserModel user) {
+    _db.collection("users").doc(user.id).set({
+      'administrator': user.administrator,
+      'birthdate': user.birthdate,
+      'disabled': user.disabled,
+      'email': user.email,
+      'id': user.id,
+      'lastname': user.lastname,
+      'name': user.name,
+      'phone': user.phone,
+      'vendor': user.vendor
+    });
   }
 
   void updateUsuarios() {

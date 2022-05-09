@@ -11,7 +11,7 @@ class Background extends StatelessWidget {
   ///dentro de esta se encuentras los elementos que conforman el diseño visual y recibe
   ///por parametros el widget el cual se espera construir ensima de este fondo y una indicación
   ///para saber si es nesario mostrar o no el logo de la empresa.
-  const Background({Key? key, required this.child, required this.useImg})
+  const Background({Key? key, required this.child, this.useImg = false})
       : super(key: key);
   final boxDecoration = const BoxDecoration(
       gradient: LinearGradient(colors: [

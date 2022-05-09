@@ -6,6 +6,7 @@ class InputStyle {
   static InputDecoration mainInput({
     required String hintText,
     required IconData icon,
+    IconData? suffixIcon,
   }) {
     return InputDecoration(
         contentPadding:
