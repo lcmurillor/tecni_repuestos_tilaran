@@ -8,8 +8,6 @@ import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-//external int get millisecondsSinceEpoch;
-
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
@@ -186,6 +184,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
           ///Input correspondiente al a contraseña para registrar el nuevo usuario.
           CustomTextInput(
+              height: 5,
               hintText: 'Confirmar contraseña',
               icon: Icons.lock,
               onChanged: (value) =>
@@ -201,18 +200,16 @@ class _RegisterFormState extends State<_RegisterForm> {
                 return null;
               }),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.only(left: 40),
-                child: Checkbox(
-                  activeColor: ColorStyle.mainRed,
-                  value: _isActived,
-                  onChanged: (bool? valueIn) {
-                    setState(() {
-                      _isActived = valueIn!;
-                    });
-                  },
-                ),
+              Checkbox(
+                activeColor: ColorStyle.mainRed,
+                value: _isActived,
+                onChanged: (bool? valueIn) {
+                  setState(() {
+                    _isActived = valueIn!;
+                  });
+                },
               ),
               const SecundaryButton(
                   text: "Términos y condiciones",
@@ -220,6 +217,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   onPressed: _launchURL)
             ],
           ),
+          const SizedBox(height: 5),
           PrimaryButton(
               text: 'Crear cuenta',
               onPressed: () =>
@@ -251,6 +249,6 @@ void _launchURL() async {
   if (await canLaunchUrlString(url)) {
     await launchUrlString(url);
   } else {
-    NotificationsService.showSnackbar('No se pudo motrar la página');
+    NotificationsService.showErrorSnackbar('No se pudo motrar la página');
   }
 }

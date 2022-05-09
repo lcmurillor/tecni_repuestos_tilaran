@@ -15,16 +15,17 @@ class FirebaseAuthService {
   ///Valida si el usario existe o si los datos incresados corresponden a un usuario registrado
   ///sinó es así, retorna un mensaje en pantalla.
   ///Guarda los datos en un objeto de tipo User.
-  static signIn(String email, String password, context) async {
+  static signIn(String email, String password, BuildContext context) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        NotificationsService.showSnackbar('El usuario indicado no existe.');
+        NotificationsService.showErrorSnackbar(
+            'El usuario indicado no existe.');
       } else if (e.code == 'wrong-password') {
-        NotificationsService.showSnackbar(
+        NotificationsService.showErrorSnackbar(
             'El usuario o la contraseña es incorrecta.');
       }
     }
@@ -32,13 +33,13 @@ class FirebaseAuthService {
 
   ///Permite serra la sesión de un usario registrado, además de esto navega a la página
   ///principal y con esto actualiza las opciones disponibles en el menú laterañ.
-  static signOut(context) async {
+  static signOut(BuildContext context) async {
     try {
       await auth.signOut();
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     } on FirebaseAuthException catch (e) {
-      NotificationsService.showSnackbar(
+      NotificationsService.showErrorSnackbar(
           'Ha ocurrodo un error al cerrar la sesión: $e');
     }
   }
@@ -46,12 +47,12 @@ class FirebaseAuthService {
   ///Permite crear un nuevos usuarios. Primeramente los registra con los sistemas de
   ///autentificación de firebase y luego guarda datos adicionales a este en la base de datos
   ///asociados con el UID. Al final guarda el usuario en la memoria y muestra la pantalla principal.
-  static logIn(
-      String email, String password, UserModel userModel, context) async {
+  static logIn(String email, String password, UserModel userModel,
+      BuildContext context) async {
     try {
       ///Proceso de creación de un nuevo usuario en el apartado de "Autentificación" de Firebase.
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
 
       ///Asigna el UID al objeto de tipo usuario y manda este objeto a la base de datos.
       userModel.id = userCredential.user!.uid;
@@ -60,12 +61,20 @@ class FirebaseAuthService {
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        NotificationsService.showSnackbar(
+        NotificationsService.showErrorSnackbar(
             'La contraseña indica no cumple con los requerimintos mínimos.');
       } else if (e.code == 'email-already-in-use') {
-        NotificationsService.showSnackbar(
+        NotificationsService.showErrorSnackbar(
             'Ya existe una cuenta registrada con este correo.');
       }
     }
+  }
+
+  ///Recive el correo de un usuario registrado en la aplicación y envía un correo a este
+  ///en el cual puede cambiar su contraseña.
+  static requestPassword(String email, BuildContext context) async {
+    await auth.sendPasswordResetEmail(email: email);
+    Future.delayed(const Duration(milliseconds: 3000))
+        .then((value) => Navigator.pushReplacementNamed(context, 'login'));
   }
 }

@@ -22,10 +22,11 @@ class RegisterFormProvider extends ChangeNotifier {
         password == confirmPassword) {
       return true;
     } else if (validated == false) {
-      NotificationsService.showSnackbar('Debe aceptar términos y condiciones.');
+      NotificationsService.showErrorSnackbar(
+          'Debe aceptar términos y condiciones.');
       return false;
     } else if (password != confirmPassword) {
-      NotificationsService.showSnackbar('La contraseña no concide.');
+      NotificationsService.showErrorSnackbar('La contraseña no concide.');
     }
     return false;
   }

@@ -66,7 +66,7 @@ class CustomDrawer extends StatelessWidget {
               builder: (BuildContext context,
                   AsyncSnapshot<List<UserModel>> snapshot) {
                 if (snapshot.hasError) {
-                  NotificationsService.showSnackbar(
+                  NotificationsService.showErrorSnackbar(
                       'Ha ocurrido un error con la carga de los datos.');
                 }
 

@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
           builder:
               (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
             if (snapshot.hasError) {
-              return NotificationsService.showSnackbar(
+              return NotificationsService.showErrorSnackbar(
                   'Ha ocurrido un error a la hora de cargar los datos.');
             }
 
@@ -86,7 +86,6 @@ class ProfileScreen extends StatelessWidget {
                     style: CustomTextStyle.robotoExtraBold
                         .copyWith(fontSize: 15, color: Colors.grey[500])),
                 const SizedBox(height: 20),
-                //TODO agregar iconos mas adecuados no impor la libreria
                 _CustomInfoButton(
                   icon: MdiIcons.accountEdit,
                   onPressed: () {

@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
         ///Construye los objetos en base a lo resivido en la base de datos.
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           if (snapshot.hasError) {
-            return NotificationsService.showSnackbar(
+            return NotificationsService.showErrorSnackbar(
                 'Ha ocurrido un error a la hora de cargar los datos.');
           }
 

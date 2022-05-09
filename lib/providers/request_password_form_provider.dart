@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-///Ésta clase se encarga de cargar los valores de los formularios de inicio de sesión
+///Ésta clase se encarga de cargar los valores del formulario de recuperación de contraseña
 ///y validar que cumpla con los requerimientos mínimos.
-class LoginFormProvider extends ChangeNotifier {
+class RequestPasswordFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String email = '';
-  String password = '';
 
-  ///Valida si el formulario cumple con las condiciones mínimas para iniciar al sesión de un usuario.
+  ///Valida si el formulario cumple con las condiciones mínimas para evaluar el correo en la base de datos.
   bool validateForm() {
     if (formKey.currentState!.validate()) {
       return true;
