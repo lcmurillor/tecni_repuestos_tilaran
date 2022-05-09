@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -6,6 +7,7 @@ import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -49,6 +51,9 @@ class ProfileScreen extends StatelessWidget {
             }
 
             final user = snapshot.data!;
+            int cumple = user[0].birthdate;
+            DateTime.fromMillisecondsSinceEpoch(cumple);
+
             return Column(
               children: [
                 const SizedBox(height: 20),
@@ -88,32 +93,36 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(
                   height: 7,
                 ),
-                Text(user[0].birthdate.toString(),
+
+                Text(cumple.toString(),
                     style: CustomTextStyle.robotoExtraBold
                         .copyWith(fontSize: 15, color: Colors.grey[500])),
                 const SizedBox(height: 20),
                 //TODO agregar iconos mas adecuados no importa la libreria
                 _CustomInfoButton(
                   icon: MdiIcons.accountEdit,
+                  // faicon: FontAwesomeIcons.chevronRight,
                   onPressed: () {
                     //TODO crear los metodos de navegacion
                     print("Esto es un boton 1 ");
                   },
-                  text: 'Edtar mi información',
+                  text: 'Esta es mi información    ',
                 ),
                 _CustomInfoButton(
+                  //   faicon: FontAwesomeIcons.chevronRight,
                   icon: MdiIcons.formTextboxPassword,
                   onPressed: () {
                     print("Esto es un boton 2 ");
                   },
-                  text: 'Cambiar mi contraseña',
+                  text: 'Cambiar mi contraseña    ',
                 ),
                 _CustomInfoButton(
+                  //  faicon: FontAwesomeIcons.chevronRight,
                   icon: MdiIcons.mapPlus,
                   onPressed: () {
                     print("Esto es un boton 3 ");
                   },
-                  text: 'Gestionar Dirrecciones',
+                  text: 'Gestionar Dirrecciones     ',
                 ),
               ],
             );
@@ -121,6 +130,10 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  DateTime toDate(int miliseconds) {
+    return DateTime.fromMillisecondsSinceEpoch(miliseconds);
   }
 }
 
@@ -131,10 +144,12 @@ class _CustomInfoButton extends StatelessWidget {
     required this.onPressed,
     required this.icon,
     required this.text,
+    //   required this.faicon,
   }) : super(key: key);
   final void Function()? onPressed;
   final IconData icon;
   final String text;
+  // final IconData faicon;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -143,9 +158,12 @@ class _CustomInfoButton extends StatelessWidget {
       child: GestureDetector(
           //TODO agreegar el estilo correcto a los botonos
           child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: ColorStyle.buttonGray),
               width: size.width * 0.75,
               height: size.width * 0.12,
-              color: ColorStyle.buttonGray,
+              //color: ColorStyle.buttonGray,
               child: Row(
                 children: [
                   Padding(
@@ -162,20 +180,23 @@ class _CustomInfoButton extends StatelessWidget {
                           color: Colors.white,
                         ),
                       )),
-                  Expanded(
-                    child: Text(text,
-                        style: CustomTextStyle.robotoMedium.copyWith(
-                            fontSize: 18, color: ColorStyle.textGrey)),
-                  ),
-                  FaIcon(
-                    //TODO este icono deve llegar como una variable
-                    FontAwesomeIcons.chevronRight,
-                    size: 30,
-                    color: ColorStyle.textGrey,
-                  ),
+                  Text(text,
+                      style: CustomTextStyle.robotoMedium
+                          .copyWith(fontSize: 18, color: ColorStyle.textGrey)),
+                  faIconButtons(FontAwesomeIcons.chevronRight),
                 ],
               )),
           onTap: onPressed),
+    );
+  }
+
+  FaIcon faIconButtons(IconData faicon) {
+    return FaIcon(
+      // FontAwesomeIcons.chevronRight
+      //TODO este icono debe llegar como una variable
+      faicon,
+      size: 30,
+      color: ColorStyle.textGrey,
     );
   }
 }
