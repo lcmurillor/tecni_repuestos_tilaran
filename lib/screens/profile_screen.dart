@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -14,14 +14,15 @@ class ProfileScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        //TODO corregist el tamaño del addbar
         appBar: AppBar(
           toolbarHeight: 87,
           iconTheme: IconThemeData(color: ColorStyle.mainGrey),
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, 'home');
+            },
             icon: const Icon(Icons.arrow_back),
             iconSize: 40,
           ),
@@ -77,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Text(user[0].email,
                     style: CustomTextStyle.robotoSemiBold
-                        .copyWith(fontSize: 15, color: Colors.grey[500])),
+                        .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
                 const SizedBox(
                   height: 7,
                 ),
@@ -87,30 +88,28 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(
                   height: 7,
                 ),
-                Text(user[0].birthdate.toString(),
+                Text(
+                    DateFormat('dd-MM-yyyy').format(
+                        DateTime.fromMillisecondsSinceEpoch(user[0].birthdate)),
                     style: CustomTextStyle.robotoExtraBold
-                        .copyWith(fontSize: 15, color: Colors.grey[500])),
+                        .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
                 const SizedBox(height: 20),
-                _CustomInfoButton(
+                InfoButton(
                   icon: MdiIcons.accountEdit,
-                  onPressed: () {
-                    //TODO crear los metodos de navegacion
-                    print("Esto es un boton 1 ");
-                  },
-                  text: 'Edtar mi información',
+                  // faicon: FontAwesomeIcons.chevronRight,
+                  onPressed: () {},
+                  text: 'Editar mi información',
                 ),
-                _CustomInfoButton(
+                InfoButton(
+                  //   faicon: FontAwesomeIcons.chevronRight,
                   icon: MdiIcons.formTextboxPassword,
-                  onPressed: () {
-                    print("Esto es un boton 2 ");
-                  },
+                  onPressed: () {},
                   text: 'Cambiar mi contraseña',
                 ),
-                _CustomInfoButton(
+                InfoButton(
+                  //  faicon: FontAwesomeIcons.chevronRight,
                   icon: MdiIcons.mapPlus,
-                  onPressed: () {
-                    print("Esto es un boton 3 ");
-                  },
+                  onPressed: () {},
                   text: 'Gestionar Dirrecciones',
                 ),
               ],
@@ -118,62 +117,6 @@ class ProfileScreen extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-//TODO comvertit en un Widget goblal
-class _CustomInfoButton extends StatelessWidget {
-  const _CustomInfoButton({
-    Key? key,
-    required this.onPressed,
-    required this.icon,
-    required this.text,
-  }) : super(key: key);
-  final void Function()? onPressed;
-  final IconData icon;
-  final String text;
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: GestureDetector(
-          //TODO agreegar el estilo correcto a los botonos
-          child: Container(
-              width: size.width * 0.75,
-              height: size.width * 0.12,
-              color: ColorStyle.buttonGray,
-              child: Row(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 10),
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: ColorStyle.mainRed),
-                        child: Icon(
-                          icon,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      )),
-                  Expanded(
-                    child: Text(text,
-                        style: CustomTextStyle.robotoMedium.copyWith(
-                            fontSize: 18, color: ColorStyle.textGrey)),
-                  ),
-                  FaIcon(
-                    //TODO este icono deve llegar como una variable
-                    FontAwesomeIcons.chevronRight,
-                    size: 30,
-                    color: ColorStyle.textGrey,
-                  ),
-                ],
-              )),
-          onTap: onPressed),
     );
   }
 }

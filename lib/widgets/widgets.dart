@@ -1,5 +1,6 @@
 export 'package:tecni_repuestos/widgets/app_bar.dart';
 export 'package:tecni_repuestos/widgets/background.dart';
+export 'package:tecni_repuestos/widgets/button_info.dart';
 export 'package:tecni_repuestos/widgets/button_primary.dart';
 export 'package:tecni_repuestos/widgets/button_secondary.dart';
 export 'package:tecni_repuestos/widgets/button_tertiary.dart';
