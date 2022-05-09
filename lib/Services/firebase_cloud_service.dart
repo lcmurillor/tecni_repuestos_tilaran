@@ -41,8 +41,9 @@ class FirebaseCloudService {
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
   ///la base de datos mediante la libreria de firebase
   static Stream<List<Product>> getfilteredProducts(
-      String type, String category) {
-    final ref = _db.collection(type).where('category', isEqualTo: category);
+      String collection, String category) {
+    final ref =
+        _db.collection(collection).where('category', isEqualTo: category);
     return ref.snapshots().map((list) =>
         list.docs.map((doc) => Product.fromFirebase(doc.data())).toList());
   }

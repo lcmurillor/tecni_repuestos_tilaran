@@ -1,4 +1,3 @@
-
 ///Este objeto disponde de todos los atributos de un "accesorio" o "repuesto" de la
 ///base de datos, por lo tanto se puede usar este tipo "Product" como modelo.
 class Product {
@@ -13,6 +12,8 @@ class Product {
   String location;
   String type;
   String img;
+
+  static late List<Product> products;
 
   ///Método constructor de Product, requiere todos los atributos para poder ser creado el objeto
   ///ningún atributo tiene un valor por defecto.

@@ -41,7 +41,7 @@ class CustomDrawer extends StatelessWidget {
               Icons.sports_motorsports,
               CategoryScreen(
                   stream: FirebaseCloudService.getAccessoriesCategory(),
-                  title: 'Repuestos',
+                  title: 'Accesorios',
                   icon: Icons.sports_motorsports),
               context),
 
