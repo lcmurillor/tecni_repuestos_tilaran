@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
+import 'package:tecni_repuestos/widgets/card_address.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class AddressesManagerScreen extends StatelessWidget {
@@ -55,10 +56,7 @@ class AddressesManagerScreen extends StatelessWidget {
                     physics: const BouncingScrollPhysics(),
                     itemCount: data.length,
                     itemBuilder: (context, index) {
-                      return CardContainer(
-                          child: Column(
-                        children: [Text(data[index].address)],
-                      ));
+                      return const AddressCard();
                     },
                   );
                 },

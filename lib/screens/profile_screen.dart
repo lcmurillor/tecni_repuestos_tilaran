@@ -80,18 +80,15 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 20),
               InfoButton(
                 icon: MdiIcons.accountEdit,
-                // faicon: FontAwesomeIcons.chevronRight,
-                onPressed: () {},
+                onPressed: () {Navigator.pushNamed(context, 'addresses');},
                 text: 'Editar mi información',
               ),
               InfoButton(
-                //   faicon: FontAwesomeIcons.chevronRight,
                 icon: MdiIcons.formTextboxPassword,
                 onPressed: () {},
                 text: 'Cambiar mi contraseña',
               ),
               InfoButton(
-                //  faicon: FontAwesomeIcons.chevronRight,
                 icon: MdiIcons.mapPlus,
                 onPressed: () {
                   Navigator.pushNamed(context, 'addresses');

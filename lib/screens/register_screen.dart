@@ -120,7 +120,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'El teléfono es obligatorio.';
-                } else if (value.length > 8) {
+                } else if (value.length > 8 || value.length < 8) {
                   return 'El teléfono no es valido.';
                 }
                 return null;

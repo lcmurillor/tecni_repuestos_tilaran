@@ -91,10 +91,13 @@ class FirebaseCloudService {
         list.docs.map((doc) => Address.fromFirebase(doc.data())).toList());
   }
 
-  void deletePruebaUsuarios() {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc('VimDJ1bLgs1VGQfBr8ms') // en el doc se manda el id a eliminar
-        .delete();
+  //TODO documentar
+  static void updateUser(UserModel user) {
+    _db.collection("users").doc(user.id).update({
+      'name': user.name,
+      'lastname': user.lastname,
+      'phone': user.phone,
+      'birthdate': user.birthdate
+    });
   }
 }

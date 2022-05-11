@@ -37,15 +37,16 @@ class CustomTextInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       TextFormField(
-          autocorrect: autocorrect,
-          controller: controller,
-          decoration: InputStyle.mainInput(hintText: hintText, icon: icon),
-          keyboardType: keyboardType,
-          obscureText: obscureText,
-          onChanged: onChanged,
-          onTap: onTap,
-          readOnly: readOnly,
-          validator: validator),
+        autocorrect: autocorrect,
+        controller: controller,
+        decoration: InputStyle.mainInput(hintText: hintText, icon: icon),
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        onChanged: onChanged,
+        onTap: onTap,
+        readOnly: readOnly,
+        validator: validator,
+      ),
       SizedBox(height: height)
     ]);
   }
