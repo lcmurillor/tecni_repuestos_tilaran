@@ -83,11 +83,12 @@ class FirebaseCloudService {
     });
   }
 
-  void updateUsuarios() {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc('xfOZ5bpOA51XBG6CbO5Q')
-        .update({'nombre': 'Francisco'});
+  ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
+  ///que se encuentre registrado en la amplicación.
+  static Stream<List<Address>> getAddressesByUser(String uid) {
+    final ref = _db.collection('userAddresses').where('userId', isEqualTo: uid);
+    return ref.snapshots().map((list) =>
+        list.docs.map((doc) => Address.fromFirebase(doc.data())).toList());
   }
 
   void deletePruebaUsuarios() {

@@ -11,111 +11,96 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          toolbarHeight: 87,
-          iconTheme: IconThemeData(color: ColorStyle.mainGrey),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, 'home');
-            },
-            icon: const Icon(Icons.arrow_back),
-            iconSize: 40,
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.dark_mode),
-              iconSize: 40,
-            )
-          ],
-        ),
-        body: StreamBuilder(
-          stream: FirebaseCloudService.getUserByUid(
-              FirebaseAuthService.auth.currentUser!.uid),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
-            if (snapshot.hasError) {
-              return NotificationsService.showErrorSnackbar(
-                  'Ha ocurrido un error a la hora de cargar los datos.');
-            }
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: CustomAppBarBackArrow(
+        actionIcon: Icons.dark_mode,
+        onPressed: () {},
+        navigatorOnPressed: () => Navigator.pushNamed(context, 'home'),
+      ),
+      body: StreamBuilder(
+        stream: FirebaseCloudService.getUserByUid(
+            FirebaseAuthService.auth.currentUser!.uid),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
+          if (snapshot.hasError) {
+            return NotificationsService.showErrorSnackbar(
+                'Ha ocurrido un error a la hora de cargar los datos.');
+          }
 
-            if (!snapshot.hasData) {
-              return const CustomProgressIndicator();
-            }
+          if (!snapshot.hasData) {
+            return const CustomProgressIndicator();
+          }
 
-            final user = snapshot.data!;
-            return Column(
-              children: [
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.center,
-                  child: CircleAvatar(
-                    child: Text(
-                      user[0].name.substring(0, 1).toUpperCase() +
-                          '' +
-                          user[0].lastname.substring(0, 1).toUpperCase(),
-                      style: CustomTextStyle.robotoMedium
-                          .copyWith(fontSize: 50, color: Colors.white),
-                    ),
-                    backgroundColor: ColorStyle.mainGrey,
-                    maxRadius: 58,
+          final user = snapshot.data!;
+          return Column(
+            children: [
+              const SizedBox(height: 20),
+              Align(
+                alignment: Alignment.center,
+                child: CircleAvatar(
+                  child: Text(
+                    user[0].name.substring(0, 1).toUpperCase() +
+                        '' +
+                        user[0].lastname.substring(0, 1).toUpperCase(),
+                    style: CustomTextStyle.robotoMedium
+                        .copyWith(fontSize: 50, color: Colors.white),
                   ),
+                  backgroundColor: ColorStyle.mainGrey,
+                  maxRadius: 58,
                 ),
-                const SizedBox(height: 20),
-                Text(
-                    user[0].name.toUpperCase() +
-                        ' ' +
-                        user[0].lastname.toUpperCase(),
-                    style: CustomTextStyle.robotoExtraBold
-                        .copyWith(fontSize: 20, color: Colors.black)),
-                const SizedBox(
-                  height: 7,
-                ),
-                Text(user[0].email,
-                    style: CustomTextStyle.robotoSemiBold
-                        .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
-                const SizedBox(
-                  height: 7,
-                ),
-                Text('+506 ' + user[0].phone,
-                    style: CustomTextStyle.robotoSemiBold
-                        .copyWith(fontSize: 16, color: ColorStyle.mainRed)),
-                const SizedBox(
-                  height: 7,
-                ),
-                Text(
-                    DateFormat('dd-MM-yyyy').format(
-                        DateTime.fromMillisecondsSinceEpoch(user[0].birthdate)),
-                    style: CustomTextStyle.robotoExtraBold
-                        .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
-                const SizedBox(height: 20),
-                InfoButton(
-                  icon: MdiIcons.accountEdit,
-                  // faicon: FontAwesomeIcons.chevronRight,
-                  onPressed: () {},
-                  text: 'Editar mi información',
-                ),
-                InfoButton(
-                  //   faicon: FontAwesomeIcons.chevronRight,
-                  icon: MdiIcons.formTextboxPassword,
-                  onPressed: () {},
-                  text: 'Cambiar mi contraseña',
-                ),
-                InfoButton(
-                  //  faicon: FontAwesomeIcons.chevronRight,
-                  icon: MdiIcons.mapPlus,
-                  onPressed: () {},
-                  text: 'Gestionar Dirrecciones',
-                ),
-              ],
-            );
-          },
-        ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                  user[0].name.toUpperCase() +
+                      ' ' +
+                      user[0].lastname.toUpperCase(),
+                  style: CustomTextStyle.robotoExtraBold
+                      .copyWith(fontSize: 20, color: Colors.black)),
+              const SizedBox(
+                height: 7,
+              ),
+              Text(user[0].email,
+                  style: CustomTextStyle.robotoSemiBold
+                      .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
+              const SizedBox(
+                height: 7,
+              ),
+              Text('+506 ' + user[0].phone,
+                  style: CustomTextStyle.robotoSemiBold
+                      .copyWith(fontSize: 16, color: ColorStyle.mainRed)),
+              const SizedBox(
+                height: 7,
+              ),
+              Text(
+                  DateFormat('dd-MM-yyyy').format(
+                      DateTime.fromMillisecondsSinceEpoch(user[0].birthdate)),
+                  style: CustomTextStyle.robotoExtraBold
+                      .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
+              const SizedBox(height: 20),
+              InfoButton(
+                icon: MdiIcons.accountEdit,
+                // faicon: FontAwesomeIcons.chevronRight,
+                onPressed: () {},
+                text: 'Editar mi información',
+              ),
+              InfoButton(
+                //   faicon: FontAwesomeIcons.chevronRight,
+                icon: MdiIcons.formTextboxPassword,
+                onPressed: () {},
+                text: 'Cambiar mi contraseña',
+              ),
+              InfoButton(
+                //  faicon: FontAwesomeIcons.chevronRight,
+                icon: MdiIcons.mapPlus,
+                onPressed: () {
+                  Navigator.pushNamed(context, 'addresses');
+                },
+                text: 'Gestionar Dirrecciones',
+              ),
+            ],
+          );
+        },
       ),
     );
   }

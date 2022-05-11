@@ -1,5 +1,6 @@
 ///Éste objeto corresponde a las diferentes categorias que existen en la aplicación,
-///coresponde dato para las caegorias de artículos como la categoría de repuestos.
+///los datos corresponden tanto para las diferentes categorías de artículos 
+///como la categoría de repuestos.
 class Category {
   String categoryLabel;
   String categoryName;
@@ -13,8 +14,8 @@ class Category {
       required this.id,
       required this.type});
 
-  /// Éste método resibe un objeto de la base de datos firebese, extrae la
-  /// información a un Map y returna una Category con todos sus
+  /// Éste método recibe un objeto de la base de datos firebese, extrae la
+  /// información a un Map y retorna una Category con todos sus
   /// atributos cargados.
   factory Category.fromFirebase(Map<String, dynamic> data) {
     return Category(
