@@ -17,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: 87,
           iconTheme: IconThemeData(color: ColorStyle.mainGrey),
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
             onPressed: () {
@@ -97,19 +97,25 @@ class ProfileScreen extends StatelessWidget {
                 InfoButton(
                   icon: MdiIcons.accountEdit,
                   // faicon: FontAwesomeIcons.chevronRight,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, 'editInformation');
+                  },
                   text: 'Editar mi información',
                 ),
                 InfoButton(
                   //   faicon: FontAwesomeIcons.chevronRight,
                   icon: MdiIcons.formTextboxPassword,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, 'home');
+                  },
                   text: 'Cambiar mi contraseña',
                 ),
                 InfoButton(
                   //  faicon: FontAwesomeIcons.chevronRight,
                   icon: MdiIcons.mapPlus,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, 'home');
+                  },
                   text: 'Gestionar Dirrecciones',
                 ),
               ],

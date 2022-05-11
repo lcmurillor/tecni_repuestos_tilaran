@@ -11,8 +11,11 @@ class Background extends StatelessWidget {
   ///dentro de esta se encuentras los elementos que conforman el diseño visual y recibe
   ///por parametros el widget el cual se espera construir ensima de este fondo y una indicación
   ///para saber si es nesario mostrar o no el logo de la empresa.
-  const Background({Key? key, required this.child, this.useImg = false})
-      : super(key: key);
+  const Background({
+    Key? key,
+    required this.child,
+    this.useImg = false,
+  }) : super(key: key);
   final boxDecoration = const BoxDecoration(
       gradient: LinearGradient(colors: [
     Color.fromRGBO(255, 11, 0, 1),
@@ -20,13 +23,16 @@ class Background extends StatelessWidget {
   ], begin: Alignment.bottomLeft, end: Alignment.topRight));
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     final size = MediaQuery.of(context).size;
     return Stack(children: [
-      containerHeightWidthBackground(size),
+      containerHeightWidthBackground(size, context),
       Positioned(top: -55, left: 15, child: _LineBlacks()),
       Positioned(top: -40, left: 230, child: _LineBlacks()),
       Positioned(top: -40, right: -110, child: _LineBlacks()),
+
       Container(
           padding: const EdgeInsets.symmetric(horizontal: 80),
           width: double.infinity,
@@ -53,8 +59,18 @@ class Background extends StatelessWidget {
   }
 
   ///Corresponde al fondo rojo con degradado de la parte superior del fondo.
-  Container containerHeightWidthBackground(Size size) {
+  Container containerHeightWidthBackground(Size size, context) {
     return Container(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 60),
+          child: IconButton(
+            alignment: Alignment.topLeft,
+            color: Colors.white,
+            iconSize: 40,
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {},
+          ),
+        ),
         width: double.infinity,
         height: size.height * 0.42,
         decoration: boxDecoration);
