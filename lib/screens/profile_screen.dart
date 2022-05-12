@@ -80,7 +80,9 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 20),
               InfoButton(
                 icon: MdiIcons.accountEdit,
-                onPressed: () {Navigator.pushNamed(context, 'addresses');},
+                onPressed: () {
+                  Navigator.pushNamed(context, 'editInformation');
+                },
                 text: 'Editar mi información',
               ),
               InfoButton(

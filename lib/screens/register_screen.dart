@@ -158,7 +158,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     }).then((selectedDate) {
                   if (selectedDate != null) {
                     _dateController.text =
-                        DateFormat('yyyy-MM-dd').format(selectedDate);
+                        DateFormat('dd-MM-yyyy').format(selectedDate);
                     //print(selectedDate.millisecondsSinceEpoch);
                     registerFormProvider.dateofbirth =
                         selectedDate.millisecondsSinceEpoch;

@@ -23,7 +23,7 @@ class AddressCard extends StatelessWidget {
         Icon(
           Icons.map,
           color: ColorStyle.mainRed,
-          size: 70,
+          size: 50,
         ),
         Expanded(
           child:

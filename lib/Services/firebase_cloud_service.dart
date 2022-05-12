@@ -91,7 +91,9 @@ class FirebaseCloudService {
         list.docs.map((doc) => Address.fromFirebase(doc.data())).toList());
   }
 
-  //TODO documentar
+  ///Permite actualizar los datos del usario identificado por medio del UID, en casos
+  ///donde no todos los datos fueron alterados, el modelo del usuario guarda los datos
+  ///anteririos y los sobreescrible.
   static void updateUser(UserModel user) {
     _db.collection("users").doc(user.id).update({
       'name': user.name,

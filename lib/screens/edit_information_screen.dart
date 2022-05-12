@@ -5,7 +5,6 @@ import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
-//import 'package:url_launcher/url_launcher_string.dart';
 
 class EditInformationScreen extends StatelessWidget {
   const EditInformationScreen({Key? key}) : super(key: key);
@@ -42,10 +41,7 @@ class EditInformationScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    const SizedBox(height: 45)
                   ],
                 )),
           ));
@@ -59,7 +55,7 @@ class _RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<_RegisterForm> {
-  final bool _isActived = false;
+  final _dataController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -137,10 +133,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                   onChanged: (value) =>
                       registerFormProvider.dateofbirth = int.parse(value),
                   keyboardType: TextInputType.datetime,
-                  controller: TextEditingController(
-                      text: DateFormat('dd-MM-yyyy').format(
-                          DateTime.fromMillisecondsSinceEpoch(
-                              user[0].birthdate))),
+                  controller: _dataController
+                    ..text = DateFormat('dd-MM-yyyy').format(
+                        DateTime.fromMillisecondsSinceEpoch(user[0].birthdate)),
                   readOnly: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -165,9 +160,8 @@ class _RegisterFormState extends State<_RegisterForm> {
                               child: child!);
                         }).then((selectedDate) {
                       if (selectedDate != null) {
-                        TextEditingController(
-                            text:
-                                DateFormat('yyyy-MM-dd').format(selectedDate));
+                        _dataController.text =
+                            DateFormat('dd-MM-yyyy').format(selectedDate);
                         //print(selectedDate.millisecondsSinceEpoch);
                         registerFormProvider.dateofbirth =
                             selectedDate.millisecondsSinceEpoch;
@@ -178,8 +172,8 @@ class _RegisterFormState extends State<_RegisterForm> {
               const SizedBox(height: 5),
               PrimaryButton(
                   text: 'Aplicar cambio',
-                  onPressed: () => _onFormSubmit(
-                      registerFormProvider, context, _isActived, user[0]))
+                  onPressed: () =>
+                      _onFormSubmit(registerFormProvider, context, user[0]))
             ],
           ),
         );
@@ -188,9 +182,9 @@ class _RegisterFormState extends State<_RegisterForm> {
   }
 }
 
-void _onFormSubmit(RegisterFormProvider registerFormProvider, context,
-    bool isActived, UserModel user) {
-  final isValid = registerFormProvider.validateForm(isActived);
+void _onFormSubmit(
+    RegisterFormProvider registerFormProvider, context, UserModel user) {
+  final isValid = registerFormProvider.validateForm(true);
   user = UserModel(
       birthdate: registerFormProvider.dateofbirth,
       email: user.email,
