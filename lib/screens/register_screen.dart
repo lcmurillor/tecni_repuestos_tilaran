@@ -131,7 +131,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               hintText: 'Fecha de nacimiento',
               icon: Icons.calendar_month_rounded,
               onChanged: (value) =>
-                  registerFormProvider.dateofbirth = int.parse(value),
+                  registerFormProvider.birthdate = int.parse(value),
               keyboardType: TextInputType.datetime,
               controller: _dateController,
               readOnly: true,
@@ -158,9 +158,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                     }).then((selectedDate) {
                   if (selectedDate != null) {
                     _dateController.text =
-                        DateFormat('yyyy-MM-dd').format(selectedDate);
+                        DateFormat('dd-MM-yyyy').format(selectedDate);
                     //print(selectedDate.millisecondsSinceEpoch);
-                    registerFormProvider.dateofbirth =
+                    registerFormProvider.birthdate =
                         selectedDate.millisecondsSinceEpoch;
                   }
                 });
@@ -232,7 +232,7 @@ void _onFormSubmit(
     RegisterFormProvider registerFormProvider, context, bool isActived) {
   final isValid = registerFormProvider.validateForm(isActived);
   UserModel user = UserModel(
-      birthdate: registerFormProvider.dateofbirth,
+      birthdate: registerFormProvider.birthdate,
       email: registerFormProvider.email,
       id: 'undefied',
       lastname: registerFormProvider.lastname,
@@ -249,6 +249,6 @@ void _launchURL() async {
   if (await canLaunchUrlString(url)) {
     await launchUrlString(url);
   } else {
-    NotificationsService.showErrorSnackbar('No se pudo motrar la página');
+    NotificationsService.showErrorSnackbar('No se pudo motrar la página.');
   }
 }

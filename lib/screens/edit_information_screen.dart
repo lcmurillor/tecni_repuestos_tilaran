@@ -5,16 +5,11 @@ import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
-//import 'package:url_launcher/url_launcher_string.dart';
 
-class EditInformationScreen extends StatefulWidget {
+class EditInformationScreen extends StatelessWidget {
+  //TODO documentar
   const EditInformationScreen({Key? key}) : super(key: key);
 
-  @override
-  State<EditInformationScreen> createState() => _EditInformationScreenState();
-}
-
-class _EditInformationScreenState extends State<EditInformationScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -41,10 +36,7 @@ class _EditInformationScreenState extends State<EditInformationScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    const SizedBox(height: 45)
                   ],
                 )),
           ));
@@ -52,13 +44,10 @@ class _EditInformationScreenState extends State<EditInformationScreen> {
   }
 }
 
-class _EditInfoForm extends StatefulWidget {
-  @override
-  State<_EditInfoForm> createState() => _EditInfoFormState();
-}
-
-class _EditInfoFormState extends State<_EditInfoForm> {
-  // final bool _isActived = false;
+class _EditInfoForm extends StatelessWidget {
+  //TODO documentar
+  _EditInfoForm({Key? key}) : super(key: key);
+  final _dataController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -135,12 +124,11 @@ class _EditInfoFormState extends State<_EditInfoForm> {
                   hintText: 'Fecha de nacimiento',
                   icon: Icons.calendar_month_rounded,
                   onChanged: (value) =>
-                      editInfoFormProvider.dateofbirth = int.parse(value),
+                      editInfoFormProvider.birthdate = int.parse(value),
                   keyboardType: TextInputType.datetime,
-                  controller: TextEditingController(
-                      text: DateFormat('dd-MM-yyyy').format(
-                          DateTime.fromMillisecondsSinceEpoch(
-                              user[0].birthdate))),
+                  controller: _dataController
+                    ..text = DateFormat('dd-MM-yyyy').format(
+                        DateTime.fromMillisecondsSinceEpoch(user[0].birthdate)),
                   readOnly: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -164,19 +152,12 @@ class _EditInfoFormState extends State<_EditInfoForm> {
                               )),
                               child: child!);
                         }).then((selectedDate) {
-                      setState(() {
-                        if (selectedDate != null) {
-                          // user[0].birthdate =
-                          //     DateTime.tryParse(selectedDate.toString());
-                          TextEditingController(
-                              text: DateFormat('yyyy-MM-dd')
-                                  .format(selectedDate));
-                          //print(selectedDate.millisecondsSinceEpoch);
-                          editInfoFormProvider.dateofbirth =
-                              selectedDate.millisecondsSinceEpoch;
-                          _onFormSubmit(editInfoFormProvider, context, user[0]);
-                        }
-                      });
+                      if (selectedDate != null) {
+                        _dataController.text =
+                            DateFormat('dd-MM-yyyy').format(selectedDate);
+                        editInfoFormProvider.birthdate =
+                            selectedDate.millisecondsSinceEpoch;
+                      }
                     });
                   }),
 
@@ -194,17 +175,30 @@ class _EditInfoFormState extends State<_EditInfoForm> {
 }
 
 void _onFormSubmit(
-    EditInfoFormProvider editInfoFormProvider, context, UserModel user) {
-  user = UserModel(
-      birthdate: editInfoFormProvider.dateofbirth,
-      email: user.email,
-      id: user.id,
-      lastname: editInfoFormProvider.lastname,
-      name: editInfoFormProvider.name,
-      phone: editInfoFormProvider.phone);
-
-  FirebaseCloudService.updateUser(user);
-  // FirebaseAuthService.logIn(registerFormProvider.email,
-
-  //     registerFormProvider.password, user, context);
+    EditInfoFormProvider editInfoFormProvider, context, UserModel user) async {
+  Future.delayed(Duration.zero, () {
+    if (editInfoFormProvider.validateForm()) {
+      user = UserModel(
+          birthdate: (editInfoFormProvider.birthdate == 0)
+              ? user.birthdate
+              : editInfoFormProvider.birthdate,
+          email: user.email,
+          id: user.id,
+          lastname: (editInfoFormProvider.lastname == "")
+              ? user.lastname
+              : editInfoFormProvider.lastname,
+          name: (editInfoFormProvider.name == "")
+              ? user.name
+              : editInfoFormProvider.name,
+          phone: (editInfoFormProvider.phone == "")
+              ? user.phone
+              : editInfoFormProvider.phone);
+    } else {
+      NotificationsService.showErrorSnackbar(
+          'No se cumple con las codiciones mínimas para actualizar la información.');
+    }
+  }).then((value) {
+    FirebaseCloudService.updateUser(user);
+    Navigator.pop(context);
+  });
 }
