@@ -11,7 +11,7 @@ class RegisterFormProvider extends ChangeNotifier {
   String name = '';
   String lastname = '';
   String phone = '';
-  int dateofbirth = 0;
+  int birthdate = 0;
   String password = '';
   String confirmPassword = '';
 

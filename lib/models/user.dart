@@ -22,7 +22,6 @@ class UserModel {
       required this.lastname,
       required this.name,
       required this.phone});
-      
 
   /// Éste método recibe un objeto de la base de datos firebese, extrae la
   /// información a un Map y retorna un User con todos sus

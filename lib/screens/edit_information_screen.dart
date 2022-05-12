@@ -7,12 +7,13 @@ import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
 class EditInformationScreen extends StatelessWidget {
+  //TODO documentar
   const EditInformationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => RegisterFormProvider(),
+        create: (_) => EditInfoFormProvider(),
         child: Builder(builder: (context) {
           return Scaffold(
               body: Background(
@@ -31,13 +32,7 @@ class EditInformationScreen extends StatelessWidget {
                               style: CustomTextStyle.robotoSemiBold
                                   .copyWith(fontSize: 30)),
                           const SizedBox(height: 15),
-                          _RegisterForm(),
-                          SecundaryButton(
-                              text: "Regresar",
-                              fontSize: 16,
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(context, 'home');
-                              })
+                          _EditInfoForm(),
                         ],
                       ),
                     ),
@@ -49,18 +44,15 @@ class EditInformationScreen extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatefulWidget {
-  @override
-  State<_RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<_RegisterForm> {
+class _EditInfoForm extends StatelessWidget {
+  //TODO documentar
+  _EditInfoForm({Key? key}) : super(key: key);
   final _dataController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final registerFormProvider =
-        Provider.of<RegisterFormProvider>(context, listen: false);
+    final editInfoFormProvider =
+        Provider.of<EditInfoFormProvider>(context, listen: false);
     return StreamBuilder(
       stream: FirebaseCloudService.getUserByUid(
           FirebaseAuthService.auth.currentUser!.uid),
@@ -76,7 +68,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
         final user = snapshot.data!;
         return Form(
-          key: registerFormProvider.formKey,
+          key: editInfoFormProvider.formKey,
           child: Column(
             children: [
               ///Input correspondiente al correo electronico para registrar el nuevo usuario.
@@ -86,7 +78,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   controller: TextEditingController(text: user[0].name),
                   hintText: 'Nombre',
                   icon: Icons.person,
-                  onChanged: (value) => registerFormProvider.name = value,
+                  onChanged: (value) => editInfoFormProvider.name = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'El nombre es obligatorio';
@@ -101,7 +93,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   controller: TextEditingController(text: user[0].lastname),
                   hintText: 'Apellidos',
                   icon: Icons.person,
-                  onChanged: (value) => registerFormProvider.lastname = value,
+                  onChanged: (value) => editInfoFormProvider.lastname = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'El apellido es obligatorio';
@@ -113,9 +105,10 @@ class _RegisterFormState extends State<_RegisterForm> {
 
               ///Input correspondiente al Telefono para registrar el nuevo usuario.
               CustomTextInput(
+                  controller: TextEditingController(text: user[0].phone),
                   hintText: 'Teléfono',
                   icon: Icons.phone,
-                  onChanged: (value) => registerFormProvider.phone = value,
+                  onChanged: (value) => editInfoFormProvider.phone = value,
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -131,7 +124,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   hintText: 'Fecha de nacimiento',
                   icon: Icons.calendar_month_rounded,
                   onChanged: (value) =>
-                      registerFormProvider.dateofbirth = int.parse(value),
+                      editInfoFormProvider.birthdate = int.parse(value),
                   keyboardType: TextInputType.datetime,
                   controller: _dataController
                     ..text = DateFormat('dd-MM-yyyy').format(
@@ -162,8 +155,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                       if (selectedDate != null) {
                         _dataController.text =
                             DateFormat('dd-MM-yyyy').format(selectedDate);
-                        //print(selectedDate.millisecondsSinceEpoch);
-                        registerFormProvider.dateofbirth =
+                        editInfoFormProvider.birthdate =
                             selectedDate.millisecondsSinceEpoch;
                       }
                     });
@@ -173,7 +165,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               PrimaryButton(
                   text: 'Aplicar cambio',
                   onPressed: () =>
-                      _onFormSubmit(registerFormProvider, context, user[0]))
+                      _onFormSubmit(editInfoFormProvider, context, user[0]))
             ],
           ),
         );
@@ -183,18 +175,30 @@ class _RegisterFormState extends State<_RegisterForm> {
 }
 
 void _onFormSubmit(
-    RegisterFormProvider registerFormProvider, context, UserModel user) {
-  final isValid = registerFormProvider.validateForm(true);
-  user = UserModel(
-      birthdate: registerFormProvider.dateofbirth,
-      email: user.email,
-      id: user.id,
-      lastname: registerFormProvider.lastname,
-      name: registerFormProvider.name,
-      phone: registerFormProvider.phone);
-  if (isValid) {
+    EditInfoFormProvider editInfoFormProvider, context, UserModel user) async {
+  Future.delayed(Duration.zero, () {
+    if (editInfoFormProvider.validateForm()) {
+      user = UserModel(
+          birthdate: (editInfoFormProvider.birthdate == 0)
+              ? user.birthdate
+              : editInfoFormProvider.birthdate,
+          email: user.email,
+          id: user.id,
+          lastname: (editInfoFormProvider.lastname == "")
+              ? user.lastname
+              : editInfoFormProvider.lastname,
+          name: (editInfoFormProvider.name == "")
+              ? user.name
+              : editInfoFormProvider.name,
+          phone: (editInfoFormProvider.phone == "")
+              ? user.phone
+              : editInfoFormProvider.phone);
+    } else {
+      NotificationsService.showErrorSnackbar(
+          'No se cumple con las codiciones mínimas para actualizar la información.');
+    }
+  }).then((value) {
     FirebaseCloudService.updateUser(user);
-    // FirebaseAuthService.logIn(registerFormProvider.email,
-    //     registerFormProvider.password, user, context);
-  }
+    Navigator.pop(context);
+  });
 }
