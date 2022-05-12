@@ -7,13 +7,18 @@ import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 //import 'package:url_launcher/url_launcher_string.dart';
 
-class EditInformationScreen extends StatelessWidget {
+class EditInformationScreen extends StatefulWidget {
   const EditInformationScreen({Key? key}) : super(key: key);
 
   @override
+  State<EditInformationScreen> createState() => _EditInformationScreenState();
+}
+
+class _EditInformationScreenState extends State<EditInformationScreen> {
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => RegisterFormProvider(),
+        create: (_) => EditInfoFormProvider(),
         child: Builder(builder: (context) {
           return Scaffold(
               body: Background(
@@ -32,13 +37,7 @@ class EditInformationScreen extends StatelessWidget {
                               style: CustomTextStyle.robotoSemiBold
                                   .copyWith(fontSize: 30)),
                           const SizedBox(height: 15),
-                          _RegisterForm(),
-                          SecundaryButton(
-                              text: "Regresar",
-                              fontSize: 16,
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(context, 'home');
-                              })
+                          _EditInfoForm(),
                         ],
                       ),
                     ),
@@ -53,18 +52,18 @@ class EditInformationScreen extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatefulWidget {
+class _EditInfoForm extends StatefulWidget {
   @override
-  State<_RegisterForm> createState() => _RegisterFormState();
+  State<_EditInfoForm> createState() => _EditInfoFormState();
 }
 
-class _RegisterFormState extends State<_RegisterForm> {
-  final bool _isActived = false;
+class _EditInfoFormState extends State<_EditInfoForm> {
+  // final bool _isActived = false;
 
   @override
   Widget build(BuildContext context) {
-    final registerFormProvider =
-        Provider.of<RegisterFormProvider>(context, listen: false);
+    final editInfoFormProvider =
+        Provider.of<EditInfoFormProvider>(context, listen: false);
     return StreamBuilder(
       stream: FirebaseCloudService.getUserByUid(
           FirebaseAuthService.auth.currentUser!.uid),
@@ -80,7 +79,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
         final user = snapshot.data!;
         return Form(
-          key: registerFormProvider.formKey,
+          key: editInfoFormProvider.formKey,
           child: Column(
             children: [
               ///Input correspondiente al correo electronico para registrar el nuevo usuario.
@@ -90,7 +89,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   controller: TextEditingController(text: user[0].name),
                   hintText: 'Nombre',
                   icon: Icons.person,
-                  onChanged: (value) => registerFormProvider.name = value,
+                  onChanged: (value) => editInfoFormProvider.name = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'El nombre es obligatorio';
@@ -105,7 +104,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   controller: TextEditingController(text: user[0].lastname),
                   hintText: 'Apellidos',
                   icon: Icons.person,
-                  onChanged: (value) => registerFormProvider.lastname = value,
+                  onChanged: (value) => editInfoFormProvider.lastname = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'El apellido es obligatorio';
@@ -117,9 +116,10 @@ class _RegisterFormState extends State<_RegisterForm> {
 
               ///Input correspondiente al Telefono para registrar el nuevo usuario.
               CustomTextInput(
+                  controller: TextEditingController(text: user[0].phone),
                   hintText: 'Teléfono',
                   icon: Icons.phone,
-                  onChanged: (value) => registerFormProvider.phone = value,
+                  onChanged: (value) => editInfoFormProvider.phone = value,
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -135,7 +135,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   hintText: 'Fecha de nacimiento',
                   icon: Icons.calendar_month_rounded,
                   onChanged: (value) =>
-                      registerFormProvider.dateofbirth = int.parse(value),
+                      editInfoFormProvider.dateofbirth = int.parse(value),
                   keyboardType: TextInputType.datetime,
                   controller: TextEditingController(
                       text: DateFormat('dd-MM-yyyy').format(
@@ -164,22 +164,27 @@ class _RegisterFormState extends State<_RegisterForm> {
                               )),
                               child: child!);
                         }).then((selectedDate) {
-                      if (selectedDate != null) {
-                        TextEditingController(
-                            text:
-                                DateFormat('yyyy-MM-dd').format(selectedDate));
-                        //print(selectedDate.millisecondsSinceEpoch);
-                        registerFormProvider.dateofbirth =
-                            selectedDate.millisecondsSinceEpoch;
-                      }
+                      setState(() {
+                        if (selectedDate != null) {
+                          // user[0].birthdate =
+                          //     DateTime.tryParse(selectedDate.toString());
+                          TextEditingController(
+                              text: DateFormat('yyyy-MM-dd')
+                                  .format(selectedDate));
+                          //print(selectedDate.millisecondsSinceEpoch);
+                          editInfoFormProvider.dateofbirth =
+                              selectedDate.millisecondsSinceEpoch;
+                          _onFormSubmit(editInfoFormProvider, context, user[0]);
+                        }
+                      });
                     });
                   }),
 
               const SizedBox(height: 5),
               PrimaryButton(
                   text: 'Aplicar cambio',
-                  onPressed: () => _onFormSubmit(
-                      registerFormProvider, context, _isActived, user[0]))
+                  onPressed: () =>
+                      _onFormSubmit(editInfoFormProvider, context, user[0]))
             ],
           ),
         );
@@ -188,19 +193,18 @@ class _RegisterFormState extends State<_RegisterForm> {
   }
 }
 
-void _onFormSubmit(RegisterFormProvider registerFormProvider, context,
-    bool isActived, UserModel user) {
-  final isValid = registerFormProvider.validateForm(isActived);
+void _onFormSubmit(
+    EditInfoFormProvider editInfoFormProvider, context, UserModel user) {
   user = UserModel(
-      birthdate: registerFormProvider.dateofbirth,
+      birthdate: editInfoFormProvider.dateofbirth,
       email: user.email,
       id: user.id,
-      lastname: registerFormProvider.lastname,
-      name: registerFormProvider.name,
-      phone: registerFormProvider.phone);
-  if (isValid) {
-    FirebaseCloudService.updateUser(user);
-    // FirebaseAuthService.logIn(registerFormProvider.email,
-    //     registerFormProvider.password, user, context);
-  }
+      lastname: editInfoFormProvider.lastname,
+      name: editInfoFormProvider.name,
+      phone: editInfoFormProvider.phone);
+
+  FirebaseCloudService.updateUser(user);
+  // FirebaseAuthService.logIn(registerFormProvider.email,
+
+  //     registerFormProvider.password, user, context);
 }
