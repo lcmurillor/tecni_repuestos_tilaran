@@ -47,7 +47,7 @@ class EditInformationScreen extends StatelessWidget {
 }
 
 class _EditInfoForm extends StatelessWidget {
-  ///Formulario en el interrir del card, disponde la información del usuario registrado
+  ///Formulario en el interior del card, disponde la información del usuario registrado
   ///y le permite cambiar ciertos datos.
   _EditInfoForm({Key? key}) : super(key: key);
   final _dataController = TextEditingController();

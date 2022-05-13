@@ -87,10 +87,10 @@ class _LoginForm extends StatelessWidget {
               onChanged: (value) => loginFormProvider.password = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Ingrese su contraseña';
+                  return 'Ingrese su contraseña.';
                 }
                 if (value.length < 6) {
-                  return 'Debe tener más de 6 caractéres';
+                  return 'Debe tener más de 6 caractéres.';
                 }
                 return null;
               }),

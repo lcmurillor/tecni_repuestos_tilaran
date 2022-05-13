@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
+import 'package:tecni_repuestos/widgets/modal_address.dart';
 
 class AddressCard extends StatelessWidget {
-  const AddressCard({Key? key, required this.title, required this.text})
-      : super(key: key);
-  final String title;
-  final String text;
+  const AddressCard({Key? key, required this.address}) : super(key: key);
+  final Address address;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class AddressCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: Icon(
-            Icons.map,
+            MdiIcons.mapMarkerRadius,
             color: ColorStyle.mainRed,
             size: 50,
           ),
@@ -38,14 +39,14 @@ class AddressCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  title,
+                  '${address.canton}, ${address.province}.',
                   style: CustomTextStyle.robotoMedium.copyWith(fontSize: 20),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  text,
+                  address.address,
                   style: CustomTextStyle.robotoMedium
                       .copyWith(fontSize: 15, color: ColorStyle.textGrey),
                   maxLines: 4,
@@ -58,25 +59,29 @@ class AddressCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              ///Botón para editar la dirreción del facturación.
               IconButton(
                 icon: Icon(
                   Icons.edit,
                   size: 40,
                   color: ColorStyle.mainGreen,
                 ),
-                onPressed: () {},
+                onPressed: () =>
+                    ModalAddress.displayEditAddressDialog(context, address),
               ),
               const Spacer(),
+
+              ///Botón para eliminar la dirreción de faturación.
               IconButton(
-                icon: Icon(Icons.delete_outline,
-                    size: 40, color: ColorStyle.mainRed),
-                onPressed: () {
-                  NotificationsService.displayDeleteDialog(
-                      context,
-                      '¿Está seguro que desea eliminar la dirrección: $text?',
-                      () {});
-                },
-              ),
+                  icon: Icon(MdiIcons.deleteForever,
+                      size: 40, color: ColorStyle.mainRed),
+                  onPressed: () => NotificationsService.displayDeleteDialog(
+                          context,
+                          '¿Está seguro que desea eliminar la dirrección: ${address.address}?',
+                          () {
+                        FirebaseCloudService.deleteAddress(address.id);
+                        Navigator.pop(context);
+                      })),
             ],
           ),
         ),

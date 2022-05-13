@@ -58,21 +58,19 @@ class AddressesManagerScreen extends StatelessWidget {
                     physics: const BouncingScrollPhysics(),
                     itemCount: address.length,
                     itemBuilder: (context, index) {
-                      return AddressCard(
-                          title:
-                              '${address[index].canton}, ${address[index].province}.',
-                          text: address[index].address);
+                      return AddressCard(address: address[index]);
                     },
                   );
                 },
               ),
               Positioned(
                 bottom: 30,
-                right: 20,
+                left: 20,
                 child: FloatingActionButton(
                   backgroundColor: ColorStyle.mainRed,
                   child: const Icon(Icons.add, size: 50),
-                  onPressed: () {},
+                  onPressed: () =>
+                      ModalAddress.displayAddAddressDialog(context),
                 ),
               ),
             ],

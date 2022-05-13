@@ -91,7 +91,7 @@ class FirebaseCloudService {
         list.docs.map((doc) => Address.fromFirebase(doc.data())).toList());
   }
 
-  ///Permite actualizar los datos del usario identificado por medio del UID, en casos
+  ///Permite actualizar los datos del usuario identificado por medio del UID, en casos
   ///donde no todos los datos fueron alterados, el modelo del usuario guarda los datos
   ///anteririos y los sobreescrible.
   static void updateUser(UserModel user) {
@@ -101,5 +101,37 @@ class FirebaseCloudService {
       'phone': user.phone,
       'birthdate': user.birthdate
     });
+  }
+
+  ///Permiter actualizar los datos de dirrecion de un usuario. En casos
+  ///donde no todos los datos fueron alterados, el modelo del dirrecciones guarda los datos
+  ///anteririos y los sobreescrible.
+  static void updateAddress(Address address) {
+    _db.collection("userAddresses").doc(address.id).update({
+      'address': address.address,
+      'canton': address.canton,
+      'province': address.province
+    });
+  }
+
+  ///Agregan en la base de datoa de Firebase un nuevo registro de Dirreción de facturación
+  ///"userAddress"  para esto se asignan los datos de un modelo previamente establecido.
+  ///Para que el valor "id" asignado al objeto se el mismo valor autogenerado de Firebase,
+  ///guarda el dato con un id nulo y seguidamente actualiza el documento con el id autogenerado.
+  static void setAddress(Address address) {
+    _db.collection("userAddresses").add({
+      'address': address.address,
+      'canton': address.canton,
+      'id': '',
+      'province': address.province,
+      'userId': address.userId
+    }).then((value) =>
+        _db.collection("userAddresses").doc(value.id).update({'id': value.id}));
+  }
+
+  ///Elimina un documento de la base de dato de tipo "userAddresses" "Dirreción de facturación"
+  ///identificado por su valor único.
+  static void deleteAddress(String docId) {
+    _db.collection("userAddresses").doc(docId).delete();
   }
 }

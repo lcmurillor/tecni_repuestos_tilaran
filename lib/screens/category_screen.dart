@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
@@ -65,7 +64,7 @@ class CategoryScreen extends StatelessWidget {
                             color: ColorStyle.mainRed,
                           ),
                           onTap: () {
-                            Route route = CupertinoPageRoute(
+                            Route route = MaterialPageRoute(
                                 builder: (context) => ProductsFilterScreen(
                                       category: data[index],
                                       icon: Icons.settings,

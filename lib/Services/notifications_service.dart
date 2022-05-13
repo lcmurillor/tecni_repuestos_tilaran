@@ -52,52 +52,52 @@ class NotificationsService {
         barrierDismissible: true,
         builder: (context) {
           return AlertDialog(
-            elevation: 10,
-            title: Text(
-              'Eliminar',
-              style: CustomTextStyle.robotoExtraBold.copyWith(fontSize: 35),
-              textAlign: TextAlign.center,
-            ),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  text,
-                  style: CustomTextStyle.robotoMedium,
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: TextButton(
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.all(0)),
-                        overlayColor: MaterialStateProperty.all<Color>(
-                            Colors.transparent)),
-                    onPressed: onPressed,
-                    child: const Text('Aceptar')),
+              elevation: 10,
+              title: Text('Eliminar',
+                  style: CustomTextStyle.robotoExtraBold.copyWith(fontSize: 35),
+                  textAlign: TextAlign.center),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(text,
+                      style: CustomTextStyle.robotoMedium,
+                      textAlign: TextAlign.center)
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: TextButton(
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.all(0)),
-                        overlayColor: MaterialStateProperty.all<Color>(
-                            Colors.transparent)),
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      'Cancelar',
-                      style: TextStyle(color: ColorStyle.mainRed),
-                    )),
-              ),
-            ],
-          );
+              actions: actions(context, onPressed));
         });
+  }
+
+  static List<Widget> actions(
+      BuildContext context, void Function()? onPressed) {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: TextButton(
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.all(0)),
+                overlayColor:
+                    MaterialStateProperty.all<Color>(Colors.transparent)),
+            onPressed: onPressed,
+            child: const Text('Aceptar')),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: TextButton(
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.all(0)),
+                overlayColor:
+                    MaterialStateProperty.all<Color>(Colors.transparent)),
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Cancelar',
+              style: TextStyle(color: ColorStyle.mainRed),
+            )),
+      ),
+    ];
   }
 }
