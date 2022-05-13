@@ -7,7 +7,9 @@ import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
 class EditInformationScreen extends StatelessWidget {
-  //TODO documentar
+  ///Corresponde a la pantalla donde se editan los datos básicos del usuario
+  ///registrado en la aplicación, esta pantalla precarga la información del usuario
+  ///y lo permite alterar la que él desee.
   const EditInformationScreen({Key? key}) : super(key: key);
 
   @override
@@ -45,7 +47,8 @@ class EditInformationScreen extends StatelessWidget {
 }
 
 class _EditInfoForm extends StatelessWidget {
-  //TODO documentar
+  ///Formulario en el interrir del card, disponde la información del usuario registrado
+  ///y le permite cambiar ciertos datos.
   _EditInfoForm({Key? key}) : super(key: key);
   final _dataController = TextEditingController();
 
@@ -71,8 +74,6 @@ class _EditInfoForm extends StatelessWidget {
           key: editInfoFormProvider.formKey,
           child: Column(
             children: [
-              ///Input correspondiente al correo electronico para registrar el nuevo usuario.
-
               ///Input correspondiente al nombre  para registrar el nuevo usuario.
               CustomTextInput(
                   controller: TextEditingController(text: user[0].name),
@@ -174,6 +175,10 @@ class _EditInfoForm extends StatelessWidget {
   }
 }
 
+///Evalua si el formulario cumple con las codiciones mínimas para ser aceptado, además
+///que se cumplan con las validaciónes de los datos en la base de datos. Para los campos
+///que no sean alterados por el usuario, asigna nuevamente los valores ya definidos y navega
+///a la pantalla anterior.
 void _onFormSubmit(
     EditInfoFormProvider editInfoFormProvider, context, UserModel user) async {
   Future.delayed(Duration.zero, () {
