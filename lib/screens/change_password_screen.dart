@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
@@ -6,13 +7,13 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
-class EditInformationScreen extends StatelessWidget {
-  const EditInformationScreen({Key? key}) : super(key: key);
+class ChangePasswordScreen extends StatelessWidget {
+  const ChangePasswordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => EditInfoFormProvider(),
+        create: (_) => LoginFormProvider(),
         child: Builder(builder: (context) {
           return Scaffold(
               body: Background(
@@ -27,10 +28,10 @@ class EditInformationScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           const SizedBox(height: 10),
-                          Text('Editar mi información',
-                              style: CustomTextStyle.robotoSemiBold
-                                  .copyWith(fontSize: 30)),
-                          const SizedBox(height: 15),
+                          Text('Cambiar contraseña',
+                              style: CustomTextStyle.robotoExtraBold
+                                  .copyWith(fontSize: 28)),
+                          const SizedBox(height: 20),
                           _EditInfoForm(),
                         ],
                       ),
@@ -46,11 +47,16 @@ class EditInformationScreen extends StatelessWidget {
 class _EditInfoForm extends StatelessWidget {
   _EditInfoForm({Key? key}) : super(key: key);
   final _dataController = TextEditingController();
-
+  final String newpassword = '0';
   @override
   Widget build(BuildContext context) {
-    final editInfoFormProvider =
-        Provider.of<EditInfoFormProvider>(context, listen: false);
+    // final editInfoFormProvider =
+    //     Provider.of<EditInfoFormProvider>(context, listen: false);
+    final loginFormProvider =
+        Provider.of<LoginFormProvider>(context, listen: false);
+    var newPassword = '';
+    //  final loginFormProvider =
+    //     Provider.of<LoginFormProvider>(context, listen: false);
     return StreamBuilder(
       stream: FirebaseCloudService.getUserByUid(
           FirebaseAuthService.auth.currentUser!.uid),
@@ -66,109 +72,100 @@ class _EditInfoForm extends StatelessWidget {
 
         final user = snapshot.data!;
         return Form(
-          key: editInfoFormProvider.formKey,
+          key: loginFormProvider.formKey,
           child: Column(
             children: [
               ///Input correspondiente al correo electronico para registrar el nuevo usuario.
 
               ///Input correspondiente al nombre  para registrar el nuevo usuario.
               CustomTextInput(
-                  controller: TextEditingController(text: user[0].name),
-                  hintText: 'Nombre',
-                  icon: Icons.person,
-                  onChanged: (value) => editInfoFormProvider.name = value,
+                  // controller: TextEditingController(text: user[0].nombre),
+                  hintText: 'Contraseña actual',
+                  icon: MdiIcons.formTextboxPassword,
+                  onChanged: (value) {
+                    loginFormProvider.password = value;
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'El nombre es obligatorio';
-                    } else if (value.length < 2) {
-                      return 'EL nombre debe tener 2 o más caracteres.';
+                      return 'Ingrese su contraseña';
                     }
-                    return null;
+                    if (value.length < 6) {
+                      return 'Debe tener más de 6 caractéres';
+                    }
+                    return value;
                   }),
 
               ///Input correspondiente al nombre  para registrar el nuevo usuario.
               CustomTextInput(
-                  controller: TextEditingController(text: user[0].lastname),
-                  hintText: 'Apellidos',
-                  icon: Icons.person,
-                  onChanged: (value) => editInfoFormProvider.lastname = value,
+                  //  controller: TextEditingController(text: user[0].lastname),
+                  hintText: 'Nueva contraseña',
+                  icon: Icons.lock,
+                  onChanged: (value) => value = loginFormProvider.password,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'El apellido es obligatorio';
-                    } else if (value.length < 2) {
-                      return 'El apellido debe tener 2 o más caracteres.';
+                      return 'Ingrese su contraseña';
                     }
+                    if (value.length < 6) {
+                      return 'Debe tener más de 6 caractéres';
+                    }
+
                     return null;
                   }),
 
               ///Input correspondiente al Telefono para registrar el nuevo usuario.
               CustomTextInput(
-                  controller: TextEditingController(text: user[0].phone),
-                  hintText: 'Teléfono',
-                  icon: Icons.phone,
-                  onChanged: (value) => editInfoFormProvider.phone = value,
-                  keyboardType: TextInputType.phone,
+                  //    controller: TextEditingController(text: user[0].phone),
+                  hintText: 'Confirmar nueva contraseña',
+                  icon: Icons.lock,
+                  onChanged: (value) => value = loginFormProvider.password,
+                  //   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'El teléfono es obligatorio.';
-                    } else if (value.length > 8 || value.length < 8) {
-                      return 'El teléfono no es valido.';
+                      return 'Ingrese su contraseña';
                     }
-                    return null;
+                    if (value.length < 6) {
+                      return 'Debe tener más de 6 caractéres';
+                    }
+                    newPassword = value;
+                    return newPassword;
                   }),
 
               ///Input correspondiente al fecha para registrar el nuevo usuario.
-              CustomTextInput(
-                  hintText: 'Fecha de nacimiento',
-                  icon: Icons.calendar_month_rounded,
-                  onChanged: (value) =>
-                      editInfoFormProvider.birthdate = int.parse(value),
-                  keyboardType: TextInputType.datetime,
-                  controller: _dataController
-                    ..text = DateFormat('dd-MM-yyyy').format(
-                        DateTime.fromMillisecondsSinceEpoch(user[0].birthdate)),
-                  readOnly: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'La fecha de nacimiento es obligatoria.';
-                    }
-                    return null;
-                  },
-                  onTap: () async {
-                    await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.fromMillisecondsSinceEpoch(
-                            user[0].birthdate),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now(),
-                        locale: const Locale('es'),
-                        builder: (BuildContext context, child) {
-                          return Theme(
-                              data: ThemeData.light().copyWith(
-                                  colorScheme: ColorScheme.light(
-                                primary: ColorStyle.mainRed,
-                              )),
-                              child: child!);
-                        }).then((selectedDate) {
-                      if (selectedDate != null) {
-                        _dataController.text =
-                            DateFormat('dd-MM-yyyy').format(selectedDate);
-                        editInfoFormProvider.birthdate =
-                            selectedDate.millisecondsSinceEpoch;
-                      }
-                    });
-                  }),
 
               const SizedBox(height: 5),
               PrimaryButton(
                   text: 'Aplicar cambio',
                   onPressed: () =>
-                      _onFormSubmit(editInfoFormProvider, context, user[0]))
+                      _onFormSubmitPassword(loginFormProvider, context))
             ],
           ),
         );
       },
     );
+  }
+}
+
+void _onFormSubmitPassword(
+  LoginFormProvider loginFormProvider,
+  BuildContext context,
+) {
+  FirebaseCloudService.getUserByEmail(loginFormProvider.email)
+      .then((UserModel? user) => _validateData(loginFormProvider, context));
+}
+
+///Función de evalución final, evalua que el formulario cumpla con los requerimientos
+///mínimos y si el usuario registrado está activo en el sistema. Si se cumplen las condiciones
+///se puede iniciar la sesión.
+void _validateData(
+  LoginFormProvider loginFormProvider,
+  BuildContext context,
+) {
+  final isValid = loginFormProvider.validateForm();
+  if (loginFormProvider.email == loginFormProvider.email) {
+    FirebaseAuthService.auth;
+  } else {
+    NotificationsService.showErrorSnackbar(
+        'El usuario indicado no está registrado.');
   }
 }
 

@@ -87,7 +87,9 @@ class ProfileScreen extends StatelessWidget {
               ),
               InfoButton(
                 icon: MdiIcons.formTextboxPassword,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, 'changePassword');
+                },
                 text: 'Cambiar mi contraseña',
               ),
               InfoButton(

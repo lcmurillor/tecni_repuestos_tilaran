@@ -31,7 +31,7 @@ class FirebaseAuthService {
     }
   }
 
-  ///Permite serra la sesión de un usario registrado, además de esto navega a la página
+  ///Permite cerrrar la sesión de un usario registrado, además de esto navega a la página
   ///principal y con esto actualiza las opciones disponibles en el menú laterañ.
   static signOut(BuildContext context) async {
     try {
