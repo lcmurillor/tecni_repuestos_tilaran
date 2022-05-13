@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/card_address.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
@@ -29,7 +30,8 @@ class AddressesManagerScreen extends StatelessWidget {
               StreamBuilder(
                 stream: FirebaseCloudService.getAddressesByUser(
                     FirebaseAuthService.auth.currentUser!.uid),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Address>> snapshot) {
                   if (snapshot.hasError) {
                     return NotificationsService.showErrorSnackbar(
                         'Ha ocurrido un error a la hora de cargar los datos.');
@@ -39,9 +41,9 @@ class AddressesManagerScreen extends StatelessWidget {
                     return const CustomProgressIndicator();
                   }
 
-                  final data = snapshot.data!;
+                  final address = snapshot.data!;
 
-                  if (data.length == 0) {
+                  if (address.isEmpty) {
                     return Padding(
                       padding: const EdgeInsets.all(30),
                       child: Text(
@@ -54,20 +56,21 @@ class AddressesManagerScreen extends StatelessWidget {
 
                   return ListView.builder(
                     physics: const BouncingScrollPhysics(),
-                    itemCount: data.length,
+                    itemCount: address.length,
                     itemBuilder: (context, index) {
-                      return const AddressCard();
+                      return AddressCard(address: address[index]);
                     },
                   );
                 },
               ),
               Positioned(
                 bottom: 30,
-                right: 20,
+                left: 20,
                 child: FloatingActionButton(
                   backgroundColor: ColorStyle.mainRed,
                   child: const Icon(Icons.add, size: 50),
-                  onPressed: () {},
+                  onPressed: () =>
+                      ModalAddress.displayAddAddressDialog(context),
                 ),
               ),
             ],

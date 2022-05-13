@@ -17,7 +17,8 @@ class CustomTextInput extends StatelessWidget {
       this.obscureText = false,
       this.onFieldSubmitted,
       this.onTap,
-      this.readOnly = false})
+      this.readOnly = false,
+      this.maxLines = 1})
       : super(key: key);
 
   final bool autocorrect;
@@ -32,11 +33,13 @@ class CustomTextInput extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function()? onTap;
   final TextEditingController? controller;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       TextFormField(
+        maxLines: maxLines,
         autocorrect: autocorrect,
         controller: controller,
         decoration: InputStyle.mainInput(hintText: hintText, icon: icon),

@@ -90,7 +90,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               onChanged: (value) => registerFormProvider.name = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El nombre es obligatorio';
+                  return 'El nombre es obligatorio.';
                 } else if (value.length < 2) {
                   return 'EL nombre debe tener 2 o más caracteres.';
                 }
@@ -104,7 +104,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               onChanged: (value) => registerFormProvider.lastname = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El apellido es obligatorio';
+                  return 'El apellido es obligatorio.';
                 } else if (value.length < 2) {
                   return 'El apellido debe tener 2 o más caracteres.';
                 }
@@ -174,7 +174,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Ingrese su contraseña';
+                  return 'Ingrese su contraseña.';
                 }
                 if (value.length < 6) {
                   return 'La contraseña debe de tener más de 6 caracteres.';
@@ -192,7 +192,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Ingrese su contraseña';
+                  return 'Ingrese su contraseña.';
                 }
                 if (value.length < 6) {
                   return 'La contraseña debe de tener más de 6 caracteres.';

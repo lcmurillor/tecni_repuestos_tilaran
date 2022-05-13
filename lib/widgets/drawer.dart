@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
@@ -132,8 +131,7 @@ ListTile _moldelListTile(
     leading: Icon(icon, color: Colors.black, size: 35),
     onTap: () {
       if (page != null) {
-        Route route = CupertinoPageRoute(builder: (context) => page);
-        Navigator.push(context, route);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       } else {
         FirebaseAuthService.signOut(context);
       }

@@ -10,5 +10,6 @@ export 'package:tecni_repuestos/widgets/card_item.dart';
 export 'package:tecni_repuestos/widgets/card_login.dart';
 export 'package:tecni_repuestos/widgets/category_title.dart';
 export 'package:tecni_repuestos/widgets/drawer.dart';
+export 'package:tecni_repuestos/widgets/modal_address.dart';
 export 'package:tecni_repuestos/widgets/progress_indicator.dart';
 export 'package:tecni_repuestos/widgets/text_input.dart';

@@ -69,8 +69,6 @@ class _EditInfoForm extends StatelessWidget {
           key: editInfoFormProvider.formKey,
           child: Column(
             children: [
-              ///Input correspondiente al correo electronico para registrar el nuevo usuario.
-
               ///Input correspondiente al nombre  para registrar el nuevo usuario.
               CustomTextInput(
                   controller: TextEditingController(text: user[0].name),
@@ -172,6 +170,10 @@ class _EditInfoForm extends StatelessWidget {
   }
 }
 
+///Evalua si el formulario cumple con las codiciones mínimas para ser aceptado, además
+///que se cumplan con las validaciónes de los datos en la base de datos. Para los campos
+///que no sean alterados por el usuario, asigna nuevamente los valores ya definidos y navega
+///a la pantalla anterior.
 void _onFormSubmit(
     EditInfoFormProvider editInfoFormProvider, context, UserModel user) async {
   Future.delayed(Duration.zero, () {
