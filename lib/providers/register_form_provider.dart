@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 
-import '../Services/notifications_service.dart';
 
 ///Ésta clase se encarga de cargar los valors de los formularios de registro de usuario
 ///y validar que cumpla con los requerimientos mínimos.
