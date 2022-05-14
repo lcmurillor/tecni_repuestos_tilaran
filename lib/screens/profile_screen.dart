@@ -97,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, 'addresses');
                 },
-                text: 'Gestionar Dirrecciones',
+                text: 'Gestionar Direcciones',
               ),
             ],
           );

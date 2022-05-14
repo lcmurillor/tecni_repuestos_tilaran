@@ -5,7 +5,6 @@ import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
-import 'package:intl/intl.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   const ChangePasswordScreen({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class ChangePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => LoginFormProvider(),
+        create: (_) => UpdatePasswordProvider(),
         child: Builder(builder: (context) {
           return Scaffold(
               body: Background(
@@ -46,17 +45,15 @@ class ChangePasswordScreen extends StatelessWidget {
 
 class _EditInfoForm extends StatelessWidget {
   _EditInfoForm({Key? key}) : super(key: key);
-  final _dataController = TextEditingController();
-  final String newpassword = '0';
+  //final _dataController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // final editInfoFormProvider =
     //     Provider.of<EditInfoFormProvider>(context, listen: false);
-    final loginFormProvider =
-        Provider.of<LoginFormProvider>(context, listen: false);
-    var newPassword = '';
-    //  final loginFormProvider =
-    //     Provider.of<LoginFormProvider>(context, listen: false);
+    final updatePasswordProvider =
+        Provider.of<UpdatePasswordProvider>(context, listen: false);
+    //  final updatePasswordProvider =
+    //     Provider.of<updatePasswordProvider>(context, listen: false);
     return StreamBuilder(
       stream: FirebaseCloudService.getUserByUid(
           FirebaseAuthService.auth.currentUser!.uid),
@@ -72,7 +69,7 @@ class _EditInfoForm extends StatelessWidget {
 
         final user = snapshot.data!;
         return Form(
-          key: loginFormProvider.formKey,
+          key: updatePasswordProvider.formKey,
           child: Column(
             children: [
               ///Input correspondiente al correo electronico para registrar el nuevo usuario.
@@ -81,9 +78,13 @@ class _EditInfoForm extends StatelessWidget {
               CustomTextInput(
                   // controller: TextEditingController(text: user[0].nombre),
                   hintText: 'Contraseña actual',
+                  obscureText: true,
                   icon: MdiIcons.formTextboxPassword,
                   onChanged: (value) {
-                    loginFormProvider.password = value;
+                    if (value == updatePasswordProvider.password) {
+                    } else {
+                      return 'Contraseñas actuales no coinciden';
+                    }
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -92,15 +93,16 @@ class _EditInfoForm extends StatelessWidget {
                     if (value.length < 6) {
                       return 'Debe tener más de 6 caractéres';
                     }
-                    return value;
+                    return null;
                   }),
 
               ///Input correspondiente al nombre  para registrar el nuevo usuario.
               CustomTextInput(
                   //  controller: TextEditingController(text: user[0].lastname),
                   hintText: 'Nueva contraseña',
+                  obscureText: true,
                   icon: Icons.lock,
-                  onChanged: (value) => value = loginFormProvider.password,
+                  onChanged: (value) => updatePasswordProvider.password = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Ingrese su contraseña';
@@ -116,8 +118,9 @@ class _EditInfoForm extends StatelessWidget {
               CustomTextInput(
                   //    controller: TextEditingController(text: user[0].phone),
                   hintText: 'Confirmar nueva contraseña',
+                  obscureText: true,
                   icon: Icons.lock,
-                  onChanged: (value) => value = loginFormProvider.password,
+                  onChanged: (value) => updatePasswordProvider.password = value,
                   //   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -126,8 +129,7 @@ class _EditInfoForm extends StatelessWidget {
                     if (value.length < 6) {
                       return 'Debe tener más de 6 caractéres';
                     }
-                    newPassword = value;
-                    return newPassword;
+                    return null;
                   }),
 
               ///Input correspondiente al fecha para registrar el nuevo usuario.
@@ -136,7 +138,7 @@ class _EditInfoForm extends StatelessWidget {
               PrimaryButton(
                   text: 'Aplicar cambio',
                   onPressed: () =>
-                      _onFormSubmitPassword(loginFormProvider, context))
+                      _onFormSubmitPassword(updatePasswordProvider, context))
             ],
           ),
         );
@@ -146,54 +148,22 @@ class _EditInfoForm extends StatelessWidget {
 }
 
 void _onFormSubmitPassword(
-  LoginFormProvider loginFormProvider,
+  UpdatePasswordProvider updatePasswordProvider,
   BuildContext context,
 ) {
-  FirebaseCloudService.getUserByEmail(loginFormProvider.email)
-      .then((UserModel? user) => _validateData(loginFormProvider, context));
+  if (updatePasswordProvider.validateForm()) {
+    FirebaseAuthService.updatePassword(
+        updatePasswordProvider.password, context);
+  } else {
+    NotificationsService.showErrorSnackbar(
+        'Su contraseña no cumple los requisitos mínimos');
+  }
 }
 
 ///Función de evalución final, evalua que el formulario cumpla con los requerimientos
 ///mínimos y si el usuario registrado está activo en el sistema. Si se cumplen las condiciones
 ///se puede iniciar la sesión.
-void _validateData(
-  LoginFormProvider loginFormProvider,
-  BuildContext context,
-) {
-  final isValid = loginFormProvider.validateForm();
-  if (loginFormProvider.email == loginFormProvider.email) {
-    FirebaseAuthService.auth;
-  } else {
-    NotificationsService.showErrorSnackbar(
-        'El usuario indicado no está registrado.');
-  }
-}
 
-void _onFormSubmit(
-    EditInfoFormProvider editInfoFormProvider, context, UserModel user) async {
-  Future.delayed(Duration.zero, () {
-    if (editInfoFormProvider.validateForm()) {
-      user = UserModel(
-          birthdate: (editInfoFormProvider.birthdate == 0)
-              ? user.birthdate
-              : editInfoFormProvider.birthdate,
-          email: user.email,
-          id: user.id,
-          lastname: (editInfoFormProvider.lastname == "")
-              ? user.lastname
-              : editInfoFormProvider.lastname,
-          name: (editInfoFormProvider.name == "")
-              ? user.name
-              : editInfoFormProvider.name,
-          phone: (editInfoFormProvider.phone == "")
-              ? user.phone
-              : editInfoFormProvider.phone);
-    } else {
-      NotificationsService.showErrorSnackbar(
-          'No se cumple con las condiciones mínimas para actualizar la información.');
-    }
-  }).then((value) {
-    FirebaseCloudService.updateUser(user);
-    Navigator.pop(context);
-  });
-}
+
+
+

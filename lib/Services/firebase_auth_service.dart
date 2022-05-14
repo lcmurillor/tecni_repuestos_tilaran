@@ -77,4 +77,17 @@ class FirebaseAuthService {
     Future.delayed(const Duration(milliseconds: 3000))
         .then((value) => Navigator.pushReplacementNamed(context, 'login'));
   }
+
+  static updatePassword(String newPassword, BuildContext context) async {
+    final user = auth.currentUser!;
+    user.updatePassword(newPassword).then((_) {
+      NotificationsService.showSnackbar(
+          'Su contraseña fue cambiada exitosamente');
+      Navigator.pop(context);
+    }).catchError((error) {
+      NotificationsService.showErrorSnackbar(
+          'Su contraseña no pudo ser cambiada porque no cumple los requisitos mínimos');
+      //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
+    });
+  }
 }
