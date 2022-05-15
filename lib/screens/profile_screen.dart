@@ -2,20 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
+import 'package:tecni_repuestos/shared/preferences.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBarBackArrow(
-        actionIcon: Icons.dark_mode,
-        onPressed: () {},
+        actionIcon:
+            (Preferences.isDarkmode) ? Icons.light_mode : Icons.dark_mode,
+        onPressed: () {
+          setState(() {
+            Preferences.isDarkmode = !Preferences.isDarkmode;
+            if (Preferences.isDarkmode) {
+              themeProvider.setDarkMode();
+            } else {
+              themeProvider.setLigthMode();
+            }
+          });
+        },
         navigatorOnPressed: () => Navigator.pushNamed(context, 'home'),
       ),
       body: StreamBuilder(

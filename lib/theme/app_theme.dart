@@ -7,4 +7,5 @@ class MainTheme {
     blurRadius: 10,
   );
   static final ThemeData lightTheme = ThemeData.light().copyWith();
+  static final ThemeData darkTheme = ThemeData.dark().copyWith();
 }
