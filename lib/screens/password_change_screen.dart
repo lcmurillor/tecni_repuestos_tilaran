@@ -5,8 +5,8 @@ import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
-class ChangePasswordScreen extends StatelessWidget {
-  const ChangePasswordScreen({Key? key}) : super(key: key);
+class PasswordChangeScreen extends StatelessWidget {
+  const PasswordChangeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,9 @@ class _UpdatePasswordForm extends StatelessWidget {
   }
 }
 
-//TODO documentar
+///Evalua que se cumplan las condicionas minimas respeto a los datos del formulario
+///para cambiar la contraseña, si es así, manda los datos a los servicos de autentificación
+///donde se evaluna la versidad de los datos.
 void _onFormSubmit(
   UpdatePasswordFormProvider updatePasswordFormProvider,
   BuildContext context,

@@ -74,17 +74,22 @@ class FirebaseAuthService {
   ///en el cual puede cambiar su contraseña.
   static requestPassword(String email, BuildContext context) async {
     await auth.sendPasswordResetEmail(email: email);
-    Future.delayed(const Duration(milliseconds: 3000))
-        .then((value) => Navigator.pushReplacementNamed(context, 'login'));
+    Navigator.pushReplacementNamed(context, 'login');
   }
 
+  ///Revice la contraseña del usuario registrado actualmente y la contraseña que ele usuario
+  ///desea definir como nueva contraseña, si la contraseña anterir es valida, realiza el cambio de las credenciales
+  ///del usuario.
   static updatePassword(
       String currentPassword, String newPassword, BuildContext context) async {
     try {
+      //Evalua si la contraseña actual es la contraseña del usuario registado
       await auth
           .signInWithEmailAndPassword(
               email: auth.currentUser!.email!, password: currentPassword)
           .then((currentUser) {
+        ///Si se cumple con las credenciales del usuario, se utiliza los métodos de
+        ///firebase para actualizar la contraseña.
         currentUser.user!.updatePassword(newPassword).then((_) {
           NotificationsService.showSnackbar(
               'Su contraseña fue cambiada exitosamente.');
