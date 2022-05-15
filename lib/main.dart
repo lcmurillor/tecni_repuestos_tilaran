@@ -29,7 +29,7 @@ class TecniRepuestoTilaran extends StatelessWidget {
           Locale('es', 'ES'),
           Locale('en', 'US'),
         ],
-        locale: const Locale('zh'),
+        locale: const Locale('cr'),
         debugShowCheckedModeBanner: false,
         title: 'Tecni repuestos Tilarán',
         theme: MainTheme.lightTheme,
@@ -53,14 +53,13 @@ class TecniRepuestoTilaran extends StatelessWidget {
             }
           },
         ),
-        // initialRoute: 'login',
-        ///Estas rutas NO SE PUEDEN BORRAR , ya que son utiliazadas en otras pantallas
-        ///para hacer la navegación.
         routes: {
           'aboutUs': (_) => const AboutUsScreen(),
+          'addresses': (_) => const AddressesManagerScreen(),
+          'editInformation': (_) => const EditInformationScreen(),
           'home': (_) => const HomeScreen(),
           'login': (_) => const LoginScreen(),
-          'register': (_) => const RegisterScreen(),
+          'passwordChange': (_) => const PasswordChangeScreen(),
           'passwordRequest': (_) => const PasswordRequestScreen(),
           'editInformation': (_) => const EditInformationScreen(),
           'addresses': (_) => const AddressesManagerScreen(),
