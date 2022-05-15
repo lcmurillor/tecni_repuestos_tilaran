@@ -18,7 +18,7 @@ class AddressesManagerScreen extends StatelessWidget {
           height: 50,
           width: double.infinity,
         ),
-        Text('Dirrecciones de facturación',
+        Text('Direcciones de facturación',
             style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 27)),
         const SizedBox(
           height: 40,
@@ -47,7 +47,7 @@ class AddressesManagerScreen extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(30),
                       child: Text(
-                          'Actualmente no tiene dirreciones registradas. Por favor, agregue una dirreción de facturación.',
+                          'Actualmente no tiene direcciones registradas. Por favor, agregue una dirección de facturación.',
                           style: CustomTextStyle.robotoSemiBold.copyWith(
                               fontSize: 20, color: ColorStyle.textGrey),
                           textAlign: TextAlign.center),
