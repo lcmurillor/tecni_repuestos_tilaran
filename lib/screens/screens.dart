@@ -1,5 +1,3 @@
-import 'package:tecni_repuestos/screens/mypackeges_screen.dart';
-
 export 'package:tecni_repuestos/screens/about_screen.dart';
 export 'package:tecni_repuestos/screens/addresses_manager_screen.dart';
 export 'package:tecni_repuestos/screens/category_screen.dart';
@@ -15,3 +13,4 @@ export 'package:tecni_repuestos/screens/register_screen.dart';
 export 'package:tecni_repuestos/screens/edit_information_screen.dart';
 export 'package:tecni_repuestos/screens/password_change_screen.dart';
 export 'package:tecni_repuestos/screens/mypackeges_screen.dart';
+export 'package:tecni_repuestos/screens/shipment_details_screen.dart';

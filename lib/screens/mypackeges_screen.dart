@@ -45,7 +45,7 @@ class MyPackegesScreen extends StatelessWidget {
                             textAlignVertical: TextAlignVertical.bottom,
                             decoration: inputDecoration()))),
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, 'home'),
+                  onTap: () => Navigator.pushNamed(context, 'shipment'),
                   child: CardContainer(
                     child: Column(
                       children: [
@@ -124,7 +124,7 @@ void _validateData(UserModel? user, LoginFormProvider loginFormProvider,
         loginFormProvider.email, loginFormProvider.password, context);
   } else {
     NotificationsService.showErrorSnackbar(
-        'El ususario indicado no está registrado.');
+        'El usuario indicado no está registrado.');
   }
 }
 
