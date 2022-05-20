@@ -89,34 +89,82 @@ class ShipmentDetailScreen extends StatelessWidget {
                             ),
                           )
                         ]),
-                        Stack(children: [
-                          SizedBox(
-                            height: 200,
-                            child: FAProgressBar(
-                              borderRadius: null,
-                              size: 10,
-                              backgroundColor: Colors.black12,
-                              //progressColor: Colors.pink,
-                              changeColorValue: 5,
-                              changeProgressColor: Colors.green,
-                              currentValue: 10,
-                              maxValue: 100,
-                              direction: Axis.vertical,
-                              verticalDirection: VerticalDirection.down,
+                        Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 25, 40, 0),
+                            child: Column(
+                              children: [
+                                Text('Etapa',
+                                    style: CustomTextStyle.robotoExtraBold
+                                        .copyWith(fontSize: 25, height: 0)),
+                                Text('En proceso',
+                                    style: CustomTextStyle.robotoExtraBold
+                                        .copyWith(fontSize: 15, height: 3)),
+                                Text('Enviado',
+                                    style: CustomTextStyle.robotoExtraBold
+                                        .copyWith(fontSize: 15, height: 3)),
+                                Text('En camino',
+                                    style: CustomTextStyle.robotoExtraBold
+                                        .copyWith(fontSize: 15, height: 3)),
+                                Text('Entregado',
+                                    style: CustomTextStyle.robotoExtraBold
+                                        .copyWith(fontSize: 15, height: 3))
+                              ],
                             ),
                           ),
-                          Positioned(
-                            right: 10,
-                            child: Text('Estado',
-                                style: CustomTextStyle.robotoSemiBold
-                                    .copyWith(fontSize: 25, height: 2)),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 75, 0, 0),
+                            child: SizedBox(
+                              height: 155,
+                              child: FAProgressBar(
+                                borderRadius: null,
+                                size: 10,
+                                backgroundColor: Colors.black12,
+                                //progressColor: Colors.pink,
+                                changeColorValue: 5,
+                                changeProgressColor: Colors.green,
+                                currentValue: 2,
+                                progressColor: Colors.green,
+                                maxValue: 10,
+                                direction: Axis.vertical,
+                                verticalDirection: VerticalDirection.down,
+                              ),
+                            ),
                           ),
-                          Positioned(
-                            top: 50,
-                            right: 40,
-                            child: Text('Etapa',
-                                style: CustomTextStyle.robotoSemiBold
-                                    .copyWith(fontSize: 25, height: 2)),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(40, 27, 0, 0),
+                            child: Column(
+                              children: [
+                                Text('Etapa',
+                                    style: CustomTextStyle.robotoExtraBold
+                                        .copyWith(fontSize: 25, height: 0)),
+                                Icon(Icons.check,
+                                    color: ColorStyle.mainGreen, size: 40),
+                                Icon(Icons.check,
+                                    color: ColorStyle.mainGreen, size: 40),
+                                const Icon(MdiIcons.loading, size: 40),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 22),
+                                  child: Container(
+                                    height: 25,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                        color: ColorStyle.mainGreen,
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 24, top: 4),
+                                      child: Text('Recibido',
+                                          style: CustomTextStyle.robotoMedium
+                                              .copyWith(
+                                                  fontSize: 13,
+                                                  color: Colors.white)),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ]),
                       ],
