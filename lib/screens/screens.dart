@@ -10,3 +10,7 @@ export 'package:tecni_repuestos/screens/placeholder_screen.dart';
 export 'package:tecni_repuestos/screens/products_filter_screen.dart';
 export 'package:tecni_repuestos/screens/profile_screen.dart';
 export 'package:tecni_repuestos/screens/register_screen.dart';
+export 'package:tecni_repuestos/screens/edit_information_screen.dart';
+export 'package:tecni_repuestos/screens/password_change_screen.dart';
+export 'package:tecni_repuestos/screens/mypackeges_screen.dart';
+export 'package:tecni_repuestos/screens/shipment_details_screen.dart';
