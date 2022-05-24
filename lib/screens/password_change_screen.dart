@@ -18,7 +18,7 @@ class PasswordChangeScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              const SizedBox(height: 170),
+              const SizedBox(height: 200),
               CardContainer(
                 child: Column(
                   children: [

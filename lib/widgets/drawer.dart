@@ -128,7 +128,7 @@ ListTile _moldelListTile(
   return ListTile(
     title: Text(title,
         style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 20)),
-    leading: Icon(icon, color: Colors.black, size: 35),
+    leading: Icon(icon, size: 35),
     onTap: () {
       if (page != null) {
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));

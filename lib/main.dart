@@ -21,7 +21,7 @@ void main() async {
 }
 
 class TecniRepuestoTilaran extends StatelessWidget {
-  ///Widget principal que se encarga de la inicación y contrución del apartado visual
+  ///Widget principal que se encarga de la iniciación y construción del apartado visual
   ///de la aplicación.
   const TecniRepuestoTilaran({Key? key}) : super(key: key);
 

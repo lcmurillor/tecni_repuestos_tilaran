@@ -11,35 +11,31 @@ class EditInformationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => EditInfoFormProvider(),
-        child: Builder(builder: (context) {
-          return Scaffold(
-              body: Background(
-            useImg: true,
-            useBackArrow: true,
-            child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+    return Scaffold(
+        body: Background(
+      useImg: true,
+      useBackArrow: true,
+      child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              const SizedBox(height: 200),
+              CardContainer(
                 child: Column(
                   children: [
-                    const SizedBox(height: 170),
-                    CardContainer(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          Text('Editar mi información',
-                              style: CustomTextStyle.robotoSemiBold
-                                  .copyWith(fontSize: 30)),
-                          const SizedBox(height: 15),
-                          _EditInfoForm(),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 45)
+                    const SizedBox(height: 10),
+                    Text('Editar mi información',
+                        style: CustomTextStyle.robotoSemiBold
+                            .copyWith(fontSize: 30)),
+                    const SizedBox(height: 15),
+                    _EditInfoForm(),
                   ],
-                )),
-          ));
-        }));
+                ),
+              ),
+              const SizedBox(height: 45)
+            ],
+          )),
+    ));
   }
 }
 
@@ -49,123 +45,130 @@ class _EditInfoForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final editInfoFormProvider =
-        Provider.of<EditInfoFormProvider>(context, listen: false);
-    return StreamBuilder(
-      stream: FirebaseCloudService.getUserByUid(
-          FirebaseAuthService.auth.currentUser!.uid),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
-          return NotificationsService.showErrorSnackbar(
-              'Ha ocurrido un error a la hora de cargar los datos.');
-        }
+    return ChangeNotifierProvider(
+      create: (_) => EditInfoFormProvider(),
+      child: Builder(builder: (context) {
+        final editInfoFormProvider =
+            Provider.of<EditInfoFormProvider>(context, listen: false);
+        return StreamBuilder(
+          stream: FirebaseCloudService.getUserByUid(
+              FirebaseAuthService.auth.currentUser!.uid),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return NotificationsService.showErrorSnackbar(
+                  'Ha ocurrido un error a la hora de cargar los datos.');
+            }
 
-        if (!snapshot.hasData) {
-          return const CustomProgressIndicator();
-        }
+            if (!snapshot.hasData) {
+              return const CustomProgressIndicator();
+            }
 
-        final user = snapshot.data!;
-        return Form(
-          key: editInfoFormProvider.formKey,
-          child: Column(
-            children: [
-              ///Input correspondiente al nombre  para registrar el nuevo usuario.
-              CustomTextInput(
-                  controller: TextEditingController(text: user[0].name),
-                  hintText: 'Nombre',
-                  icon: Icons.person,
-                  onChanged: (value) => editInfoFormProvider.name = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'El nombre es obligatorio';
-                    } else if (value.length < 2) {
-                      return 'EL nombre debe tener 2 o más caracteres.';
-                    }
-                    return null;
-                  }),
+            final user = snapshot.data!;
+            return Form(
+              key: editInfoFormProvider.formKey,
+              child: Column(
+                children: [
+                  ///Input correspondiente al nombre  para registrar el nuevo usuario.
+                  CustomTextInput(
+                      controller: TextEditingController(text: user[0].name),
+                      hintText: 'Nombre',
+                      icon: Icons.person,
+                      onChanged: (value) => editInfoFormProvider.name = value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'El nombre es obligatorio';
+                        } else if (value.length < 2) {
+                          return 'EL nombre debe tener 2 o más caracteres.';
+                        }
+                        return null;
+                      }),
 
-              ///Input correspondiente al nombre  para registrar el nuevo usuario.
-              CustomTextInput(
-                  controller: TextEditingController(text: user[0].lastname),
-                  hintText: 'Apellidos',
-                  icon: Icons.person,
-                  onChanged: (value) => editInfoFormProvider.lastname = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'El apellido es obligatorio';
-                    } else if (value.length < 2) {
-                      return 'El apellido debe tener 2 o más caracteres.';
-                    }
-                    return null;
-                  }),
+                  ///Input correspondiente al nombre  para registrar el nuevo usuario.
+                  CustomTextInput(
+                      controller: TextEditingController(text: user[0].lastname),
+                      hintText: 'Apellidos',
+                      icon: Icons.person,
+                      onChanged: (value) =>
+                          editInfoFormProvider.lastname = value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'El apellido es obligatorio';
+                        } else if (value.length < 2) {
+                          return 'El apellido debe tener 2 o más caracteres.';
+                        }
+                        return null;
+                      }),
 
-              ///Input correspondiente al Telefono para registrar el nuevo usuario.
-              CustomTextInput(
-                  controller: TextEditingController(text: user[0].phone),
-                  hintText: 'Teléfono',
-                  icon: Icons.phone,
-                  onChanged: (value) => editInfoFormProvider.phone = value,
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'El teléfono es obligatorio.';
-                    } else if (value.length > 8 || value.length < 8) {
-                      return 'El teléfono no es valido.';
-                    }
-                    return null;
-                  }),
+                  ///Input correspondiente al Telefono para registrar el nuevo usuario.
+                  CustomTextInput(
+                      controller: TextEditingController(text: user[0].phone),
+                      hintText: 'Teléfono',
+                      icon: Icons.phone,
+                      onChanged: (value) => editInfoFormProvider.phone = value,
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'El teléfono es obligatorio.';
+                        } else if (value.length > 8 || value.length < 8) {
+                          return 'El teléfono no es valido.';
+                        }
+                        return null;
+                      }),
 
-              ///Input correspondiente al fecha para registrar el nuevo usuario.
-              CustomTextInput(
-                  hintText: 'Fecha de nacimiento',
-                  icon: Icons.calendar_month_rounded,
-                  onChanged: (value) =>
-                      editInfoFormProvider.birthdate = int.parse(value),
-                  keyboardType: TextInputType.datetime,
-                  controller: _dataController
-                    ..text = DateFormat('dd-MM-yyyy').format(
-                        DateTime.fromMillisecondsSinceEpoch(user[0].birthdate)),
-                  readOnly: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'La fecha de nacimiento es obligatoria.';
-                    }
-                    return null;
-                  },
-                  onTap: () async {
-                    await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.fromMillisecondsSinceEpoch(
-                            user[0].birthdate),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now(),
-                        locale: const Locale('es'),
-                        builder: (BuildContext context, child) {
-                          return Theme(
-                              data: ThemeData.light().copyWith(
-                                  colorScheme: ColorScheme.light(
-                                primary: ColorStyle.mainRed,
-                              )),
-                              child: child!);
-                        }).then((selectedDate) {
-                      if (selectedDate != null) {
-                        _dataController.text =
-                            DateFormat('dd-MM-yyyy').format(selectedDate);
-                        editInfoFormProvider.birthdate =
-                            selectedDate.millisecondsSinceEpoch;
-                      }
-                    });
-                  }),
+                  ///Input correspondiente al fecha para registrar el nuevo usuario.
+                  CustomTextInput(
+                      hintText: 'Fecha de nacimiento',
+                      icon: Icons.calendar_month_rounded,
+                      onChanged: (value) =>
+                          editInfoFormProvider.birthdate = int.parse(value),
+                      keyboardType: TextInputType.datetime,
+                      controller: _dataController
+                        ..text = DateFormat('dd-MM-yyyy').format(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                user[0].birthdate)),
+                      readOnly: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'La fecha de nacimiento es obligatoria.';
+                        }
+                        return null;
+                      },
+                      onTap: () async {
+                        await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.fromMillisecondsSinceEpoch(
+                                user[0].birthdate),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                            locale: const Locale('es'),
+                            builder: (BuildContext context, child) {
+                              return Theme(
+                                  data: ThemeData.light().copyWith(
+                                      colorScheme: ColorScheme.light(
+                                    primary: ColorStyle.mainRed,
+                                  )),
+                                  child: child!);
+                            }).then((selectedDate) {
+                          if (selectedDate != null) {
+                            _dataController.text =
+                                DateFormat('dd-MM-yyyy').format(selectedDate);
+                            editInfoFormProvider.birthdate =
+                                selectedDate.millisecondsSinceEpoch;
+                          }
+                        });
+                      }),
 
-              const SizedBox(height: 5),
-              PrimaryButton(
-                  text: 'Aplicar cambio',
-                  onPressed: () =>
-                      _onFormSubmit(editInfoFormProvider, context, user[0]))
-            ],
-          ),
+                  const SizedBox(height: 5),
+                  PrimaryButton(
+                      text: 'Aplicar cambio',
+                      onPressed: () =>
+                          _onFormSubmit(editInfoFormProvider, context, user[0]))
+                ],
+              ),
+            );
+          },
         );
-      },
+      }),
     );
   }
 }

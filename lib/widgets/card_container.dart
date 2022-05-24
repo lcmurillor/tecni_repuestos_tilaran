@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tecni_repuestos/theme/app_theme.dart';
 
 class CardContainer extends StatelessWidget {
   final Widget child;
@@ -7,19 +6,12 @@ class CardContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: _createCardShape(),
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 25),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: child,
       ),
     );
   }
-
-  BoxDecoration _createCardShape() => BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(25),
-      boxShadow: [MainTheme.cardShadow]);
 }

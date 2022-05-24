@@ -51,7 +51,7 @@ class Background extends StatelessWidget {
         Container(height: size.height * 0.42),
         Flexible(
           child: Container(
-              color: const Color.fromRGBO(250, 250, 250, 1),
+              color: Theme.of(context).scaffoldBackgroundColor,
               width: double.infinity,
               height: size.height * 0.51),
         )

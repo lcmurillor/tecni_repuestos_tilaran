@@ -20,7 +20,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: CustomAppBarBackArrow(
         actionIcon:
             (Preferences.isDarkmode) ? Icons.light_mode : Icons.dark_mode,
@@ -73,8 +72,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   user[0].name.toUpperCase() +
                       ' ' +
                       user[0].lastname.toUpperCase(),
-                  style: CustomTextStyle.robotoExtraBold
-                      .copyWith(fontSize: 20, color: Colors.black)),
+                  style:
+                      CustomTextStyle.robotoExtraBold.copyWith(fontSize: 20)),
               const SizedBox(
                 height: 7,
               ),
@@ -106,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InfoButton(
                 icon: MdiIcons.formTextboxPassword,
                 onPressed: () {
-                  Navigator.pushNamed(context, 'changePassword');
+                  Navigator.pushNamed(context, 'passwordChange');
                 },
                 text: 'Cambiar mi contraseña',
               ),

@@ -21,52 +21,44 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final formatCurrency = NumberFormat.currency(symbol: "₡ ");
-
-    return Container(
-        height: size.height * 0.52,
-        width: double.infinity,
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
-            boxShadow: [MainTheme.cardShadow]),
+    return Card(
 
         ///Construcción de los elementos dentro del contenedor.
-        child: Column(children: [
-          productImage(size, img),
-          productInfo(title),
-          //const Spacer(),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            ///Cambia la tipografía para que sea compatible con el signo de colones.
-            Text(
-              formatCurrency.format(total),
-              style: TextStyle(
-                  color: ColorStyle.mainRed,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w500),
-            ),
+        child: Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(children: [
+        productImage(size, img),
+        productInfo(title),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          ///Cambia la tipografía para que sea compatible con el signo de colones.
+          Text(
+            formatCurrency.format(total),
+            style: TextStyle(
+                color: ColorStyle.mainRed,
+                fontSize: 26,
+                fontWeight: FontWeight.w500),
+          ),
 
-            ///Este contenedor y todo lo que se encuentra dentro de el, corresponde
-            ///al botón de agregar al carrito.
-            Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                    color: ColorStyle.mainRed,
-                    borderRadius: BorderRadius.circular(100)),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
-                    size: 30.0,
-                  ),
+          ///Este contenedor y todo lo que se encuentra dentro de el, corresponde
+          ///al botón de agregar al carrito.
+          Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
                   color: ColorStyle.mainRed,
-                ))
-          ]),
-          // const SizedBox(height: 1)
-        ]));
+                  borderRadius: BorderRadius.circular(100)),
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                  size: 30.0,
+                ),
+                color: ColorStyle.mainRed,
+              ))
+        ])
+      ]),
+    ));
   }
 
   ///Éste médoto constuye la información que correspone al artículo.
