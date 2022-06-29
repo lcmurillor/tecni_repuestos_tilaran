@@ -6,13 +6,14 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/modal_address.dart';
 
 class AddressCard extends StatelessWidget {
-  //DOCUMENTAR 
+  //TODO: DOCUMENTAR
   const AddressCard({Key? key, required this.address}) : super(key: key);
   final Address address;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    //TODO Cmabiar esto por un card
     return Container(
       ///Contrucción de la decoración y dimenciones del conetendor.
       height: size.height * 0.20,

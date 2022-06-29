@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,8 +16,6 @@ class MyPackegesScreen extends StatelessWidget {
   final bool hasError;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Builder(builder: (context) {
       Future.delayed(Duration.zero, () {
         if (hasError) {

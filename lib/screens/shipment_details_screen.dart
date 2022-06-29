@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +8,6 @@ import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 //import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
@@ -18,8 +19,6 @@ class ShipmentDetailScreen extends StatelessWidget {
   final bool hasError;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Builder(builder: (context) {
       Future.delayed(Duration.zero, () {
         if (hasError) {
@@ -113,7 +112,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.fromLTRB(0, 75, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
                             child: SizedBox(
                               height: 155,
                               child: FAProgressBar(
@@ -176,13 +175,6 @@ class ShipmentDetailScreen extends StatelessWidget {
       ));
     });
   }
-}
-
-///Función intermedia que hace una llamado a la base de datos para optener un usuario
-///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
-void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
-  FirebaseCloudService.getUserByEmail(loginFormProvider.email).then(
-      (UserModel? user) => _validateData(user, loginFormProvider, context));
 }
 
 ///Función de evalución final, evalua que el formulario cumpla con los requerimientos

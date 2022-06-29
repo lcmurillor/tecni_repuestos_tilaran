@@ -34,5 +34,8 @@ class MainTheme {
 
     ///Configuración del listTile (Utilizado en el drawer).
     listTileTheme: const ListTileThemeData(iconColor: Colors.white),
+
+    ///Configuración del inputDecorationTheme (Utilizado en todos los inputs).
+    inputDecorationTheme: const InputDecorationTheme(),
   );
 }
