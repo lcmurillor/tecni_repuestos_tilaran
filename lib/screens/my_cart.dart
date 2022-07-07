@@ -39,6 +39,7 @@ class MyCartScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 20),
+                      //TODO: aqui el edgeInsets es el que centra las letras, notese que en la linea 39 está el crossAxisAlignment que no sé por qué razón no funciona
                       moldeRowInfo(
                         const EdgeInsets.fromLTRB(110, 0, 0, 0),
                         'Subtotal: ',
@@ -47,16 +48,16 @@ class MyCartScreen extends StatelessWidget {
                             .copyWith(color: Colors.black38),
                         'C85.500.00',
                       ),
-                      Center(
-                        child: moldeRowInfo(
-                          const EdgeInsets.fromLTRB(110, 0, 0, 0),
-                          'IVA: ',
-                          CustomTextStyle.robotoExtraBold,
-                          CustomTextStyle.robotoMedium
-                              .copyWith(color: Colors.black38),
-                          '13.500.00',
-                        ),
+                      //TODO: aqui el edgeInsets es el que centra las letras, notese que en la linea 39 está el crossAxisAlignment que no sé por qué razón no funciona
+                      moldeRowInfo(
+                        const EdgeInsets.fromLTRB(110, 0, 0, 0),
+                        'IVA: ',
+                        CustomTextStyle.robotoExtraBold,
+                        CustomTextStyle.robotoMedium
+                            .copyWith(color: Colors.black38),
+                        '13.500.00',
                       ),
+                      //TODO: aqui el edgeInsets es el que centra las letras, notese que en la linea 39 está el crossAxisAlignment que no sé por qué razón no funciona
                       moldeRowInfo(
                         const EdgeInsets.fromLTRB(108, 0, 0, 0),
                         'Total: ',
@@ -127,7 +128,7 @@ class MyCartScreen extends StatelessWidget {
       child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Expanded(
           child: Column(
-            //TODO: Se desborda si el nombre del articulo es muy largo
+            //TODO: Se desborda si el nombre del articulo es muy largo, porfa revisar cual puede ser el error
             children: [
               moldeRowInfo(
                   const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -173,6 +174,7 @@ class MyCartScreen extends StatelessWidget {
     );
   }
 
+//Metodo que contiene los ajustes de los iconbutton de las cards de my cart
   IconButton iconButtonCard(EdgeInsetsGeometry padding, Icon icon, Color color,
       void Function() onPressed) {
     return IconButton(
@@ -184,6 +186,7 @@ class MyCartScreen extends StatelessWidget {
     );
   }
 
+//Metodo que contiene los ajutes de las cartas de mycart
   Row moldeRowInfo(EdgeInsetsGeometry padding, String text, TextStyle style,
       TextStyle style2,
       [String text2 = '', TextAlign textalign = TextAlign.center]) {
