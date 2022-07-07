@@ -20,7 +20,7 @@ class ModalAddress {
           return AlertDialog(
             elevation: 10,
             title: Text(
-              'Editar una dirreción de facturación',
+              'Editar una dirección de facturación',
               style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 30),
               textAlign: TextAlign.center,
             ),
@@ -47,7 +47,7 @@ class ModalAddress {
           return AlertDialog(
             elevation: 10,
             title: Text(
-              'Editar una dirreción de facturación',
+              'Editar una dirección de facturación',
               style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 30),
               textAlign: TextAlign.center,
             ),
@@ -92,7 +92,7 @@ class AddressForm extends StatelessWidget {
                   controller: (address != null)
                       ? TextEditingController(text: address!.address)
                       : null,
-                  hintText: 'Dirreción exacta',
+                  hintText: 'Dirección exacta',
                   maxLines: 3,
                   icon: Icons.map,
                   onChanged: (value) => addressFormProvider.address = value,

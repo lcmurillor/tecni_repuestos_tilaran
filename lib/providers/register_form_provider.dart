@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 
-
 ///Ésta clase se encarga de cargar los valors de los formularios de registro de usuario
 ///y validar que cumpla con los requerimientos mínimos.
 class RegisterFormProvider extends ChangeNotifier {
@@ -15,7 +14,7 @@ class RegisterFormProvider extends ChangeNotifier {
   String password = '';
   String confirmPassword = '';
 
-  ///Valida si el formulario cumple con las condiciones mínimas para registar al ususario.
+  ///Valida si el formulario cumple con las condiciones mínimas para registar al usuario.
   bool validateForm(bool validated) {
     if (formKey.currentState!.validate() &&
         validated == true &&
