@@ -6,7 +6,6 @@ import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 //import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
@@ -18,8 +17,6 @@ class ShipmentDetailScreen extends StatelessWidget {
   final bool hasError;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Builder(builder: (context) {
       Future.delayed(Duration.zero, () {
         if (hasError) {
@@ -113,7 +110,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.fromLTRB(0, 75, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
                             child: SizedBox(
                               height: 155,
                               child: FAProgressBar(

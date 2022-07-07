@@ -26,6 +26,7 @@ class CustomAppBarBackArrow extends StatelessWidget
       iconTheme: IconThemeData(color: ColorStyle.mainGrey),
       backgroundColor: Colors.transparent,
       elevation: 0,
+
       leading: IconButton(
         onPressed: navigatorOnPressed,
         icon: const Icon(Icons.arrow_back),

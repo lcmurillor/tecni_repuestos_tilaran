@@ -14,8 +14,6 @@ class MyPackegesScreen extends StatelessWidget {
   final bool hasError;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Builder(builder: (context) {
       Future.delayed(Duration.zero, () {
         if (hasError) {
