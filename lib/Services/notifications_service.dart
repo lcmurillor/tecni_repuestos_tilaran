@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
+///Esta clase permite gestionar de manera controlada los diferentes tipos de cuadros de dialogo que son
+///usados por la aplicación para dar información o advertir al usuario.
 class NotificationsService {
   static GlobalKey<ScaffoldMessengerState> messengerKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -70,6 +72,7 @@ class NotificationsService {
         });
   }
 
+  ///Esta lista corresponde a los dos botones que se encuentran en la parte inferior del cuadro de dialogo.
   static List<Widget> actions(
       BuildContext context, void Function()? onPressed) {
     return [
@@ -82,7 +85,10 @@ class NotificationsService {
                 overlayColor:
                     MaterialStateProperty.all<Color>(Colors.transparent)),
             onPressed: onPressed,
-            child: const Text('Aceptar')),
+            child: Text(
+              'Aceptar',
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            )),
       ),
       Padding(
         padding: const EdgeInsets.only(right: 20),
@@ -95,7 +101,7 @@ class NotificationsService {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancelar',
-              style: TextStyle(color: ColorStyle.mainRed),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
             )),
       ),
     ];

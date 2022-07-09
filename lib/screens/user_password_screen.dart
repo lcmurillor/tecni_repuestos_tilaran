@@ -5,8 +5,10 @@ import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
-class PasswordChangeScreen extends StatelessWidget {
-  const PasswordChangeScreen({Key? key}) : super(key: key);
+class UserPasswordScreen extends StatelessWidget {
+  ///Corresponde a la pantalla en la cual el usuario puede cambiar su contraseña, escibiendo
+  ///primeramente su contraseña actual y luego su nueva contraseña dos veces para comprobar que coincida.
+  const UserPasswordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +20,20 @@ class PasswordChangeScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              const SizedBox(height: 200),
-              CardContainer(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Text('Cambiar contraseña',
-                        style: CustomTextStyle.robotoExtraBold
-                            .copyWith(fontSize: 28)),
-                    const SizedBox(height: 20),
-                    const _UpdatePasswordForm(),
-                  ],
+              const SizedBox(height: 170),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Text('Cambiar contraseña',
+                          style: CustomTextStyle.robotoExtraBold
+                              .copyWith(fontSize: 28)),
+                      const SizedBox(height: 20),
+                      const _UpdatePasswordForm(),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 45)
@@ -39,6 +44,9 @@ class PasswordChangeScreen extends StatelessWidget {
 }
 
 class _UpdatePasswordForm extends StatelessWidget {
+  ///Éste widget es el formulario el cual permite al usuario registrarse ingresar los datos para cambiar
+  ///su contraseña, envía la información a los correspondientes métodos para validar los datos ingresados,
+  ///tanto la contraseña actual como la igualdad entre las nuevas contraseñas.
   const _UpdatePasswordForm({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {

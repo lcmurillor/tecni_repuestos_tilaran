@@ -7,12 +7,18 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
+  ///Corresponde a la pantalla en la cual el usuario inicia sesión para poder hacer uso de las
+  ///diferentes funciones disponibles para los usuarios registrados (Estas funciones cambian según
+  ///el rango del usuario). si el usuario no tiene una cuente puede dirigirse a la pantalla para
+  ///crear una y si a olvidado su contraseña, puede solicitar una recuperación.
   const LoginScreen({Key? key, this.hasError = false}) : super(key: key);
   final bool hasError;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+    ///Este metodo es ultilizado para precargar la sesión del usuario si las credenciales de registro
+    ///se encuentran en el dispositivo, si esto no ejecuta correcatamente, muestra un mensaje de error.
     return ChangeNotifierProvider(
         create: (_) => LoginFormProvider(),
         child: Builder(builder: (context) {
@@ -29,18 +35,21 @@ class LoginScreen extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    const SizedBox(height: 180),
-                    CardContainer(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          // ,
-                          Text('Iniciar Sesión',
-                              style: CustomTextStyle.robotoSemiBold
-                                  .copyWith(fontSize: size.width * 0.11)),
-                          const SizedBox(height: 30),
-                          _LoginForm()
-                        ],
+                    const SizedBox(height: 170),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            // ,
+                            Text('Iniciar Sesión',
+                                style: CustomTextStyle.robotoSemiBold
+                                    .copyWith(fontSize: size.width * 0.11)),
+                            const SizedBox(height: 30),
+                            _LoginForm()
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 15),

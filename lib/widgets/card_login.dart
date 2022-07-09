@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tecni_repuestos/theme/app_theme.dart';
+import 'package:tecni_repuestos/theme/main_theme.dart';
 
 class CardLogin extends StatelessWidget {
   const CardLogin({Key? key}) : super(key: key);

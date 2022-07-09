@@ -46,7 +46,7 @@ class MyPackegesScreen extends StatelessWidget {
                             decoration: inputDecoration()))),
                 GestureDetector(
                   onTap: () => Navigator.pushNamed(context, 'shipment'),
-                  child: CardContainer(
+                  child: Card(
                     child: Column(
                       children: [
                         moldeRowInfo(

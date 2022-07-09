@@ -37,7 +37,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                 const SizedBox(height: 110),
                 GestureDetector(
                   onTap: () => Navigator.pushNamed(context, 'shipment'),
-                  child: CardContainer(
+                  child: Card(
                     child: Column(
                       children: [
                         Text('Detalles del envío',

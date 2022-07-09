@@ -69,7 +69,7 @@ class MyCartScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      CardContainer(
+                      Card(
                         child: Row(children: [
                           const Icon(
                             Icons.map_sharp,
@@ -123,8 +123,8 @@ class MyCartScreen extends StatelessWidget {
     );
   }
 
-  CardContainer cardMyCart() {
-    return CardContainer(
+  Card cardMyCart() {
+    return Card(
       child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Expanded(
           child: Column(

@@ -61,15 +61,16 @@ class TecniRepuestoTilaran extends StatelessWidget {
             }
           },
         ),
+        //TODO: Revisar la sintaxis de la navegacion una vez corregido el nombre de las rutas.
         routes: {
           'aboutUs': (_) => const AboutUsScreen(),
-          'addresses': (_) => const AddressesManagerScreen(),
-          'editInformation': (_) => const EditInformationScreen(),
+          'addresses': (_) => const UserAddressesScreen(),
+          'editInformation': (_) => const UserInformationScreen(),
           'home': (_) => const HomeScreen(),
           'login': (_) => const LoginScreen(),
-          'passwordChange': (_) => const PasswordChangeScreen(),
+          'passwordChange': (_) => const UserPasswordScreen(),
           'passwordRequest': (_) => const PasswordRequestScreen(),
-          'changePassword': (_) => const PasswordChangeScreen(),
+          'changePassword': (_) => const UserPasswordScreen(),
           'myPackeges': (_) => const MyPackegesScreen(),
           'shipment': (_) => const ShipmentDetailScreen(),
           'register': (_) => const RegisterScreen(),

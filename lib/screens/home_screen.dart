@@ -9,40 +9,43 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      drawer: const CustomDrawer(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: const CustomAppBar(),
+        drawer: const CustomDrawer(),
 
-      ///Construción de la lista de articulos para la pantalla principal.
-      body: StreamBuilder(
-        ///Hace un llamado a la base de datos y resive una lista de productos.
-        stream: FirebaseCloudService.getHomeProducts(),
+        ///Construción de la lista de articulos para la pantalla principal.
+        body: StreamBuilder(
+          ///Hace un llamado a la base de datos y resive una lista de productos.
+          stream: FirebaseCloudService.getHomeProducts(),
 
-        ///Construye los objetos en base a lo resivido en la base de datos.
-        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-          if (snapshot.hasError) {
-            return NotificationsService.showErrorSnackbar(
-                'Ha ocurrido un error a la hora de cargar los datos.');
-          }
+          ///Construye los objetos en base a lo resivido en la base de datos.
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+            if (snapshot.hasError) {
+              return NotificationsService.showErrorSnackbar(
+                  'Ha ocurrido un error a la hora de cargar los datos.');
+            }
 
-          if (!snapshot.hasData) {
-            return const CustomProgressIndicator();
-          }
+            if (!snapshot.hasData) {
+              return const CustomProgressIndicator();
+            }
 
-          final data = snapshot.data!;
+            final data = snapshot.data!;
 
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              return ItemCard(
-                  title: data[index].description,
-                  quantity: data[index].quantity,
-                  total: data[index].total,
-                  img: data[index].img);
-            },
-          );
-        },
+            return ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return ItemCard(
+                    title: data[index].description,
+                    quantity: data[index].quantity,
+                    total: data[index].total,
+                    img: data[index].img);
+              },
+            );
+          },
+        ),
       ),
     );
   }

@@ -10,9 +10,9 @@ import 'package:tecni_repuestos/widgets/widgets.dart';
 ///asociados a la dirreción de factuación o "userAddress", y la oportunidad de alterar
 ///los valores de una dirreción en particular. Se puede editar o añadir una dirrecion.
 ///Para ambos casos se reutiliza el formulario y sus respetivas validaciones.
-class ModalAddress {
-  ///Permite editar una dirreción de factuaración.
-  static displayEditAddressDialog(BuildContext context, Address address) {
+class DialogAddress {
+  ///Permite editar o añadir una dirrección de factuaración.
+  static displayAddressDialog(BuildContext context, Address? address) {
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -31,33 +31,6 @@ class ModalAddress {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [AddressForm(address: address)],
-              ),
-            ),
-            //actions: _actions(context, onPressed)
-          );
-        });
-  }
-
-  ///Permite crear una dirreción de factuaración.
-  static displayAddAddressDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) {
-          return AlertDialog(
-            elevation: 10,
-            title: Text(
-              'Editar una dirección de facturación',
-              style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 30),
-              textAlign: TextAlign.center,
-            ),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            content: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [AddressForm()],
               ),
             ),
             //actions: _actions(context, onPressed)

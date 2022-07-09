@@ -6,8 +6,11 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
-class EditInformationScreen extends StatelessWidget {
-  const EditInformationScreen({Key? key}) : super(key: key);
+class UserInformationScreen extends StatelessWidget {
+  ///Ésta pantalla corresponde al apartado donde el usuario puede editar su información.
+  ///Se muestra un formulario el cual esta previamente cargado con la información del usuario registrado
+  ///en este, el usuario puede editar lo que necesite.
+  const UserInformationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +23,19 @@ class EditInformationScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 200),
-              CardContainer(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Text('Editar mi información',
-                        style: CustomTextStyle.robotoSemiBold
-                            .copyWith(fontSize: 30)),
-                    const SizedBox(height: 15),
-                    _EditInfoForm(),
-                  ],
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Text('Editar mi información',
+                          style: CustomTextStyle.robotoSemiBold
+                              .copyWith(fontSize: 30)),
+                      const SizedBox(height: 15),
+                      _EditInfoForm(),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 45)
@@ -39,6 +45,8 @@ class EditInformationScreen extends StatelessWidget {
   }
 }
 
+///Formulario el cual se carga con la información del usuario registrado en la aplicación y en donde este
+///puede editar sus datos personales.
 class _EditInfoForm extends StatelessWidget {
   _EditInfoForm({Key? key}) : super(key: key);
   final _dataController = TextEditingController();
@@ -173,8 +181,8 @@ class _EditInfoForm extends StatelessWidget {
   }
 }
 
-///Evalua si el formulario cumple con las codiciones mínimas para ser aceptado, además
-///que se cumplan con las validaciónes de los datos en la base de datos. Para los campos
+///Evalua si el formulario cumple con las condiciones mínimas para ser aceptado, además
+///de que se cumplan con las validaciónes de los datos en la base de datos. Para los campos
 ///que no sean alterados por el usuario, asigna nuevamente los valores ya definidos y navega
 ///a la pantalla anterior.
 void _onFormSubmit(

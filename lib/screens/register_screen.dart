@@ -9,6 +9,9 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class RegisterScreen extends StatelessWidget {
+  ///En esta pantalla un usuario nuevo puede registrarese en la aplicación ingresando su información
+  ///personal básica. Estos datos son requeridos para faciliar porcesos de facturación y compras a
+  ///niveles administrativos.
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
@@ -23,17 +26,20 @@ class RegisterScreen extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    const SizedBox(height: 90),
-                    CardContainer(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          Text('Regístrate',
-                              style: CustomTextStyle.robotoSemiBold
-                                  .copyWith(fontSize: 45)),
-                          const SizedBox(height: 15),
-                          _RegisterForm()
-                        ],
+                    const SizedBox(height: 40),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            Text('Regístrate',
+                                style: CustomTextStyle.robotoSemiBold
+                                    .copyWith(fontSize: 45)),
+                            const SizedBox(height: 15),
+                            _RegisterForm()
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -51,6 +57,10 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
+///En este widget se crea el formulario con el cual se evaluan las condiciones de los datos ingresados
+///a la hora de crear un nuevo usuario, cada entrada tiene un formato esperado. si se cumple el formato
+///se envía todos los datos del formulario cargado a una función la cual registra el usuario y
+///guarda los datos en la base de datos.
 class _RegisterForm extends StatefulWidget {
   @override
   State<_RegisterForm> createState() => _RegisterFormState();
@@ -228,6 +238,9 @@ class _RegisterFormState extends State<_RegisterForm> {
   }
 }
 
+///Evalua que el formualrio cumpla con las condiciones mínimas, si es así, se registra un usuario en la base
+///de datos de Firebase, seguidamente se guardan estos datos en la base de datos y se asocian los datos de
+///autentificación.
 void _onFormSubmit(
     RegisterFormProvider registerFormProvider, context, bool isActived) {
   final isValid = registerFormProvider.validateForm(isActived);
@@ -244,6 +257,8 @@ void _onFormSubmit(
   }
 }
 
+///En este aprtado podemos agregar un enlace directo a una página con los términos y condiciones
+///para los usuarios de la aplicación.
 void _launchURL() async {
   const url = 'https://es.lipsum.com/';
   if (await canLaunchUrlString(url)) {
