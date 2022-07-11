@@ -44,7 +44,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           navigatorOnPressed: () => Navigator.pushNamed(context, 'home'),
         ),
         body: StreamBuilder(
-          stream: FirebaseCloudService.getUserByUid(
+          stream: FirebaseFirestoreService.getUserByUid(
               FirebaseAuthService.auth.currentUser!.uid),
           builder:
               //TODO: ver si podemos cambiar esto de una lista de usuarios a un único usuario

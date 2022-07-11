@@ -27,7 +27,7 @@ class ProductsSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseCloudService.getfilteredProducts(
+      stream: FirebaseFirestoreService.getfilteredProducts(
           (hasData) ? 'accesorios' : 'repuesto', query),
       builder: (_, AsyncSnapshot<List<Product>> snapshot) {
         if (!snapshot.hasData) {
@@ -63,7 +63,7 @@ class ProductsSearchDelegate extends SearchDelegate {
       return _emptyContainer();
     }
     return StreamBuilder(
-      stream: FirebaseCloudService.getfilteredProducts(
+      stream: FirebaseFirestoreService.getfilteredProducts(
           (hasData) ? 'accesorios' : 'repuesto', query),
       builder: (_, AsyncSnapshot<List<Product>> snapshot) {
         if (!snapshot.hasData) {

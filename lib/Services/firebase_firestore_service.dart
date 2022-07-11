@@ -1,11 +1,11 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tecni_repuestos/models/models.dart';
 
 ///Ésta clase corresponde a la conexión a la base datos Firebase y su respectivo
 ///traslado de datos a los modelos correspondientes.
-class FirebaseCloudService {
+///Este servicio fue actualizado el 9-7-2022 para implementar la conexión a Realtime.
+class FirebaseFirestoreService {
+  //Referencia global de la conexión de la base de datos.
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde

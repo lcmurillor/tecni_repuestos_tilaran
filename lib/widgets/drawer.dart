@@ -31,7 +31,7 @@ class CustomDrawer extends StatelessWidget {
               'Repuestos',
               Icons.settings,
               CategoryScreen(
-                  stream: FirebaseCloudService.getSparesCategory(),
+                  stream: FirebaseFirestoreService.getSparesCategory(),
                   title: 'Repuestos',
                   icon: Icons.settings),
               context),
@@ -39,7 +39,7 @@ class CustomDrawer extends StatelessWidget {
               'Accesorios',
               Icons.sports_motorsports,
               CategoryScreen(
-                  stream: FirebaseCloudService.getAccessoriesCategory(),
+                  stream: FirebaseFirestoreService.getAccessoriesCategory(),
                   title: 'Accesorios',
                   icon: Icons.sports_motorsports),
               context),
@@ -60,7 +60,7 @@ class CustomDrawer extends StatelessWidget {
           ///dispone de la opción de cerrar la sesión.
           if (FirebaseAuthService.auth.currentUser != null) ...{
             StreamBuilder(
-              stream: FirebaseCloudService.getUserByUid(
+              stream: FirebaseFirestoreService.getUserByUid(
                   FirebaseAuthService.auth.currentUser!.uid),
               builder: (BuildContext context,
                   AsyncSnapshot<List<UserModel>> snapshot) {

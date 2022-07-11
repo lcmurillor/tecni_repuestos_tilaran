@@ -59,7 +59,7 @@ class _EditInfoForm extends StatelessWidget {
         final editInfoFormProvider =
             Provider.of<EditInfoFormProvider>(context, listen: false);
         return StreamBuilder(
-          stream: FirebaseCloudService.getUserByUid(
+          stream: FirebaseFirestoreService.getUserByUid(
               FirebaseAuthService.auth.currentUser!.uid),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
@@ -209,7 +209,7 @@ void _onFormSubmit(
           'No se cumple con las condiciones mínimas para actualizar la información.');
     }
   }).then((value) {
-    FirebaseCloudService.updateUser(user);
+    FirebaseFirestoreService.updateUser(user);
     Navigator.pop(context);
   });
 }

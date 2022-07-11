@@ -138,7 +138,7 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
           id: 'undefined',
           province: addressFormProvider.province,
           userId: FirebaseAuthService.auth.currentUser!.uid);
-      FirebaseCloudService.setAddress(_address);
+      FirebaseFirestoreService.setAddress(_address);
       Navigator.pop(context);
     } else {
       NotificationsService.showErrorSnackbar(
@@ -166,7 +166,7 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
             'No se cumple con las condiciones mínimas para actualizar la información.');
       }
     }).then((value) {
-      FirebaseCloudService.updateAddress(address!);
+      FirebaseFirestoreService.updateAddress(address!);
       Navigator.pop(context);
     });
   }

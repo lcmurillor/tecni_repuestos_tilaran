@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
         ///Construción de la lista de articulos para la pantalla principal.
         body: StreamBuilder(
           ///Hace un llamado a la base de datos y resive una lista de productos.
-          stream: FirebaseCloudService.getHomeProducts(),
+          stream: FirebaseFirestoreService.getHomeProducts(),
 
           ///Construye los objetos en base a lo resivido en la base de datos.
           builder:

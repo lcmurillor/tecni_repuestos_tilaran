@@ -104,8 +104,8 @@ class _PasswordForm extends StatelessWidget {
 ///si éste está registrado.
 void _onFormSubmit(RequestPasswordFormProvider requestPasswordFormProvider,
     BuildContext context) {
-  FirebaseCloudService.getUserByEmail(requestPasswordFormProvider.email).then(
-      (UserModel? user) =>
+  FirebaseFirestoreService.getUserByEmail(requestPasswordFormProvider.email)
+      .then((UserModel? user) =>
           _validateData(user, requestPasswordFormProvider, context));
 }
 
