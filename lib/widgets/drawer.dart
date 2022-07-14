@@ -5,7 +5,6 @@ import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
-import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class CustomDrawer extends StatelessWidget {
   ///Éste widget corresponde al menú lateral desplegable que permite la navegación
@@ -63,7 +62,7 @@ class CustomDrawer extends StatelessWidget {
           if (FirebaseAuthService.auth.currentUser != null) ...{
             FutureBuilder(
               future: FirebaseRealtimeService.getUserByUid(
-                  FirebaseAuthService.auth.currentUser!.uid),
+                  uid: FirebaseAuthService.auth.currentUser!.uid),
               builder:
                   (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
                 if (snapshot.hasError) {
@@ -72,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
                 }
 
                 if (!snapshot.hasData) {
-                  return const CustomProgressIndicator();
+                  return Container();
                 }
 
                 final user = snapshot.data!;

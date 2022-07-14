@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
+import 'package:animate_do/animate_do.dart';
 
 class HomeScreen extends StatelessWidget {
   ///Corresponde a la pantalla principal donde se pueden ver varios articulos de la tienda
@@ -28,11 +29,9 @@ class HomeScreen extends StatelessWidget {
                 }
                 final product =
                     Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
-                return ItemCard(
-                    title: product.description,
-                    total: product.price,
-                    img: product.imageUrl,
-                    quantity: product.quantity);
+                return FadeInRight(
+                  child: ItemCard(product: product),
+                );
               },
             )));
   }

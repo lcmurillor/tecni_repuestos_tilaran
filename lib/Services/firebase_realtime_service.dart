@@ -26,13 +26,42 @@ class FirebaseRealtimeService {
           .startAt(fistValue)
           .endAt(lastValue);
     }
-    return _db.ref().child('products').limitToLast(30);
+    return _db.ref().child('products').limitToLast(5);
+  }
+
+  ///Asigna a un objeto de tipo Product en la base de datos la dirección Url por la cual este
+  ///objeto puede optener su imagen.
+  static setProducImg({required String productId, required String url}) async {
+    _db.ref().child('products/$productId').update({"imageUrl": url});
+  }
+
+  ///Permite igualar el valor del id de de un producto en la base de datos con su valor
+  ///autogenerado, con el fin de mitigar errores y problemas a la hora de hacr consultas
+  ///mediante estosdatos.
+  static matchProductId() async {
+    DataSnapshot dataSnapshot = await _db.ref().child('products').get();
+    Map<String, dynamic> data = jsonDecode(jsonEncode(dataSnapshot.value));
+    data.forEach((key, value) {
+      if (value['id'] != key) {
+        _db.ref().child('products/$key').update({'id': key});
+      }
+    });
+  }
+
+  ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
+  ///la base de datos mediante la libreria de firebase
+  static Query getFilteredProducts(String description) {
+    return _db
+        .ref()
+        .child('products')
+        .orderByChild('category')
+        .startAt(description);
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Future<UserModel> getUserByUid(String uid) async {
+  static Future<UserModel> getUserByUid({required String uid}) async {
     late UserModel user;
     final Query query =
         _db.ref().child('users').orderByChild('id').equalTo(uid);
@@ -48,7 +77,7 @@ class FirebaseRealtimeService {
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Future<UserModel> getUserByEmail(String email) async {
+  static Future<UserModel> getUserByEmail({required String email}) async {
     late UserModel user;
     final Query query =
         _db.ref().child('users').orderByChild('email').equalTo(email);

@@ -11,13 +11,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Preferences.init();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-          create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode))
-    ],
-    child: const TecniRepuestoTilaran(),
-  ));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+        create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode))
+  ], child: const TecniRepuestoTilaran()));
 }
 
 class TecniRepuestoTilaran extends StatelessWidget {
@@ -47,21 +44,19 @@ class TecniRepuestoTilaran extends StatelessWidget {
         ///cargando, si a ocurrido un error, si hay un usario registrado o ninguna de las anteriores.
         ///Según el caso, ejecutará una acción u otra.
         home: StreamBuilder(
-          stream: FirebaseAuthService.auth.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CustomProgressIndicator();
-            } else if (snapshot.hasError) {
-              ///Hace un llamado al "LoginScreen" pero debe indicar el error que ha occurrido.
-              return const LoginScreen(hasError: true);
-            } else if (snapshot.hasData) {
-              return const HomeScreen();
-            } else {
-              return const HomeScreen();
-            }
-          },
-        ),
-        //TODO: Revisar la sintaxis de la navegacion una vez corregido el nombre de las rutas.
+            stream: FirebaseAuthService.auth.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CustomProgressIndicator();
+              } else if (snapshot.hasError) {
+                ///Hace un llamado al "LoginScreen" pero debe indicar el error que ha occurrido.
+                return const LoginScreen(hasError: true);
+              } else if (snapshot.hasData) {
+                return const HomeScreen();
+              } else {
+                return const HomeScreen();
+              }
+            }),
         routes: {
           'aboutUs': (_) => const AboutUsScreen(),
           'addresses': (_) => const UserAddressesScreen(),
@@ -74,7 +69,7 @@ class TecniRepuestoTilaran extends StatelessWidget {
           'myPackeges': (_) => const MyPackegesScreen(),
           'shipment': (_) => const ShipmentDetailScreen(),
           'register': (_) => const RegisterScreen(),
-          'mycart': (_) => const MyCartScreen(),
+          'mycart': (_) => const MyCartScreen()
         });
   }
 }
