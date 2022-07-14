@@ -73,24 +73,33 @@ class ItemCard extends StatelessWidget {
   ///Éste método construye la imagen dentro del card de productos con todos los
   ///aspectos decorativos.
   GestureDetector productImage(Size size) {
-    ///Este contendor disponde de un tamaño fijo para la imagen según el tamaño
-    ///del disposito además esta parte del código contiene todos los elementos
-    ///decorativos.
+    ///Al precionar por sobre ina imagen, ya sea vacía o una imagen de producto.
+    ///permite abrir la galería y seleccionar una imagen para el respectivo producto.
+    ///Evaúa que solo los administradores pedan cambiar la imagen.
     return GestureDetector(
-      //TODO evaluar que solo los administradores puedan actualizar imagenes.
       onTap: () async {
-        final result = await FilePicker.platform.pickFiles(
-            allowMultiple: false,
-            type: FileType.custom,
-            allowedExtensions: ['png', 'jpg']);
-        if (result == null) {
-          //Mensaje
+        if (FirebaseAuthService.auth.currentUser != null) {
+          UserModel user = await FirebaseRealtimeService.getUserByUid(
+              uid: FirebaseAuthService.auth.currentUser!.uid);
+          if (user.administrator) {}
+          final result = await FilePicker.platform.pickFiles(
+              allowMultiple: false,
+              type: FileType.custom,
+              allowedExtensions: ['png', 'jpg']);
+          if (result == null) {
+            NotificationsService.showSnackbar(
+                'No ha selecionado ninguna imagen.');
+          } else {
+            final path = result.files.single.path;
+            final name = product.id;
+            FirebaseStorageService.uploadFile(path!, name);
+          }
         }
-        final path = result?.files.single.path;
-        final name = product.id;
-
-        FirebaseStorageService.uploadFile(path!, name);
       },
+
+      ///Este contendor disponde de un tamaño fijo para la imagen según el tamaño
+      ///del disposito además esta parte del código contiene todos los elementos
+      ///decorativos.
       child: Container(
           width: double.infinity,
           height: size.height * 0.30,
