@@ -12,8 +12,8 @@ class FirebaseFirestoreService {
   ///la base de datos mediante la libreria de firebase.
   static Stream<List<Product>> getHomeProducts() {
     final ref = _db.collection('accesorios');
-    return ref.snapshots().map((list) =>
-        list.docs.map((doc) => Product.fromFirebase(doc.data())).toList());
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Product.fromMap(doc.data())).toList());
   }
 
   ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
@@ -44,27 +44,27 @@ class FirebaseFirestoreService {
       String collection, String category) {
     final ref =
         _db.collection(collection).where('category', isEqualTo: category);
-    return ref.snapshots().map((list) =>
-        list.docs.map((doc) => Product.fromFirebase(doc.data())).toList());
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Product.fromMap(doc.data())).toList());
   }
 
-  ///Éste método seleciona un usuario de la base de datos Firebase por medio del UID
+  ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
   static Stream<List<UserModel>> getUserByUid(String uid) {
     final ref = _db.collection('users').where('id', isEqualTo: uid);
     return ref.snapshots().map((list) =>
-        list.docs.map((doc) => UserModel.fromFirebase(doc.data())).toList());
+        list.docs.map((doc) => UserModel.fromMap(doc.data())).toList());
   }
 
-  ///Éste método seleciona un usuario de la base de datos Firebase por medio del correo
+  ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
   static Future<UserModel?> getUserByEmail(String email) {
     return _db.collection('users').where('email', isEqualTo: email).get().then(
         (snapshot) => 0 == snapshot.size
             ? null
-            : UserModel.fromFirebase(snapshot.docs[0].data()));
+            : UserModel.fromMap(snapshot.docs[0].data()));
   }
 
   ///Éste método permite crear un nuevo usuario en la base de datos. Es solo requerido cuando

@@ -3,7 +3,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
+import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
+import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class CustomDrawer extends StatelessWidget {
   ///Éste widget corresponde al menú lateral desplegable que permite la navegación
@@ -56,31 +58,31 @@ class CustomDrawer extends StatelessWidget {
           },
 
           ///Segunda condición para evaluar el estado de usuario. Si existe la instancia
-          ///de un usario en la aplicación evaluará el rango de este usuario y ahora
+          ///de un usuario en la aplicación, evaluará el rango de este usuario y ahora
           ///dispone de la opción de cerrar la sesión.
           if (FirebaseAuthService.auth.currentUser != null) ...{
-            StreamBuilder(
-              stream: FirebaseFirestoreService.getUserByUid(
+            FutureBuilder(
+              future: FirebaseRealtimeService.getUserByUid(
                   FirebaseAuthService.auth.currentUser!.uid),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<UserModel>> snapshot) {
+              builder:
+                  (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
                 if (snapshot.hasError) {
-                  NotificationsService.showErrorSnackbar(
-                      'Ha ocurrido un error con la carga de los datos.');
+                  return NotificationsService.showErrorSnackbar(
+                      'Ha ocurrido un error a la hora de cargar los datos.');
                 }
 
                 if (!snapshot.hasData) {
-                  return const SizedBox();
+                  return const CustomProgressIndicator();
                 }
 
-                final data = snapshot.data!;
+                final user = snapshot.data!;
 
-                ///Última condición para evaluar el estado de usuario. Si existe la instancia
-                ///de un usario en la aplicación evaluará el rango de este usuario, si el usuario
+                ///Última condición para evaluar el rango de usuario. Si existe la instancia
+                ///de un usuario en la aplicación evaluará el rango de este usuario, si el usuario
                 ///es administrador o vendedor, dispondrá de mas o menos opciones administrativas
-                ///respetivamnete.
+                ///respectivamente.
                 return Column(children: [
-                  if (data[0].administrator) ...[
+                  if (user.administrator) ...[
                     _moldelListTile(
                         'Administrar pedidos',
                         MdiIcons.archiveCog,
@@ -91,7 +93,7 @@ class CustomDrawer extends StatelessWidget {
                         MdiIcons.accountCog,
                         const PlaceholderScreen(text: 'Adminitrar usuarios'),
                         context)
-                  ] else if (data[0].vendor) ...[
+                  ] else if (user.vendor) ...[
                     _moldelListTile(
                         'Administrar pedidos',
                         MdiIcons.archiveCog,
@@ -110,6 +112,7 @@ class CustomDrawer extends StatelessWidget {
               },
             ),
           },
+
           _moldelListTile(
               'Acerca de', Icons.info, const AboutUsScreen(), context),
         ],

@@ -245,12 +245,16 @@ void _onFormSubmit(
     RegisterFormProvider registerFormProvider, context, bool isActived) {
   final isValid = registerFormProvider.validateForm(isActived);
   UserModel user = UserModel(
-      birthdate: registerFormProvider.birthdate,
-      email: registerFormProvider.email,
-      id: 'undefied',
-      lastname: registerFormProvider.lastname,
-      name: registerFormProvider.name,
-      phone: registerFormProvider.phone);
+    birthdate: registerFormProvider.birthdate,
+    email: registerFormProvider.email,
+    id: 'undefied',
+    identification: 'undefied',
+    identificationType: 'undefied',
+    lastname: registerFormProvider.lastname,
+    name: registerFormProvider.name,
+    phone: registerFormProvider.phone,
+    profileImg: 'undefied',
+  );
   if (isValid) {
     FirebaseAuthService.logIn(registerFormProvider.email,
         registerFormProvider.password, user, context);

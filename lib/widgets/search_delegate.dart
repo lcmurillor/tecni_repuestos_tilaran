@@ -27,8 +27,8 @@ class ProductsSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestoreService.getfilteredProducts(
-          (hasData) ? 'accesorios' : 'repuesto', query),
+      // stream: FirebaseFirestoreService.getfilteredProducts(
+      //     (hasData) ? 'accesorios' : 'repuesto', query),
       builder: (_, AsyncSnapshot<List<Product>> snapshot) {
         if (!snapshot.hasData) {
           hasData = !hasData;
@@ -63,8 +63,8 @@ class ProductsSearchDelegate extends SearchDelegate {
       return _emptyContainer();
     }
     return StreamBuilder(
-      stream: FirebaseFirestoreService.getfilteredProducts(
-          (hasData) ? 'accesorios' : 'repuesto', query),
+      // stream: FirebaseFirestoreService.getfilteredProducts(
+      //     (hasData) ? 'accesorios' : 'repuesto', query),
       builder: (_, AsyncSnapshot<List<Product>> snapshot) {
         if (!snapshot.hasData) {
           hasData = !hasData;
@@ -92,10 +92,10 @@ class _PrductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: product.img.startsWith('http')
+      leading: product.imageUrl.startsWith('http')
           ? FadeInImage(
               placeholder: const AssetImage('assets/placeholder-image.png'),
-              image: NetworkImage(product.img),
+              image: NetworkImage(product.imageUrl),
               placeholderFit: BoxFit.cover,
               fit: BoxFit.cover,
               width: 50,

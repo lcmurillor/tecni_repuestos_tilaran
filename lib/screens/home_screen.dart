@@ -1,3 +1,4 @@
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
@@ -10,43 +11,29 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: const CustomAppBar(),
-        drawer: const CustomDrawer(),
+        child: Scaffold(
+            appBar: const CustomAppBar(),
+            drawer: const CustomDrawer(),
 
-        ///Construción de la lista de articulos para la pantalla principal.
-        body: StreamBuilder(
-          ///Hace un llamado a la base de datos y resive una lista de productos.
-          stream: FirebaseFirestoreService.getHomeProducts(),
-
-          ///Construye los objetos en base a lo resivido en la base de datos.
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-            if (snapshot.hasError) {
-              return NotificationsService.showErrorSnackbar(
-                  'Ha ocurrido un error a la hora de cargar los datos.');
-            }
-
-            if (!snapshot.hasData) {
-              return const CustomProgressIndicator();
-            }
-
-            final data = snapshot.data!;
-
-            return ListView.builder(
+            ///Construción de la lista de articulos para la pantalla principal.
+            body: FirebaseAnimatedList(
+              ///Resive la consulta de la base de datos.
+              query: FirebaseRealtimeService.getHomeProducts(),
+              defaultChild: const CustomProgressIndicator(),
               physics: const BouncingScrollPhysics(),
-              itemCount: data.length,
-              itemBuilder: (context, index) {
+              itemBuilder: (context, snapshot, animation, index) {
+                if (!snapshot.exists) {
+                  return NotificationsService.showErrorSnackbar(
+                      'Ha ocurrido un error a la hora de cargar los datos.');
+                }
+                final product =
+                    Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
                 return ItemCard(
-                    title: data[index].description,
-                    quantity: data[index].quantity,
-                    total: data[index].total,
-                    img: data[index].img);
+                    title: product.description,
+                    total: product.price,
+                    img: product.imageUrl,
+                    quantity: product.quantity);
               },
-            );
-          },
-        ),
-      ),
-    );
+            )));
   }
 }

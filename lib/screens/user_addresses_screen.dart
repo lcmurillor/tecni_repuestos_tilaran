@@ -28,8 +28,8 @@ class UserAddressesScreen extends StatelessWidget {
               children: [
                 ///Conexión a la base de datos para crear la lista de dirreciones.
                 StreamBuilder(
-                  stream: FirebaseFirestoreService.getAddressesByUser(
-                      FirebaseAuthService.auth.currentUser!.uid),
+                  // stream: FirebaseFirestoreService.getAddressesByUser(
+                  //     FirebaseAuthService.auth.currentUser!.uid),
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Address>> snapshot) {
                     if (snapshot.hasError) {
