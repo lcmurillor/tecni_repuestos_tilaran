@@ -96,9 +96,7 @@ class MyCartScreen extends StatelessWidget {
                           height: 10,
                         ),
                         PrimaryButton(
-                          onPressed: () {
-                            //TODO: Agregar las funciones de pago.
-                          },
+                          onPressed: () {},
                           text: "Pagar",
                         )
                       ],
@@ -111,35 +109,36 @@ class MyCartScreen extends StatelessWidget {
     );
   }
 
-  Column _invoiceTotalInfo() {
-    return Column(
-      children: [
-        const SizedBox(height: 20),
-        moldeRowInfo(
-          const EdgeInsets.fromLTRB(110, 0, 0, 0),
-          'Subtotal: ',
-          CustomTextStyle.robotoExtraBold,
-          CustomTextStyle.robotoMedium.copyWith(color: ColorStyle.mainGrey),
-          'C85.500.00',
-        ),
-        moldeRowInfo(
-          const EdgeInsets.fromLTRB(110, 0, 0, 0),
-          'IVA: ',
-          CustomTextStyle.robotoExtraBold,
-          CustomTextStyle.robotoMedium.copyWith(color: ColorStyle.mainGrey),
-          '13.500.00',
-        ),
-        moldeRowInfo(
-          const EdgeInsets.fromLTRB(108, 0, 0, 0),
-          'Total: ',
-          CustomTextStyle.robotoExtraBold,
-          CustomTextStyle.robotoExtraBold.copyWith(color: ColorStyle.mainBlue),
-          'C99.000.00',
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-      ],
+  Container _invoiceTotalInfo() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          moldeRowInfo(
+            'Subtotal: ',
+            CustomTextStyle.robotoExtraBold,
+            CustomTextStyle.robotoMedium.copyWith(color: ColorStyle.mainGrey),
+            'C85.500.00',
+          ),
+          moldeRowInfo(
+            'IVA: ',
+            CustomTextStyle.robotoExtraBold,
+            CustomTextStyle.robotoMedium.copyWith(color: ColorStyle.mainGrey),
+            '13.500.00',
+          ),
+          moldeRowInfo(
+            'Total: ',
+            CustomTextStyle.robotoExtraBold,
+            CustomTextStyle.robotoExtraBold
+                .copyWith(color: ColorStyle.mainBlue),
+            'C99.000.00',
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+        ],
+      ),
     );
   }
 
@@ -151,19 +150,16 @@ class MyCartScreen extends StatelessWidget {
             //TODO: Se desborda si el nombre del articulo es muy largo, porfa revisar cual puede ser el error
             children: [
               moldeRowInfo(
-                  const EdgeInsets.fromLTRB(0, 0, 0, 0),
                   'Titulo del artículo publicado ',
                   CustomTextStyle.robotoSemiBold,
                   CustomTextStyle.robotoSemiBold),
               moldeRowInfo(
-                const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 'Cantidad: ',
                 CustomTextStyle.robotoSemiBold,
                 CustomTextStyle.robotoMedium.copyWith(color: Colors.black38),
                 '3',
               ),
               moldeRowInfo(
-                const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 'Total: ',
                 CustomTextStyle.robotoMedium,
                 CustomTextStyle.robotoExtraBold
@@ -207,15 +203,11 @@ class MyCartScreen extends StatelessWidget {
   }
 
 //Método que contiene los ajutes de las cartas de mycart
-  Row moldeRowInfo(EdgeInsetsGeometry padding, String text, TextStyle style,
-      TextStyle style2,
+  Row moldeRowInfo(String text, TextStyle style, TextStyle style2,
       [String text2 = '', TextAlign textalign = TextAlign.center]) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: padding,
-        ),
         Text(text,
             textAlign: textalign,
             maxLines: 1,
@@ -225,9 +217,7 @@ class MyCartScreen extends StatelessWidget {
             textAlign: textalign,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: style2
-            //CustomTextStyle.robotoMedium.copyWith(color: ColorStyle.mainBlue),
-            ),
+            style: style2),
       ],
     );
   }

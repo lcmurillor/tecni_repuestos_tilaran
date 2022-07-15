@@ -59,8 +59,8 @@ class _EditInfoForm extends StatelessWidget {
         final editInfoFormProvider =
             Provider.of<EditInfoFormProvider>(context, listen: false);
         return StreamBuilder(
-          // stream: FirebaseFirestoreService.getUserByUid(
-          //     FirebaseAuthService.auth.currentUser!.uid),
+          stream: FirebaseFirestoreService.getUserByUid(
+              FirebaseAuthService.auth.currentUser!.uid),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
               return NotificationsService.showErrorSnackbar(

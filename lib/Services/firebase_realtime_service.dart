@@ -26,7 +26,7 @@ class FirebaseRealtimeService {
           .startAt(fistValue)
           .endAt(lastValue);
     }
-    return _db.ref().child('products').limitToLast(5);
+    return _db.ref().child('products').limitToLast(20);
   }
 
   ///Asigna a un objeto de tipo Product en la base de datos la dirección Url por la cual este
@@ -38,12 +38,12 @@ class FirebaseRealtimeService {
   ///Permite igualar el valor del id de de un producto en la base de datos con su valor
   ///autogenerado, con el fin de mitigar errores y problemas a la hora de hacr consultas
   ///mediante estosdatos.
-  static matchProductId() async {
-    DataSnapshot dataSnapshot = await _db.ref().child('products').get();
+  static matchId() async {
+    DataSnapshot dataSnapshot = await _db.ref().child('categories').get();
     Map<String, dynamic> data = jsonDecode(jsonEncode(dataSnapshot.value));
     data.forEach((key, value) {
       if (value['id'] != key) {
-        _db.ref().child('products/$key').update({'id': key});
+        _db.ref().child('categories/$key').update({'id': key});
       }
     });
   }
@@ -55,7 +55,8 @@ class FirebaseRealtimeService {
         .ref()
         .child('products')
         .orderByChild('category')
-        .startAt(description);
+        .startAt(description)
+        .limitToFirst(20);
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
@@ -88,5 +89,24 @@ class FirebaseRealtimeService {
       user = UserModel.fromMap(value);
     });
     return user;
+  }
+
+  ///Éste método permite crear un nuevo usuario en la base de datos. Es solo requerido cuando
+  ///un usuario es registrado por primera vez.
+  static void setUser(UserModel user) {
+    _db.ref().child('users/${user.id}').set({
+      'administrator': user.administrator,
+      'birthdate': user.birthdate,
+      'disabled': user.disabled,
+      'email': user.email,
+      'id': user.id,
+      'identification': user.identification,
+      'identificationType': user.identificationType,
+      'lastname': user.lastname,
+      'name': user.name,
+      'phone': user.phone,
+      'profileImg': user.profileImg,
+      'vendor': user.vendor
+    });
   }
 }

@@ -59,7 +59,19 @@ class ProductsSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return _emptyContainer();
     }
-    return const CustomProgressIndicator();
+    return FirebaseAnimatedList(
+      query: FirebaseRealtimeService.getFilteredProducts(query),
+      defaultChild: const CustomProgressIndicator(),
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, snapshot, animation, index) {
+        if (!snapshot.exists) {
+          return NotificationsService.showErrorSnackbar(
+              'Ha ocurrido un error a la hora de cargar los datos.');
+        }
+        final product = Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
+        return ZoomIn(child: _PrductItem(product: product));
+      },
+    );
   }
 }
 

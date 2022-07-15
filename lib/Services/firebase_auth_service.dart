@@ -7,12 +7,12 @@ import 'package:tecni_repuestos/screens/screens.dart';
 ///Ésta clase corresponde a la conección que se tiene con la base de datos Firebase
 ///relacionada con el apartado de credenciales y autetificación de usuario.
 class FirebaseAuthService {
-  /// Valor estatatico para hacer llamado a éste en diferentes partes del programa
+  /// Valor estático para hacer llamado a éste en diferentes partes del programa
   /// retorna los valores del usuario y el estado de la instancia registrada.
   static final FirebaseAuth auth = FirebaseAuth.instance;
 
-  ///Médoto para inicicar sesión mediante el correo y la contraseña,
-  ///Valida si el usario existe o si los datos incresados corresponden a un usuario registrado
+  ///Médoto para iniciar sesión mediante el correo y la contraseña,
+  ///Valida si el usuario existe o si los datos ingresados corresponden a un usuario registrado
   ///sinó es así, retorna un mensaje en pantalla.
   ///Guarda los datos en un objeto de tipo User.
   static signIn(String email, String password, BuildContext context) async {
@@ -31,8 +31,8 @@ class FirebaseAuthService {
     }
   }
 
-  ///Permite cerrrar la sesión de un usario registrado, además de esto navega a la página
-  ///principal y con esto actualiza las opciones disponibles en el menú laterañ.
+  ///Permite cerrar la sesión de un usuario registrado, además de esto navega a la página
+  ///principal y con esto actualiza las opciones disponibles en el menú lateral.
   static signOut(BuildContext context) async {
     try {
       await auth.signOut();
@@ -56,13 +56,13 @@ class FirebaseAuthService {
 
       ///Asigna el UID al objeto de tipo usuario y manda este objeto a la base de datos.
       userModel.id = userCredential.user!.uid;
-      //FirebaseFirestoreService.setUser(userModel);
+      FirebaseRealtimeService.setUser(userModel);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         NotificationsService.showErrorSnackbar(
-            'La contraseña indica no cumple con los requerimintos mínimos.');
+            'La contraseña indica no cumple con los requerimientos mínimos.');
       } else if (e.code == 'email-already-in-use') {
         NotificationsService.showErrorSnackbar(
             'Ya existe una cuenta registrada con este correo.');
