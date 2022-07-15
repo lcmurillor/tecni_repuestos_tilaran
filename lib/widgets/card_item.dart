@@ -81,18 +81,19 @@ class ItemCard extends StatelessWidget {
         if (FirebaseAuthService.auth.currentUser != null) {
           UserModel user = await FirebaseRealtimeService.getUserByUid(
               uid: FirebaseAuthService.auth.currentUser!.uid);
-          if (user.administrator) {}
-          final result = await FilePicker.platform.pickFiles(
-              allowMultiple: false,
-              type: FileType.custom,
-              allowedExtensions: ['png', 'jpg']);
-          if (result == null) {
-            NotificationsService.showSnackbar(
-                'No ha selecionado ninguna imagen.');
-          } else {
-            final path = result.files.single.path;
-            final name = product.id;
-            FirebaseStorageService.uploadFile(path!, name);
+          if (user.administrator) {
+            final result = await FilePicker.platform.pickFiles(
+                allowMultiple: false,
+                type: FileType.custom,
+                allowedExtensions: ['png', 'jpg']);
+            if (result == null) {
+              NotificationsService.showSnackbar(
+                  'No ha selecionado ninguna imagen.');
+            } else {
+              final path = result.files.single.path;
+              final name = product.id;
+              FirebaseStorageService.uploadFile(path!, name);
+            }
           }
         }
       },

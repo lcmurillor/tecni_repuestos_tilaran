@@ -26,7 +26,7 @@ class FirebaseRealtimeService {
           .startAt(fistValue)
           .endAt(lastValue);
     }
-    return _db.ref().child('products').limitToLast(20);
+    return _db.ref().child('products').limitToLast(35);
   }
 
   ///Asigna a un objeto de tipo Product en la base de datos la dirección Url por la cual este
@@ -56,7 +56,7 @@ class FirebaseRealtimeService {
         .child('products')
         .orderByChild('category')
         .startAt(description)
-        .limitToFirst(20);
+        .limitToFirst(40);
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
