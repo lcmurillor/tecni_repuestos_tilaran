@@ -23,62 +23,79 @@ class MyPackegesScreen extends StatelessWidget {
               'Ha ocurrido un error en sus paquetes.');
         }
       });
-      return Scaffold(
-          body: Background(
-        useBackArrow: true,
-        useImg: false,
-        child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                const SizedBox(height: 110),
-                Center(
-                    child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 30.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        width: 280,
-                        height: 35,
-                        child: TextField(
-                            onTap: () {},
-                            textAlignVertical: TextAlignVertical.bottom,
-                            decoration: inputDecoration()))),
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, 'shipment'),
-                  child: Card(
-                    child: Column(
-                      children: [
-                        moldeRowInfo(
-                            const EdgeInsets.fromLTRB(20, 10, 10, 9),
-                            MdiIcons.barcode,
-                            'CR452687230WS',
-                            CustomTextStyle.robotoExtraBold),
-                        moldeRowInfo(
-                            const EdgeInsets.fromLTRB(20, 0, 10, 5),
-                            Icons.person,
-                            'Nombre completo del usuario',
-                            CustomTextStyle.robotoMedium),
-                        moldeRowInfo(
-                            const EdgeInsets.fromLTRB(20, 5, 10, 5),
-                            Icons.calendar_today_rounded,
-                            '25/11/2022',
-                            CustomTextStyle.robotoMedium),
-                        // ,
+      final navegacionModel = Provider.of<NavegacionModel>(context);
+      return ChangeNotifierProvider(
+        create: (_) => NavegacionModel(),
+        child: Scaffold(
+            bottomNavigationBar: const _Navegacion(),
+            body: Background(
+              useBackArrow: true,
+              useImg: false,
+              child: PageView(
+                controller: navegacionModel.pageController,
+                children: [
+                  SingleChildScrollView(
+                      //   controller: navegacionModel.pageController,
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 110),
+                          Center(
+                              child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 30.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  width: 280,
+                                  height: 35,
+                                  child: TextField(
+                                      onTap: () {},
+                                      textAlignVertical:
+                                          TextAlignVertical.bottom,
+                                      decoration: inputDecoration()))),
+                          GestureDetector(
+                            onTap: () =>
+                                Navigator.pushNamed(context, 'shipment'),
+                            child: Card(
+                              child: Column(
+                                children: [
+                                  moldeRowInfo(
+                                      const EdgeInsets.fromLTRB(20, 10, 10, 9),
+                                      MdiIcons.barcode,
+                                      'CR452687230WS',
+                                      CustomTextStyle.robotoExtraBold),
+                                  moldeRowInfo(
+                                      const EdgeInsets.fromLTRB(20, 0, 10, 5),
+                                      Icons.person,
+                                      'Nombre completo del usuario',
+                                      CustomTextStyle.robotoMedium),
+                                  moldeRowInfo(
+                                      const EdgeInsets.fromLTRB(20, 5, 10, 5),
+                                      Icons.calendar_today_rounded,
+                                      '25/11/2022',
+                                      CustomTextStyle.robotoMedium),
+                                  // ,
 
-                        moldeRowInfo(
-                            const EdgeInsets.fromLTRB(20, 5, 10, 5),
-                            MdiIcons.truckDelivery,
-                            'Estado: ',
-                            CustomTextStyle.robotoMedium,
-                            'En camino')
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                                  moldeRowInfo(
+                                      const EdgeInsets.fromLTRB(20, 5, 10, 5),
+                                      MdiIcons.truckDelivery,
+                                      'Estado: ',
+                                      CustomTextStyle.robotoMedium,
+                                      'En camino')
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            color: Colors.green,
+                          )
+                        ],
+                      ))
+                ],
+              ),
             )),
-      ));
+      );
     });
   }
 
@@ -103,6 +120,27 @@ class MyPackegesScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _Navegacion extends StatelessWidget {
+  const _Navegacion({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final navegacionModel = Provider.of<NavegacionModel>(context);
+
+    return BottomNavigationBar(
+        currentIndex: navegacionModel.currentPage,
+        onTap: (i) => navegacionModel.currentPage = i,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(MdiIcons.archive), label: "Procesados"),
+          BottomNavigationBarItem(
+              icon: Icon(MdiIcons.archiveAlert), label: "Pendientes")
+        ]);
   }
 }
 
@@ -147,4 +185,21 @@ InputDecoration inputDecoration() {
       focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: const BorderSide(color: Colors.transparent)));
+}
+
+//Logica de como se obtiene el numero del buttomnavigationbar
+class NavegacionModel with ChangeNotifier {
+  int _currentPage = 0;
+  final PageController _pageController = PageController();
+
+  int get currentPage => _currentPage;
+
+  set currentPage(int valor) {
+    _currentPage = valor;
+    _pageController.animateToPage(valor,
+        duration: const Duration(milliseconds: 250), curve: Curves.easeOut);
+    notifyListeners();
+  }
+
+  PageController get pageController => _pageController;
 }

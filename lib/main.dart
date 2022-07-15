@@ -14,7 +14,8 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
-          create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode))
+        create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode),
+      )
     ],
     child: const TecniRepuestoTilaran(),
   ));
