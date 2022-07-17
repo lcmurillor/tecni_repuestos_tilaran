@@ -1,8 +1,11 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
-
-bool hasData = false;
+import 'package:tecni_repuestos/theme/color_style.dart';
+import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class ProductsSearchDelegate extends SearchDelegate {
   @override
@@ -26,35 +29,29 @@ class ProductsSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseCloudService.getfilteredProducts(
-          (hasData) ? 'accesorios' : 'repuesto', query),
-      builder: (_, AsyncSnapshot<List<Product>> snapshot) {
-        if (!snapshot.hasData) {
-          hasData = !hasData;
-          return _emptyContainer();
+    return FirebaseAnimatedList(
+      query: FirebaseRealtimeService.getFilteredProducts(query),
+      defaultChild: const CustomProgressIndicator(),
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, snapshot, animation, index) {
+        if (!snapshot.exists) {
+          return NotificationsService.showErrorSnackbar(
+              'Ha ocurrido un error a la hora de cargar los datos.');
         }
-
-        final data = snapshot.data!;
-        return ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: data.length,
-          itemBuilder: (_, index) => _PrductItem(
-            product: data[index],
-          ),
-        );
+        final product = Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
+        return ZoomIn(child: _PrductItem(product: product));
       },
     );
   }
 
   Widget _emptyContainer() {
-    return const Center(
-      child: Icon(
-        Icons.build_circle,
-        color: Colors.black38,
-        size: 100,
-      ),
-    );
+    return Center(
+        child: SvgPicture.asset(
+      'assets/logo-full-white.svg',
+      fit: BoxFit.contain,
+      height: 100,
+      color: ColorStyle.mainGrey.withOpacity(0.30),
+    ));
   }
 
   @override
@@ -62,23 +59,17 @@ class ProductsSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return _emptyContainer();
     }
-    return StreamBuilder(
-      stream: FirebaseCloudService.getfilteredProducts(
-          (hasData) ? 'accesorios' : 'repuesto', query),
-      builder: (_, AsyncSnapshot<List<Product>> snapshot) {
-        if (!snapshot.hasData) {
-          hasData = !hasData;
-          return _emptyContainer();
+    return FirebaseAnimatedList(
+      query: FirebaseRealtimeService.getFilteredProducts(query),
+      defaultChild: const CustomProgressIndicator(),
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, snapshot, animation, index) {
+        if (!snapshot.exists) {
+          return NotificationsService.showErrorSnackbar(
+              'Ha ocurrido un error a la hora de cargar los datos.');
         }
-
-        final data = snapshot.data!;
-        return ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: data.length,
-          itemBuilder: (_, index) => _PrductItem(
-            product: data[index],
-          ),
-        );
+        final product = Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
+        return ZoomIn(child: _PrductItem(product: product));
       },
     );
   }
@@ -92,10 +83,10 @@ class _PrductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: product.img.startsWith('http')
+      leading: product.imageUrl.startsWith('http')
           ? FadeInImage(
               placeholder: const AssetImage('assets/placeholder-image.png'),
-              image: NetworkImage(product.img),
+              image: NetworkImage(product.imageUrl),
               placeholderFit: BoxFit.cover,
               fit: BoxFit.cover,
               width: 50,

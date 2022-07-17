@@ -59,7 +59,7 @@ class _EditInfoForm extends StatelessWidget {
         final editInfoFormProvider =
             Provider.of<EditInfoFormProvider>(context, listen: false);
         return StreamBuilder(
-          stream: FirebaseCloudService.getUserByUid(
+          stream: FirebaseFirestoreService.getUserByUid(
               FirebaseAuthService.auth.currentUser!.uid),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
@@ -190,26 +190,30 @@ void _onFormSubmit(
   Future.delayed(Duration.zero, () {
     if (editInfoFormProvider.validateForm()) {
       user = UserModel(
-          birthdate: (editInfoFormProvider.birthdate == 0)
-              ? user.birthdate
-              : editInfoFormProvider.birthdate,
-          email: user.email,
-          id: user.id,
-          lastname: (editInfoFormProvider.lastname == "")
-              ? user.lastname
-              : editInfoFormProvider.lastname,
-          name: (editInfoFormProvider.name == "")
-              ? user.name
-              : editInfoFormProvider.name,
-          phone: (editInfoFormProvider.phone == "")
-              ? user.phone
-              : editInfoFormProvider.phone);
+        birthdate: (editInfoFormProvider.birthdate == 0)
+            ? user.birthdate
+            : editInfoFormProvider.birthdate,
+        email: user.email,
+        id: user.id,
+        identification: user.identification,
+        identificationType: user.identificationType,
+        lastname: (editInfoFormProvider.lastname == "")
+            ? user.lastname
+            : editInfoFormProvider.lastname,
+        name: (editInfoFormProvider.name == "")
+            ? user.name
+            : editInfoFormProvider.name,
+        phone: (editInfoFormProvider.phone == "")
+            ? user.phone
+            : editInfoFormProvider.phone,
+        profileImg: user.profileImg,
+      );
     } else {
       NotificationsService.showErrorSnackbar(
           'No se cumple con las condiciones mínimas para actualizar la información.');
     }
   }).then((value) {
-    FirebaseCloudService.updateUser(user);
+    // FirebaseFirestoreService.updateUser(user);
     Navigator.pop(context);
   });
 }

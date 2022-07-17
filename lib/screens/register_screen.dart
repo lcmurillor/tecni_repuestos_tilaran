@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
@@ -93,7 +94,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                 }
               }),
 
-          ///Input correspondiente al nombre  para registrar el nuevo usuario.
+          ///Input correspondiente al nombre para registrar el nuevo usuario.
           CustomTextInput(
               hintText: 'Nombre',
               icon: Icons.person,
@@ -102,12 +103,12 @@ class _RegisterFormState extends State<_RegisterForm> {
                 if (value == null || value.isEmpty) {
                   return 'El nombre es obligatorio.';
                 } else if (value.length < 2) {
-                  return 'EL nombre debe tener 2 o más caracteres.';
+                  return 'EL nombre debe contener 2 o más caracteres.';
                 }
                 return null;
               }),
 
-          ///Input correspondiente al nombre  para registrar el nuevo usuario.
+          ///Input correspondiente al Apellido para registrar el nuevo usuario.
           CustomTextInput(
               hintText: 'Apellidos',
               icon: Icons.person,
@@ -116,12 +117,12 @@ class _RegisterFormState extends State<_RegisterForm> {
                 if (value == null || value.isEmpty) {
                   return 'El apellido es obligatorio.';
                 } else if (value.length < 2) {
-                  return 'El apellido debe tener 2 o más caracteres.';
+                  return 'El apellido debe contener 2 o más caracteres.';
                 }
                 return null;
               }),
 
-          ///Input correspondiente al Telefono para registrar el nuevo usuario.
+          ///Input correspondiente al Teléfono para registrar el nuevo usuario.
           CustomTextInput(
               hintText: 'Teléfono',
               icon: Icons.phone,
@@ -130,8 +131,8 @@ class _RegisterFormState extends State<_RegisterForm> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'El teléfono es obligatorio.';
-                } else if (value.length > 8 || value.length < 8) {
-                  return 'El teléfono no es valido.';
+                } else if (value.length < 8 || value.length > 8) {
+                  return 'El teléfono debe contener 8 números.';
                 }
                 return null;
               }),
@@ -169,11 +170,51 @@ class _RegisterFormState extends State<_RegisterForm> {
                   if (selectedDate != null) {
                     _dateController.text =
                         DateFormat('dd-MM-yyyy').format(selectedDate);
-                    //print(selectedDate.millisecondsSinceEpoch);
                     registerFormProvider.birthdate =
                         selectedDate.millisecondsSinceEpoch;
                   }
                 });
+              }),
+
+          ///Input correspondiente del tipo de identificación para registrar el nuevo usuario.
+          //TODO dar estilo a este coso
+          DropdownButtonFormField<String>(
+            value:
+                'Persona física', //Este será el valor por defecto al dibujar el widget
+            items: const [
+              DropdownMenuItem(
+                value: 'Persona física',
+                child: Text('Cédula de identidad'),
+              ),
+              DropdownMenuItem(
+                value: 'Persona Jurídica',
+                child: Text('Persona Jurídica'),
+              ),
+              DropdownMenuItem(
+                value: 'Extranjero',
+                child: Text('Pasaporte'),
+              ),
+            ],
+            onChanged: (value) {
+              registerFormProvider.identificationType =
+                  value ?? 'Persona física';
+            },
+          ),
+          const SizedBox(height: 15),
+
+          ///Input correspondiente de la identificación para registrar el nuevo usuario.
+          CustomTextInput(
+              keyboardType: TextInputType.number,
+              hintText: 'Cédula',
+              icon: MdiIcons.cardAccountDetails,
+              onChanged: (value) => registerFormProvider.identification = value,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'La cédula es obligatoria.';
+                } else if (value.length < 7) {
+                  return 'El cédula debe contener 7 o más caracteres.';
+                }
+                return null;
               }),
 
           ///Input correspondiente al a contraseña para registrar el nuevo usuario.
@@ -187,7 +228,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   return 'Ingrese su contraseña.';
                 }
                 if (value.length < 6) {
-                  return 'La contraseña debe de tener más de 6 caracteres.';
+                  return 'La contraseña debe de contener más de 6 caracteres.';
                 }
                 return null;
               }),
@@ -205,7 +246,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   return 'Ingrese su contraseña.';
                 }
                 if (value.length < 6) {
-                  return 'La contraseña debe de tener más de 6 caracteres.';
+                  return 'La contraseña debe de contener más de 6 caracteres.';
                 }
                 return null;
               }),
@@ -245,12 +286,18 @@ void _onFormSubmit(
     RegisterFormProvider registerFormProvider, context, bool isActived) {
   final isValid = registerFormProvider.validateForm(isActived);
   UserModel user = UserModel(
-      birthdate: registerFormProvider.birthdate,
-      email: registerFormProvider.email,
-      id: 'undefied',
-      lastname: registerFormProvider.lastname,
-      name: registerFormProvider.name,
-      phone: registerFormProvider.phone);
+    birthdate: registerFormProvider.birthdate,
+    email: registerFormProvider.email,
+    id: 'undefied',
+    identification: registerFormProvider.identification,
+    identificationType: (registerFormProvider.identificationType == "")
+        ? 'Persona física'
+        : registerFormProvider.identificationType,
+    lastname: registerFormProvider.lastname,
+    name: registerFormProvider.name,
+    phone: registerFormProvider.phone,
+    profileImg: 'undefied',
+  );
   if (isValid) {
     FirebaseAuthService.logIn(registerFormProvider.email,
         registerFormProvider.password, user, context);

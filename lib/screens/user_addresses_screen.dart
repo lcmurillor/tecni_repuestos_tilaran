@@ -19,23 +19,17 @@ class UserAddressesScreen extends StatelessWidget {
             useActions: false,
             navigatorOnPressed: () => Navigator.pop(context)),
         body: Column(children: [
-          const SizedBox(
-            height: 50,
-            width: double.infinity,
-          ),
+          const SizedBox(height: 50),
           Text('Direcciones de facturación',
               style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 27)),
-          const SizedBox(
-            height: 40,
-            width: double.infinity,
-          ),
+          const SizedBox(height: 40),
           Expanded(
             child: Stack(
               children: [
                 ///Conexión a la base de datos para crear la lista de dirreciones.
                 StreamBuilder(
-                  stream: FirebaseCloudService.getAddressesByUser(
-                      FirebaseAuthService.auth.currentUser!.uid),
+                  // stream: FirebaseFirestoreService.getAddressesByUser(
+                  //     FirebaseAuthService.auth.currentUser!.uid),
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Address>> snapshot) {
                     if (snapshot.hasError) {

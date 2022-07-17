@@ -1,50 +1,66 @@
-///Este objeto disponde de todos los atributos de un "accesorio" o "repuesto" de la
-///base de datos, por lo tanto se puede usar este tipo "Product" como modelo.
+import 'models.dart';
+
+export 'dart:convert';
+
+///Este objeto disponde de todos los atributos de un "product" de la base de datos.
+///permite hacer la construcción de un objeto de tipo "product" en base a una consulta.
 class Product {
-  double cost;
-  double price;
-  double total;
-  int quantity;
-  String category;
-  String description;
-  String id;
-  String item;
-  String location;
-  String type;
-  String img;
-
-  static late List<Product> products;
-
   ///Método constructor de Product, requiere todos los atributos para poder ser creado el objeto
   ///ningún atributo tiene un valor por defecto.
-  Product(
-      {required this.cost,
-      required this.price,
-      required this.total,
-      required this.quantity,
-      required this.category,
-      required this.description,
-      required this.id,
-      required this.item,
-      required this.location,
-      required this.type,
-      required this.img});
+  Product({
+    required this.category,
+    required this.code,
+    required this.cost,
+    required this.description,
+    required this.id,
+    required this.imageUrl,
+    required this.location,
+    required this.price,
+    required this.quantity,
+    required this.type,
+  });
 
-  /// Éste método recibe un objeto de la base de datos firebese, ya sea un "accesosrio"
-  /// o un "repuesto" extrae la información a un Map y retorna un Product con todos sus
-  /// atributos cargados.
-  factory Product.fromFirebase(Map<String, dynamic> data) {
-    return Product(
-        id: data['id'] ?? 'undefined',
-        cost: double.parse(data['cost'] ?? 0.0),
-        price: double.parse(data['price'] ?? 0.0),
-        total: double.parse(data['total'] ?? 0.0),
-        quantity: int.parse(data['quantity'] ?? 0),
-        category: data['category'] ?? 'undefined',
-        description: data['description'] ?? 'undefined',
-        item: data['item'] ?? 'undefined',
-        location: data['location'] ?? 'undefined',
-        type: data['type'] ?? 'undefined',
-        img: data['img'] ?? 'undefined');
-  }
+  String category;
+  String code;
+  double cost;
+  String description;
+  String id;
+  String imageUrl;
+  String location;
+  double price;
+  int quantity;
+  String type;
+
+  factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  ///Éste método recibe un objeto de tipo Map de la base de datos que corresponde a la interptretación
+  ///de un archivo json el cual es el producto, y lo convierte a un objeto de tipo Product para luego ser
+  ///usado.
+  factory Product.fromMap(Map<String, dynamic> json) => Product(
+        category: json["category"] ?? 'undefined',
+        code: json["code"] ?? 'undefined',
+        cost: json["cost"].toDouble() ?? 0.0,
+        description: json["description"] ?? 'undefined',
+        id: json["id"] ?? 'undefined',
+        imageUrl: json["imageUrl"] ?? 'undefined',
+        location: json["location"] ?? 'undefined',
+        price: json["price"].toDouble() ?? 0.0,
+        quantity: json["quantity"].toInt() ?? 0,
+        type: json["type"] ?? 'undefined',
+      );
+
+  Map<String, dynamic> toMap() => {
+        "category": category,
+        "code": code,
+        "cost": cost,
+        "description": description,
+        "id": id,
+        "imageUrl": imageUrl,
+        "location": location,
+        "price": price,
+        "quantity": quantity,
+        "type": type,
+      };
 }

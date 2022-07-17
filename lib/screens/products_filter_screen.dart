@@ -27,8 +27,8 @@ class ProductsFilterScreen extends StatelessWidget {
       body: StreamBuilder(
         ///Hace un llamdo a la base de datos y resive una lista de productos filtrado por el tipo
         ///(pude ser tanto un repuesto como un accesorio) y por la categoria especifica de cada uno.
-        stream: FirebaseCloudService.getfilteredProducts(
-            category.type, category.categoryName),
+        // stream: FirebaseFirestoreService.getfilteredProducts(
+        //     category.type, category.categoryName),
 
         ///Construye los objetos en base a lo resivido en la base de datos.
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
@@ -42,13 +42,13 @@ class ProductsFilterScreen extends StatelessWidget {
           }
 
           final data = snapshot.data!;
-          final List<ItemCard> products = List<ItemCard>.generate(
-              data.length,
-              (index) => ItemCard(
-                  title: data[index].description,
-                  quantity: data[index].quantity,
-                  total: data[index].total,
-                  img: data[index].img));
+          // final List<ItemCard> products = List<ItemCard>.generate(
+          //     data.length,
+          //     (index) => ItemCard(
+          //         title: data[index].description,
+          //         quantity: data[index].quantity,
+          //         total: data[index].total,
+          //         img: data[index].img));
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -66,7 +66,7 @@ class ProductsFilterScreen extends StatelessWidget {
                           text: title,
                         ),
                       ))),
-              SliverList(delegate: SliverChildListDelegate([...products]))
+              //SliverList(delegate: SliverChildListDelegate([...products]))
             ],
           );
         },

@@ -23,7 +23,7 @@ class MyPackegesScreen extends StatelessWidget {
               'Ha ocurrido un error en sus paquetes.');
         }
       });
-      final navegacionModel = Provider.of<NavegacionModel>(context);
+      // final navegacionModel = Provider.of<NavegacionModel>(context);
       return ChangeNotifierProvider(
         create: (_) => NavegacionModel(),
         child: Scaffold(
@@ -32,7 +32,7 @@ class MyPackegesScreen extends StatelessWidget {
               useBackArrow: true,
               useImg: false,
               child: PageView(
-                controller: navegacionModel.pageController,
+                //   controller: navegacionModel.pageController,
                 children: [
                   SingleChildScrollView(
                       //   controller: navegacionModel.pageController,
@@ -147,8 +147,8 @@ class _Navegacion extends StatelessWidget {
 ///Función intermedia que hace una llamado a la base de datos para optener un usuario
 ///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
 void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
-  FirebaseCloudService.getUserByEmail(loginFormProvider.email).then(
-      (UserModel? user) => _validateData(user, loginFormProvider, context));
+  // FirebaseFirestoreService.getUserByEmail(loginFormProvider.email).then(
+  //     (UserModel? user) => _validateData(user, loginFormProvider, context));
 }
 
 ///Función de evalución final, evalua que el formulario cumpla con los requerimientos

@@ -119,10 +119,10 @@ class _LoginForm extends StatelessWidget {
   }
 }
 
-///Función intermedia que hace una llamado a la base de datos para optener un usuario
+///Función intermedia que hace una llamado a la base de datos para obtener un usuario
 ///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
 void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
-  FirebaseCloudService.getUserByEmail(loginFormProvider.email).then(
+  FirebaseRealtimeService.getUserByEmail(email: loginFormProvider.email).then(
       (UserModel? user) => _validateData(user, loginFormProvider, context));
 }
 
