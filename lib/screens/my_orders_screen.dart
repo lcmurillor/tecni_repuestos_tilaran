@@ -11,8 +11,8 @@ import 'package:tecni_repuestos/widgets/widgets.dart';
 
 import '../theme/themes.dart';
 
-class MyPackegesScreen extends StatelessWidget {
-  const MyPackegesScreen({Key? key, this.hasError = false}) : super(key: key);
+class MyOrdersScreen extends StatelessWidget {
+  const MyOrdersScreen({Key? key, this.hasError = false}) : super(key: key);
   final bool hasError;
   @override
   Widget build(BuildContext context) {

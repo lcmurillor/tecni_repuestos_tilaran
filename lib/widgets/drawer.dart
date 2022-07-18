@@ -102,7 +102,7 @@ class CustomDrawer extends StatelessWidget {
                   _moldelListTile('Mi carrito', Icons.shopping_cart,
                       const MyCartScreen(), context),
                   _moldelListTile('Mis pedidos', MdiIcons.archive,
-                      const MyPackegesScreen(), context),
+                      const MyOrdersScreen(), context),
                   _moldelListTile('Mi perfil', MdiIcons.account,
                       const UserProfileScreen(), context),
                   _moldelListTile(

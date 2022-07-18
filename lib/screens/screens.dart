@@ -3,7 +3,7 @@ export 'package:tecni_repuestos/screens/category_screen.dart';
 export 'package:tecni_repuestos/screens/home_screen.dart';
 export 'package:tecni_repuestos/screens/login_screen.dart';
 export 'package:tecni_repuestos/screens/my_cart_screen.dart';
-export 'package:tecni_repuestos/screens/mypackeges_screen.dart';
+export 'package:tecni_repuestos/screens/my_orders_screen.dart';
 export 'package:tecni_repuestos/screens/password_request_screen.dart';
 export 'package:tecni_repuestos/screens/placeholder_screen.dart';
 export 'package:tecni_repuestos/screens/products_filter_screen.dart';
