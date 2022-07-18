@@ -178,26 +178,24 @@ class _RegisterFormState extends State<_RegisterForm> {
 
           ///Input correspondiente del tipo de identificación para registrar el nuevo usuario.
           //TODO dar estilo a este coso
-          DropdownButtonFormField<String>(
-            value:
-                'Persona física', //Este será el valor por defecto al dibujar el widget
+          DropdownButtonFormField<int>(
+            value: 1, //Este será el valor por defecto al dibujar el widget
             items: const [
               DropdownMenuItem(
-                value: 'Persona física',
+                value: 1,
                 child: Text('Cédula de identidad'),
               ),
               DropdownMenuItem(
-                value: 'Persona Jurídica',
+                value: 2,
                 child: Text('Persona Jurídica'),
               ),
               DropdownMenuItem(
-                value: 'Extranjero',
+                value: 3,
                 child: Text('Pasaporte'),
               ),
             ],
             onChanged: (value) {
-              registerFormProvider.identificationType =
-                  value ?? 'Persona física';
+              registerFormProvider.identificationType = value ?? 1;
             },
           ),
           const SizedBox(height: 15),
@@ -290,8 +288,8 @@ void _onFormSubmit(
     email: registerFormProvider.email,
     id: 'undefied',
     identification: registerFormProvider.identification,
-    identificationType: (registerFormProvider.identificationType == "")
-        ? 'Persona física'
+    identificationType: (registerFormProvider.identificationType == 0)
+        ? 1
         : registerFormProvider.identificationType,
     lastname: registerFormProvider.lastname,
     name: registerFormProvider.name,

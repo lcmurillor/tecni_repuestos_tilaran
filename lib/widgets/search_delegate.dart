@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -98,8 +99,27 @@ class _PrductItem extends StatelessWidget {
               height: 80),
       title: Text(product.description),
       subtitle: Text('Disponibles: ${product.quantity}'),
-      onTap: () {
+      onTap: () async {
         //Navigator.pushNamed(context, 'details', arguments: product);
+
+        if (FirebaseAuthService.auth.currentUser != null) {
+          UserModel user = await FirebaseRealtimeService.getUserByUid(
+              uid: FirebaseAuthService.auth.currentUser!.uid);
+          if (user.administrator) {
+            final result = await FilePicker.platform.pickFiles(
+                allowMultiple: false,
+                type: FileType.custom,
+                allowedExtensions: ['png', 'jpg']);
+            if (result == null) {
+              NotificationsService.showSnackbar(
+                  'No ha selecionado ninguna imagen.');
+            } else {
+              final path = result.files.single.path;
+              final name = product.id;
+              FirebaseStorageService.uploadFile(path!, name);
+            }
+          }
+        }
       },
     );
   }

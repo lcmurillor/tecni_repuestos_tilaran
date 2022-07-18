@@ -26,7 +26,11 @@ class FirebaseRealtimeService {
           .startAt(fistValue)
           .endAt(lastValue);
     }
+<<<<<<< HEAD
     return _db.ref().child('products').limitToLast(100);
+=======
+    return _db.ref().child('products').limitToLast(35);
+>>>>>>> origin/luis
   }
 
   ///Asigna a un objeto de tipo Product en la base de datos la dirección Url por la cual este
@@ -39,11 +43,11 @@ class FirebaseRealtimeService {
   ///autogenerado, con el fin de mitigar errores y problemas a la hora de hacr consultas
   ///mediante estosdatos.
   static matchId() async {
-    DataSnapshot dataSnapshot = await _db.ref().child('categories').get();
+    DataSnapshot dataSnapshot = await _db.ref().child('products').get();
     Map<String, dynamic> data = jsonDecode(jsonEncode(dataSnapshot.value));
     data.forEach((key, value) {
-      if (value['id'] != key) {
-        _db.ref().child('categories/$key').update({'id': key});
+      if (value['type'] == 'repuesto') {
+        _db.ref().child('products/$key').update({'type': 'spare'});
       }
     });
   }
@@ -56,7 +60,7 @@ class FirebaseRealtimeService {
         .child('products')
         .orderByChild('category')
         .startAt(description)
-        .limitToFirst(20);
+        .limitToFirst(40);
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID

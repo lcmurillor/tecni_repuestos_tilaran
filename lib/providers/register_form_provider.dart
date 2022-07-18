@@ -5,12 +5,11 @@ import 'package:tecni_repuestos/Services/services.dart';
 ///y validar que cumpla con los requerimientos mínimos.
 class RegisterFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-//TODO revizar las validaciones para el nuevo formato
   String email = '';
   String name = '';
   String lastname = '';
   String identification = '';
-  String identificationType = '';
+  int identificationType = 0;
   String phone = '';
   int birthdate = 0;
   String password = '';
