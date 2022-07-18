@@ -39,11 +39,11 @@ class FirebaseRealtimeService {
   ///autogenerado, con el fin de mitigar errores y problemas a la hora de hacr consultas
   ///mediante estosdatos.
   static matchId() async {
-    DataSnapshot dataSnapshot = await _db.ref().child('categories').get();
+    DataSnapshot dataSnapshot = await _db.ref().child('products').get();
     Map<String, dynamic> data = jsonDecode(jsonEncode(dataSnapshot.value));
     data.forEach((key, value) {
-      if (value['id'] != key) {
-        _db.ref().child('categories/$key').update({'id': key});
+      if (value['type'] == 'repuesto') {
+        _db.ref().child('products/$key').update({'type': 'spare'});
       }
     });
   }

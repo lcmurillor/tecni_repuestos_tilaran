@@ -52,8 +52,10 @@ class TecniRepuestoTilaran extends StatelessWidget {
                 ///Hace un llamado al "LoginScreen" pero debe indicar el error que ha occurrido.
                 return const LoginScreen(hasError: true);
               } else if (snapshot.hasData) {
+                FirebaseRealtimeService.matchId();
                 return const HomeScreen();
               } else {
+                FirebaseRealtimeService.matchId();
                 return const HomeScreen();
               }
             }),

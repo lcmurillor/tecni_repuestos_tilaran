@@ -26,7 +26,7 @@ class UserModel {
   String email;
   String id;
   String identification;
-  String identificationType;
+  int identificationType;
   String lastname;
   String name;
   String phone;
@@ -47,7 +47,7 @@ class UserModel {
         email: json["email"] ?? 'undefined',
         id: json["id"] ?? 'undefined',
         identification: json["identification"] ?? 'undefined',
-        identificationType: json["identificationType"] ?? 'undefined',
+        identificationType: json["identificationType"] ?? 0,
         lastname: json["lastname"] ?? 'undefined',
         name: json["name"] ?? 'undefined',
         phone: json["phone"] ?? 'undefined',
