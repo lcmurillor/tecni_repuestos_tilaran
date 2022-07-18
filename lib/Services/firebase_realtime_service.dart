@@ -26,7 +26,7 @@ class FirebaseRealtimeService {
           .startAt(fistValue)
           .endAt(lastValue);
     }
-    return _db.ref().child('products').limitToLast(20);
+    return _db.ref().child('products').limitToLast(100);
   }
 
   ///Asigna a un objeto de tipo Product en la base de datos la dirección Url por la cual este
