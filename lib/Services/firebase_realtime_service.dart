@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/services/services.dart';
 
 ///Ésta clase corresponde a la conexión a la base datos Firebase reialtime.
 ///En esta se ecuentra una instancia de conexión global y las respetivas consultas.
@@ -48,15 +49,30 @@ class FirebaseRealtimeService {
     });
   }
 
+  ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan.
+  static Query getCategories({required String type}) {
+    return _db.ref().child('categories').orderByChild('type').equalTo(type);
+  }
+
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
-  ///la base de datos mediante la libreria de firebase
-  static Query getFilteredProducts(String description) {
+  ///la base de datos mediante la libreria de firebase. Es utilizado para la barra de busqueda.
+  static Query getSearchedProducts({required String description}) {
     return _db
         .ref()
         .child('products')
         .orderByChild('category')
         .startAt(description)
         .limitToFirst(40);
+  }
+
+  ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
+  ///la base de datos mediante la libreria de firebase. Es utilizado para mostrar los procutos filtrados pot tipo y tategoría.
+  static Query getFilteredProducts({required String description}) {
+    return _db
+        .ref()
+        .child('products')
+        .orderByChild('category')
+        .equalTo(description);
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
@@ -78,22 +94,35 @@ class FirebaseRealtimeService {
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Future<UserModel> getUserByEmail({required String email}) async {
-    late UserModel user;
+  static Future<UserModel> getUserByEmail({required String email, user}) async {
+    late UserModel user = UserModel(
+        birthdate: 0,
+        email: '',
+        id: '',
+        identification: '',
+        identificationType: 0,
+        lastname: '',
+        name: '',
+        phone: '',
+        profileImg: '');
     final Query query =
         _db.ref().child('users').orderByChild('email').equalTo(email);
     final DataSnapshot dataSnapshot = await query.get();
-    final Map<String, dynamic> data =
-        jsonDecode(jsonEncode(dataSnapshot.value));
-    data.forEach((key, value) {
-      user = UserModel.fromMap(value);
-    });
+    if (dataSnapshot.value != null) {
+      final Map<String, dynamic> data =
+          jsonDecode(jsonEncode(dataSnapshot.value));
+      data.forEach((key, value) {
+        user = UserModel.fromMap(value);
+      });
+    } else {
+      NotificationsService.showErrorSnackbar('Usuario o contraseña invalida.');
+    }
     return user;
   }
 
   ///Éste método permite crear un nuevo usuario en la base de datos. Es solo requerido cuando
   ///un usuario es registrado por primera vez.
-  static void setUser(UserModel user) {
+  static void setUser({required UserModel user}) {
     _db.ref().child('users/${user.id}').set({
       'administrator': user.administrator,
       'birthdate': user.birthdate,

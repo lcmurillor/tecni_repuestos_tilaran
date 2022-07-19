@@ -32,7 +32,7 @@ class CustomDrawer extends StatelessWidget {
               'Repuestos',
               Icons.settings,
               CategoryScreen(
-                  stream: FirebaseFirestoreService.getSparesCategory(),
+                  query: FirebaseRealtimeService.getCategories(type: 'spare'),
                   title: 'Repuestos',
                   icon: Icons.settings),
               context),
@@ -40,7 +40,8 @@ class CustomDrawer extends StatelessWidget {
               'Accesorios',
               Icons.sports_motorsports,
               CategoryScreen(
-                  stream: FirebaseFirestoreService.getAccessoriesCategory(),
+                  query:
+                      FirebaseRealtimeService.getCategories(type: 'accesorie'),
                   title: 'Accesorios',
                   icon: Icons.sports_motorsports),
               context),

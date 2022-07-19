@@ -122,8 +122,13 @@ class _LoginForm extends StatelessWidget {
 ///Función intermedia que hace una llamado a la base de datos para obtener un usuario
 ///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
 void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
-  FirebaseRealtimeService.getUserByEmail(email: loginFormProvider.email).then(
-      (UserModel? user) => _validateData(user, loginFormProvider, context));
+  if (loginFormProvider.validateForm()) {
+    FirebaseRealtimeService.getUserByEmail(email: loginFormProvider.email).then(
+        (UserModel? user) => _validateData(user, loginFormProvider, context));
+  } else {
+    NotificationsService.showErrorSnackbar(
+        'No se han ingresado los datos para iniciar sesión.');
+  }
 }
 
 ///Función de evalución final, evalua que el formulario cumpla con los requerimientos
@@ -131,8 +136,7 @@ void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
 ///se puede iniciar la sesión.
 void _validateData(UserModel? user, LoginFormProvider loginFormProvider,
     BuildContext context) {
-  final isValid = loginFormProvider.validateForm();
-  if (null != user && !user.disabled && isValid) {
+  if (user != null && !user.disabled) {
     FirebaseAuthService.signIn(
         loginFormProvider.email, loginFormProvider.password, context);
   } else {

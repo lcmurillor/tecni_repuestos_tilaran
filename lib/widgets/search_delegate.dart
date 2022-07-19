@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tecni_repuestos/Services/services.dart';
@@ -31,7 +30,7 @@ class ProductsSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return FirebaseAnimatedList(
-      query: FirebaseRealtimeService.getFilteredProducts(query),
+      query: FirebaseRealtimeService.getSearchedProducts(description: query),
       defaultChild: const CustomProgressIndicator(),
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, snapshot, animation, index) {
@@ -60,19 +59,7 @@ class ProductsSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return _emptyContainer();
     }
-    return FirebaseAnimatedList(
-      query: FirebaseRealtimeService.getFilteredProducts(query),
-      defaultChild: const CustomProgressIndicator(),
-      physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, snapshot, animation, index) {
-        if (!snapshot.exists) {
-          return NotificationsService.showErrorSnackbar(
-              'Ha ocurrido un error a la hora de cargar los datos.');
-        }
-        final product = Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
-        return ZoomIn(child: _PrductItem(product: product));
-      },
-    );
+    return const CustomProgressIndicator();
   }
 }
 

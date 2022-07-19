@@ -24,7 +24,7 @@ class FirebaseFirestoreService {
         .where('type', isEqualTo: 'accesorios')
         .orderBy('category_label');
     return ref.snapshots().map((list) =>
-        list.docs.map((doc) => Category.fromFirebase(doc.data())).toList());
+        list.docs.map((doc) => Category.fromMap(doc.data())).toList());
   }
 
   ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan
@@ -35,7 +35,7 @@ class FirebaseFirestoreService {
         .where('type', isEqualTo: 'repuesto')
         .orderBy('category_label');
     return ref.snapshots().map((list) =>
-        list.docs.map((doc) => Category.fromFirebase(doc.data())).toList());
+        list.docs.map((doc) => Category.fromMap(doc.data())).toList());
   }
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
