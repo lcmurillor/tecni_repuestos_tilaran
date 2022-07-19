@@ -138,4 +138,18 @@ class FirebaseRealtimeService {
       'vendor': user.vendor
     });
   }
+
+  ///Permite actualizar los datos del usuario identificado por medio del UID, en casos
+  ///donde no todos los datos fueron alterados, el modelo del usuario guarda los datos
+  ///anteririos y los sobreescrible.
+  static void updateUser(UserModel user) {
+    _db.ref().child('users/${user.id}').update({
+      'birthdate': user.birthdate,
+      'identification': user.identification,
+      'identificationType': user.identificationType,
+      'lastname': user.lastname,
+      'name': user.name,
+      'phone': user.phone,
+    });
+  }
 }

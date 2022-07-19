@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
@@ -16,13 +17,12 @@ class UserInformationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Background(
-      useImg: true,
       useBackArrow: true,
       child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              const SizedBox(height: 200),
+              const SizedBox(height: 60),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -58,10 +58,10 @@ class _EditInfoForm extends StatelessWidget {
       child: Builder(builder: (context) {
         final editInfoFormProvider =
             Provider.of<EditInfoFormProvider>(context, listen: false);
-        return StreamBuilder(
-          stream: FirebaseFirestoreService.getUserByUid(
-              FirebaseAuthService.auth.currentUser!.uid),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return FutureBuilder(
+          future: FirebaseRealtimeService.getUserByUid(
+              uid: FirebaseAuthService.auth.currentUser!.uid),
+          builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
             if (snapshot.hasError) {
               return NotificationsService.showErrorSnackbar(
                   'Ha ocurrido un error a la hora de cargar los datos.');
@@ -78,7 +78,7 @@ class _EditInfoForm extends StatelessWidget {
                 children: [
                   ///Input correspondiente al nombre  para registrar el nuevo usuario.
                   CustomTextInput(
-                      controller: TextEditingController(text: user[0].name),
+                      controller: TextEditingController(text: user.name),
                       hintText: 'Nombre',
                       icon: Icons.person,
                       onChanged: (value) => editInfoFormProvider.name = value,
@@ -93,7 +93,7 @@ class _EditInfoForm extends StatelessWidget {
 
                   ///Input correspondiente al nombre  para registrar el nuevo usuario.
                   CustomTextInput(
-                      controller: TextEditingController(text: user[0].lastname),
+                      controller: TextEditingController(text: user.lastname),
                       hintText: 'Apellidos',
                       icon: Icons.person,
                       onChanged: (value) =>
@@ -109,7 +109,7 @@ class _EditInfoForm extends StatelessWidget {
 
                   ///Input correspondiente al Telefono para registrar el nuevo usuario.
                   CustomTextInput(
-                      controller: TextEditingController(text: user[0].phone),
+                      controller: TextEditingController(text: user.phone),
                       hintText: 'Teléfono',
                       icon: Icons.phone,
                       onChanged: (value) => editInfoFormProvider.phone = value,
@@ -133,7 +133,7 @@ class _EditInfoForm extends StatelessWidget {
                       controller: _dataController
                         ..text = DateFormat('dd-MM-yyyy').format(
                             DateTime.fromMillisecondsSinceEpoch(
-                                user[0].birthdate)),
+                                user.birthdate)),
                       readOnly: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -145,7 +145,7 @@ class _EditInfoForm extends StatelessWidget {
                         await showDatePicker(
                             context: context,
                             initialDate: DateTime.fromMillisecondsSinceEpoch(
-                                user[0].birthdate),
+                                user.birthdate),
                             firstDate: DateTime(1900),
                             lastDate: DateTime.now(),
                             locale: const Locale('es'),
@@ -165,12 +165,54 @@ class _EditInfoForm extends StatelessWidget {
                           }
                         });
                       }),
+                  //Input correspondiente del tipo de identificación para registrar el nuevo usuario.
+                  //TODO dar estilo a este coso
+                  DropdownButtonFormField<int>(
+                    value:
+                        1, //Este será el valor por defecto al dibujar el widget
+                    items: const [
+                      DropdownMenuItem(
+                        value: 1,
+                        child: Text('Cédula de identidad'),
+                      ),
+                      DropdownMenuItem(
+                        value: 2,
+                        child: Text('Persona Jurídica'),
+                      ),
+                      DropdownMenuItem(
+                        value: 3,
+                        child: Text('Pasaporte'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      editInfoFormProvider.identificationType = value ?? 1;
+                    },
+                  ),
+                  const SizedBox(height: 15),
+
+                  ///Input correspondiente de la identificación para registrar el nuevo usuario.
+                  CustomTextInput(
+                      controller:
+                          TextEditingController(text: user.identification),
+                      keyboardType: TextInputType.number,
+                      hintText: 'Cédula',
+                      icon: MdiIcons.cardAccountDetails,
+                      onChanged: (value) =>
+                          editInfoFormProvider.identification = value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'La cédula es obligatoria.';
+                        } else if (value.length < 7) {
+                          return 'El cédula debe contener 7 o más caracteres.';
+                        }
+                        return null;
+                      }),
 
                   const SizedBox(height: 5),
                   PrimaryButton(
                       text: 'Aplicar cambio',
                       onPressed: () =>
-                          _onFormSubmit(editInfoFormProvider, context, user[0]))
+                          _onFormSubmit(editInfoFormProvider, context, user))
                 ],
               ),
             );
@@ -195,8 +237,12 @@ void _onFormSubmit(
             : editInfoFormProvider.birthdate,
         email: user.email,
         id: user.id,
-        identification: user.identification,
-        identificationType: user.identificationType,
+        identification: (editInfoFormProvider.identification == '')
+            ? user.identification
+            : editInfoFormProvider.identification,
+        identificationType: (editInfoFormProvider.identificationType == 0)
+            ? user.identificationType
+            : editInfoFormProvider.identificationType,
         lastname: (editInfoFormProvider.lastname == "")
             ? user.lastname
             : editInfoFormProvider.lastname,
@@ -213,7 +259,11 @@ void _onFormSubmit(
           'No se cumple con las condiciones mínimas para actualizar la información.');
     }
   }).then((value) {
-    // FirebaseFirestoreService.updateUser(user);
-    Navigator.pop(context);
+    FirebaseRealtimeService.updateUser(user);
+    if (editInfoFormProvider.validateForm()) {
+      Navigator.pushReplacementNamed(context, 'profile');
+      NotificationsService.showSnackbar(
+          'Información actualizada correctamente.');
+    }
   });
 }

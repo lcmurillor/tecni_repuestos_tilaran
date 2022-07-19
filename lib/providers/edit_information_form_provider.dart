@@ -7,6 +7,8 @@ class EditInfoFormProvider extends ChangeNotifier {
   String lastname = '';
   String phone = '';
   int birthdate = 0;
+  String identification = '';
+  int identificationType = 0;
 
   ///Valida si el formulario cumple con las condiciones mínimas para iniciar al sesión de un usuario.
   bool validateForm() {
