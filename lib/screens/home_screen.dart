@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
-import 'package:animate_do/animate_do.dart';
 
 class HomeScreen extends StatelessWidget {
   ///Corresponde a la pantalla principal donde se pueden ver varios articulos de la tienda
@@ -10,28 +9,37 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: const CustomAppBar(),
-            drawer: const CustomDrawer(),
+    return Scaffold(
+      appBar: const CustomAppBar(),
+      drawer: const CustomDrawer(),
 
-            ///Construción de la lista de articulos para la pantalla principal.
-            body: FirebaseAnimatedList(
-              ///Resive la consulta de la base de datos.
-              query: FirebaseRealtimeService.getHomeProducts(),
-              defaultChild: const CustomProgressIndicator(),
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, snapshot, animation, index) {
-                if (!snapshot.exists) {
-                  return NotificationsService.showErrorSnackbar(
-                      'Ha ocurrido un error a la hora de cargar los datos.');
-                }
-                final product =
-                    Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
-                return FadeInRight(
-                  child: ItemCard(product: product),
-                );
-              },
-            )));
+      ///Construción de la lista de articulos para la pantalla principal.
+      body: FutureBuilder(
+        ///Hace un llamado a la base de datos y resive una lista de productos.
+        future: FirebaseRealtimeService.getHomeProducts(),
+
+        ///Construye los objetos en base a lo resivido en la base de datos.
+        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+          if (snapshot.hasError) {
+            return NotificationsService.showErrorSnackbar(
+                'Ha ocurrido un error a la hora de cargar los datos.');
+          }
+
+          if (!snapshot.hasData) {
+            return const CustomProgressIndicator();
+          }
+
+          final data = snapshot.data!;
+
+          return ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return ItemCard(product: data[index]);
+            },
+          );
+        },
+      ),
+    );
   }
 }

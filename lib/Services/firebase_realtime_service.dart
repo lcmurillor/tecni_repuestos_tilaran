@@ -12,24 +12,35 @@ class FirebaseRealtimeService {
   ///Permite seleccionar artículos de la base de datos de la categoría "products"
   ///para mostrar en la pantalla principal, estos produtos además se pueden filtrar
   ///según el rubro deseado por el usuario.
-  static Query getHomeProducts(
-      {bool filterByType = false,
-      String? type,
-      bool fillerByValue = false,
-      double fistValue = 0,
-      double lastValue = 1000000}) {
-    if (filterByType) {
-      return _db.ref().child('products').orderByChild('type').equalTo(type);
-    } else if (fillerByValue) {
-      return _db
-          .ref()
-          .child('products')
-          .orderByChild('price')
-          .startAt(fistValue)
-          .endAt(lastValue);
-    }
-    return _db.ref().child('products').limitToLast(100);
+  static Future<List<Product>> getHomeProducts() async {
+    List<Product> products = [];
+    final Query query = _db.ref().child('products').limitToLast(100);
+    final DataSnapshot dataSnapshot = await query.get();
+    final Map<String, dynamic> data =
+        jsonDecode(jsonEncode(dataSnapshot.value));
+    data.forEach((key, value) {
+      products.add(Product.fromMap(value));
+    });
+    return products;
   }
+  // static Query getHomeProducts(
+  //     {bool filterByType = false,
+  //     String? type,
+  //     bool fillerByValue = false,
+  //     double fistValue = 0,
+  //     double lastValue = 1000000}) {
+  //   if (filterByType) {
+  //     return _db.ref().child('products').orderByChild('type').equalTo(type);
+  //   } else if (fillerByValue) {
+  //     return _db
+  //         .ref()
+  //         .child('products')
+  //         .orderByChild('price')
+  //         .startAt(fistValue)
+  //         .endAt(lastValue);
+  //   }
+  //   return _db.ref().child('products').limitToLast(100);
+  // }
 
   ///Asigna a un objeto de tipo Product en la base de datos la dirección Url por la cual este
   ///objeto puede optener su imagen.
