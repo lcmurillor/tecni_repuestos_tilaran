@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
@@ -179,19 +182,29 @@ class _RegisterFormState extends State<_RegisterForm> {
           ///Input correspondiente del tipo de identificación para registrar el nuevo usuario.
           //TODO dar estilo a este coso
           DropdownButtonFormField<int>(
+            style: GoogleFonts.roboto(
+                fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+            decoration:
+                InputStyle.mainInput(hintText: '', icon: MdiIcons.fileAccount),
             value: 1, //Este será el valor por defecto al dibujar el widget
             items: const [
               DropdownMenuItem(
                 value: 1,
-                child: Text('Cédula de identidad'),
+                child: Text(
+                  'Cédula de identidad',
+                ),
               ),
               DropdownMenuItem(
                 value: 2,
-                child: Text('Persona Jurídica'),
+                child: Text(
+                  'Persona Jurídica',
+                ),
               ),
               DropdownMenuItem(
                 value: 3,
-                child: Text('Pasaporte'),
+                child: Text(
+                  'Pasaporte',
+                ),
               ),
             ],
             onChanged: (value) {
