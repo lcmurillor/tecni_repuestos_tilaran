@@ -87,8 +87,8 @@ class FirebaseFirestoreService {
   ///que se encuentre registrado en la amplicación.
   static Stream<List<Address>> getAddressesByUser(String uid) {
     final ref = _db.collection('userAddresses').where('userId', isEqualTo: uid);
-    return ref.snapshots().map((list) =>
-        list.docs.map((doc) => Address.fromFirebase(doc.data())).toList());
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Address.fromMap(doc.data())).toList());
   }
 
   ///Permite actualizar los datos del usuario identificado por medio del UID, en casos

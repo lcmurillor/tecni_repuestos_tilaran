@@ -109,8 +109,8 @@ class MyCartScreen extends StatelessWidget {
     );
   }
 
-  Container _invoiceTotalInfo() {
-    return Container(
+  SizedBox _invoiceTotalInfo() {
+    return SizedBox(
       width: double.infinity,
       child: Column(
         children: [

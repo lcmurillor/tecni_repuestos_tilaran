@@ -63,20 +63,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 return Column(
                   children: [
                     const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.center,
-                      //TODO: Ver si es posible empezar a implementar la foto de perfil por usuario.
-                      child: CircleAvatar(
-                        child: Text(
-                          user.name.substring(0, 1).toUpperCase() +
-                              '' +
-                              user.lastname.substring(0, 1).toUpperCase(),
-                          style: CustomTextStyle.robotoMedium
-                              .copyWith(fontSize: 50, color: Colors.white),
+                    Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          //TODO: Ver si es posible empezar a implementar la foto de perfil por usuario.
+                          child: CircleAvatar(
+                            child: Text(
+                              user.name.substring(0, 1).toUpperCase() +
+                                  '' +
+                                  user.lastname.substring(0, 1).toUpperCase(),
+                              style: CustomTextStyle.robotoMedium
+                                  .copyWith(fontSize: 50, color: Colors.white),
+                            ),
+                            backgroundColor: ColorStyle.mainGrey,
+                            maxRadius: 58,
+                          ),
                         ),
-                        backgroundColor: ColorStyle.mainGrey,
-                        maxRadius: 58,
-                      ),
+                        Container(
+                          height: 40,
+                          width: 40,
+                          color: Colors.amber,
+                        )
+                      ],
                     ),
                     const SizedBox(height: 20),
                     Text(

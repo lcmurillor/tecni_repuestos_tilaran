@@ -73,7 +73,8 @@ class CardAddress extends StatelessWidget {
                             context,
                             '¿Está seguro que desea eliminar la dirrección: ${address.address}?',
                             () {
-                          //FirebaseFirestoreService.deleteAddress(address.id);
+                          FirebaseRealtimeService.deleteAddress(
+                              key: address.id);
                           Navigator.pop(context);
                         })),
               ],

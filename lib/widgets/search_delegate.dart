@@ -103,7 +103,7 @@ class _PrductItem extends StatelessWidget {
             } else {
               final path = result.files.single.path;
               final name = product.id;
-              FirebaseStorageService.uploadFile(path!, name);
+              FirebaseStorageService.uploadProductFile(path!, name);
             }
           }
         }

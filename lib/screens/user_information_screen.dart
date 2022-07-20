@@ -3,6 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
+import 'package:tecni_repuestos/shared/preferences.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
@@ -166,8 +167,15 @@ class _EditInfoForm extends StatelessWidget {
                         });
                       }),
                   //Input correspondiente del tipo de identificación para registrar el nuevo usuario.
-                  //TODO dar estilo a este coso
                   DropdownButtonFormField<int>(
+                    style: CustomTextStyle.robotoSemiBold.copyWith(
+                        color: (Preferences.isDarkmode)
+                            ? Colors.white
+                            : Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                    decoration: InputStyle.mainInput(
+                        hintText: '', icon: MdiIcons.fileAccount),
+
                     value:
                         1, //Este será el valor por defecto al dibujar el widget
                     items: const [
@@ -259,7 +267,7 @@ void _onFormSubmit(
           'No se cumple con las condiciones mínimas para actualizar la información.');
     }
   }).then((value) {
-    FirebaseRealtimeService.updateUser(user);
+    FirebaseRealtimeService.updateUser(user: user);
     if (editInfoFormProvider.validateForm()) {
       Navigator.pushReplacementNamed(context, 'profile');
       NotificationsService.showSnackbar(

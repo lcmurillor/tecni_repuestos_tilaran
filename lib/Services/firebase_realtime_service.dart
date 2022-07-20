@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/widgets/widgets.dart';
 
 ///Ésta clase corresponde a la conexión a la base datos Firebase reialtime.
 ///En esta se ecuentra una instancia de conexión global y las respetivas consultas.
@@ -36,6 +37,12 @@ class FirebaseRealtimeService {
     _db.ref().child('products/$productId').update({"imageUrl": url});
   }
 
+  ///Asigna a un objeto de tipo User en la base de datos la dirección Url por la cual este
+  ///objeto puede optener su imagen.
+  static setUserImg({required String userId, required String url}) async {
+    _db.ref().child('users/$userId').update({"profileImg": url});
+  }
+
   ///Permite igualar el valor del id de de un producto en la base de datos con su valor
   ///autogenerado, con el fin de mitigar errores y problemas a la hora de hacr consultas
   ///mediante estosdatos.
@@ -50,8 +57,17 @@ class FirebaseRealtimeService {
   }
 
   ///Éste método obtiene una lista de objetos de tipo categoria los cuales correspondan.
-  static Query getCategories({required String type}) {
-    return _db.ref().child('categories').orderByChild('type').equalTo(type);
+  static Future<List<Category>> getCategories({required String type}) async {
+    List<Category> categories = [];
+    final Query query =
+        _db.ref().child('categories').orderByChild('type').equalTo(type);
+    final DataSnapshot dataSnapshot = await query.get();
+    final Map<String, dynamic> data =
+        jsonDecode(jsonEncode(dataSnapshot.value));
+    data.forEach((key, value) {
+      categories.add(Category.fromMap(value));
+    });
+    return categories;
   }
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
@@ -67,12 +83,21 @@ class FirebaseRealtimeService {
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
   ///la base de datos mediante la libreria de firebase. Es utilizado para mostrar los procutos filtrados pot tipo y tategoría.
-  static Query getFilteredProducts({required String description}) {
-    return _db
+  static Future<List<ItemCard>> getFilteredProducts(
+      {required String descripcion}) async {
+    List<ItemCard> products = [];
+    final Query query = _db
         .ref()
         .child('products')
         .orderByChild('category')
-        .equalTo(description);
+        .equalTo(descripcion);
+    final DataSnapshot dataSnapshot = await query.get();
+    final Map<String, dynamic> data =
+        jsonDecode(jsonEncode(dataSnapshot.value));
+    data.forEach((key, value) {
+      products.add(ItemCard(product: Product.fromMap(value)));
+    });
+    return products;
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
@@ -142,7 +167,7 @@ class FirebaseRealtimeService {
   ///Permite actualizar los datos del usuario identificado por medio del UID, en casos
   ///donde no todos los datos fueron alterados, el modelo del usuario guarda los datos
   ///anteririos y los sobreescrible.
-  static void updateUser(UserModel user) {
+  static void updateUser({required UserModel user}) {
     _db.ref().child('users/${user.id}').update({
       'birthdate': user.birthdate,
       'identification': user.identification,
@@ -151,5 +176,43 @@ class FirebaseRealtimeService {
       'name': user.name,
       'phone': user.phone,
     });
+  }
+
+  ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
+  ///que se encuentre registrado en la amplicación.
+  static Query getAddressesByUser({required String uid}) {
+    return _db.ref('addresses').orderByChild('userId').equalTo(uid);
+  }
+
+  ///Permiter actualizar los datos de dirrecion de un usuario. En casos
+  ///donde no todos los datos fueron alterados, el modelo del dirrecciones guarda los datos
+  ///anteririos y los sobreescrible.
+  static void updateAddress({required Address address}) {
+    _db.ref("addresses/${address.id}").update({
+      'address': address.address,
+      'canton': address.canton,
+      'id': address.id,
+      'province': address.province,
+      'last': address.last,
+    });
+  }
+
+  ///Agregan en la base de datoa de Firebase un nuevo registro de Dirreción de facturación
+  ///"address". Para esto se asignan los datos de un modelo previamente establecido.
+  static void setAddress({required Address address}) {
+    final String id = _db.ref('addresses').push().key!;
+    _db.ref('addresses/$id').set({
+      'address': address.address,
+      'canton': address.canton,
+      'id': id,
+      'province': address.province,
+      'userId': address.userId
+    });
+  }
+
+  ///Elimina un registro de la base de dato de tipo "addresses" "Dirreción de facturación"
+  ///identificado por su valor único.
+  static void deleteAddress({required String key}) {
+    _db.ref('addresses/$key').remove();
   }
 }

@@ -31,19 +31,16 @@ class CustomDrawer extends StatelessWidget {
           _moldelListTile(
               'Repuestos',
               Icons.settings,
-              CategoryScreen(
-                  query: FirebaseRealtimeService.getCategories(type: 'spare'),
-                  title: 'Repuestos',
-                  icon: Icons.settings),
+              const CategoryScreen(
+                  title: 'Repuestos', icon: Icons.settings, type: 'spare'),
               context),
           _moldelListTile(
               'Accesorios',
               Icons.sports_motorsports,
-              CategoryScreen(
-                  query:
-                      FirebaseRealtimeService.getCategories(type: 'accesorie'),
+              const CategoryScreen(
                   title: 'Accesorios',
-                  icon: Icons.sports_motorsports),
+                  icon: Icons.sports_motorsports,
+                  type: 'accesorie'),
               context),
 
           ///Pirmera condición para evaluar el estado de usuario. Si no se encuentra

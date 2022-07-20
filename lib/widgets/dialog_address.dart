@@ -20,7 +20,9 @@ class DialogAddress {
           return AlertDialog(
             elevation: 10,
             title: Text(
-              'Editar una dirección de facturación',
+              (address != null)
+                  ? 'Editar una dirección de facturación'
+                  : 'Añadir una dirreción de facturación',
               style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 30),
               textAlign: TextAlign.center,
             ),
@@ -137,8 +139,9 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
           canton: addressFormProvider.canton,
           id: 'undefined',
           province: addressFormProvider.province,
-          userId: FirebaseAuthService.auth.currentUser!.uid);
-      //    FirebaseFirestoreService.setAddress(_address);
+          userId: FirebaseAuthService.auth.currentUser!.uid,
+          last: false);
+      FirebaseRealtimeService.setAddress(address: _address);
       Navigator.pop(context);
     } else {
       NotificationsService.showErrorSnackbar(
@@ -160,13 +163,14 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
             province: (addressFormProvider.province == "")
                 ? address!.province
                 : addressFormProvider.province,
-            userId: address!.userId);
+            userId: address!.userId,
+            last: false);
       } else {
         NotificationsService.showErrorSnackbar(
             'No se cumple con las condiciones mínimas para actualizar la información.');
       }
     }).then((value) {
-      //   FirebaseFirestoreService.updateAddress(address!);
+      FirebaseRealtimeService.updateAddress(address: address!);
       Navigator.pop(context);
     });
   }
