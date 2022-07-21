@@ -47,7 +47,7 @@ class FirebaseStorageService {
       FirebaseRealtimeService.setUserImg(userId: name, url: url);
     } catch (e) {
       NotificationsService.showErrorSnackbar(
-          "Ha ocurrido un error a la hora de cargar la nueva imagen. Por favor, inmtentelo de nuevo.");
+          "Ha ocurrido un error a la hora de cargar la nueva imagen. Por favor, intentelo de nuevo.");
     }
   }
 }

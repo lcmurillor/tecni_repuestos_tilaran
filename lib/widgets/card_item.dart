@@ -73,9 +73,9 @@ class ItemCard extends StatelessWidget {
   ///Éste método construye la imagen dentro del card de productos con todos los
   ///aspectos decorativos.
   GestureDetector productImage(Size size) {
-    ///Al precionar por sobre ina imagen, ya sea vacía o una imagen de producto.
+    ///Al presionar por sobre una imagen, ya sea vacía o una imagen de producto.
     ///permite abrir la galería y seleccionar una imagen para el respectivo producto.
-    ///Evaúa que solo los administradores pedan cambiar la imagen.
+    ///Evalúa que solo los administradores puedan cambiar la imagen.
     return GestureDetector(
       onTap: () async {
         if (FirebaseAuthService.auth.currentUser != null) {
