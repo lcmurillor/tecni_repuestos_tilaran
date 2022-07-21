@@ -22,7 +22,7 @@ class ItemCard extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: Column(children: [
         productImage(size),
-        productInfo(),
+        productInfo(context),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           ///Cambia la tipografía para que sea compatible con el signo de colones.
           Text(
@@ -56,18 +56,23 @@ class ItemCard extends StatelessWidget {
   }
 
   ///Éste médoto constuye la información que correspone al artículo.
-  ListTile productInfo() {
-    return ListTile(
-        contentPadding: const EdgeInsets.all(0),
-        title: Text(product.description,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 18)),
-        subtitle: Text('Disponibles: ${product.quantity}',
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style:
-                GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w600)));
+  GestureDetector productInfo(context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, 'productDetails');
+      },
+      child: ListTile(
+          contentPadding: const EdgeInsets.all(0),
+          title: Text(product.description,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 18)),
+          subtitle: Text('Disponibles: ${product.quantity}',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: GoogleFonts.roboto(
+                  fontSize: 15, fontWeight: FontWeight.w600))),
+    );
   }
 
   ///Éste método construye la imagen dentro del card de productos con todos los

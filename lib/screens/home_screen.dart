@@ -15,10 +15,10 @@ class HomeScreen extends StatelessWidget {
 
       ///Construción de la lista de articulos para la pantalla principal.
       body: FutureBuilder(
-        ///Hace un llamado a la base de datos y resive una lista de productos.
+        ///Hace un llamado a la base de datos y recibe una lista de productos.
         future: FirebaseRealtimeService.getHomeProducts(),
 
-        ///Construye los objetos en base a lo resivido en la base de datos.
+        ///Construye los objetos en base a lo recibido en la base de datos.
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           if (snapshot.hasError) {
             return NotificationsService.showErrorSnackbar(

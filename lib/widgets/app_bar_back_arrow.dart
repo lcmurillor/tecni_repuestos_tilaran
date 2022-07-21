@@ -7,16 +7,25 @@ class CustomAppBarBackArrow extends StatelessWidget
   ///puede cambiar su acción o desactivarse, según la pantalla lo necesite.
   const CustomAppBarBackArrow({
     Key? key,
+    this.editIcon = true,
     this.useActions = true,
+    this.icon,
     this.actionIcon,
     this.onPressed,
     this.navigatorOnPressed,
+    this.iconColor1,
     this.iconColor,
+    this.size = 40,
+    this.size1 = 40,
   }) : super(key: key);
-
+  final bool editIcon;
   final bool useActions;
+  final IconData? icon;
   final IconData? actionIcon;
+  final Color? iconColor1;
   final Color? iconColor;
+  final double size;
+  final double size1;
   final void Function()? onPressed;
   final void Function()? navigatorOnPressed;
 
@@ -28,11 +37,17 @@ class CustomAppBarBackArrow extends StatelessWidget
       backgroundColor: Colors.transparent,
       elevation: 0,
 
-      leading: IconButton(
-        onPressed: navigatorOnPressed,
-        icon: const Icon(Icons.arrow_back),
-        iconSize: 40,
-      ),
+      leading: (editIcon)
+          ? IconButton(
+              onPressed: navigatorOnPressed,
+              icon: const Icon(Icons.arrow_back_outlined, color: Colors.black),
+              iconSize: size,
+            )
+          : IconButton(
+              onPressed: navigatorOnPressed,
+              icon: Icon(icon, color: iconColor1),
+              iconSize: size,
+            ),
 
       ///Evalua si es necesario el botón addicional o no, si lo es, construye el botón
       ///con su respectivo ícono, sinó no lo construye.
@@ -41,7 +56,7 @@ class CustomAppBarBackArrow extends StatelessWidget
               IconButton(
                 onPressed: onPressed,
                 icon: Icon(actionIcon, color: iconColor),
-                iconSize: 40,
+                iconSize: size1,
               )
             ]
           : null,
