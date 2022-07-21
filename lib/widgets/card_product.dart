@@ -6,9 +6,9 @@ import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
-class CardItem extends StatelessWidget {
+class CardProduct extends StatelessWidget {
   ///Contenedor que construye el card de producto con todo su contenido.
-  const CardItem({Key? key, required this.product}) : super(key: key);
+  const CardProduct({Key? key, required this.product}) : super(key: key);
   final Product product;
 
   @override

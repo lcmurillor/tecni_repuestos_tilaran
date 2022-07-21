@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                 final product =
                     Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
                 return FadeInRight(
-                  child: CardItem(product: product),
+                  child: CardProduct(product: product),
                 );
               },
             )));

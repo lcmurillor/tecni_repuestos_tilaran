@@ -95,21 +95,19 @@ class FirebaseRealtimeService {
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
   ///la base de datos mediante la libreria de firebase. Es utilizado para mostrar los procutos filtrados pot tipo y tategoría.
-  static Future<List<CardItem>> getFilteredProducts(
-      {required String descripcion}) async {
-    List<CardItem> products = [];
-    final Query query = _db
+  static Query getFilteredProducts({required String description}) {
+    return _db
         .ref()
         .child('products')
         .orderByChild('category')
-        .equalTo(descripcion);
-    final DataSnapshot dataSnapshot = await query.get();
-    final Map<String, dynamic> data =
-        jsonDecode(jsonEncode(dataSnapshot.value));
-    data.forEach((key, value) {
-      products.add(CardItem(product: Product.fromMap(value)));
-    });
-    return products;
+        .equalTo(description);
+
+    // final DataSnapshot dataSnapshot = await query.get();
+    // final Map<String, dynamic> data =
+    //     jsonDecode(jsonEncode(dataSnapshot.value));
+    // data.forEach((key, value) {
+    //   products.add(CardItem(product: Product.fromMap(value)));
+    // });
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
