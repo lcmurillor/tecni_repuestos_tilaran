@@ -67,7 +67,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       children: [
                         Align(
                           alignment: Alignment.center,
-                          //TODO: Ver si es posible empezar a implementar la foto de perfil por usuario.
                           child: CircleAvatar(
                             child: Text(
                               user.name.substring(0, 1).toUpperCase() +

@@ -12,34 +12,35 @@ class FirebaseRealtimeService {
   ///Permite seleccionar artículos de la base de datos de la categoría "products"
   ///para mostrar en la pantalla principal, estos produtos además se pueden filtrar
   ///según el rubro deseado por el usuario.
-  static Future<List<Product>> getHomeProducts() async {
-    List<Product> products = [];
-    final Query query = _db.ref().child('products').limitToLast(100);
-    final DataSnapshot dataSnapshot = await query.get();
-    final Map<String, dynamic> data =
-        jsonDecode(jsonEncode(dataSnapshot.value));
-    data.forEach((key, value) {
-      products.add(Product.fromMap(value));
-    });
-    return products;
+  static Query getHomeProducts(
+      {bool filterByType = false,
+      String? type,
+      bool fillerByValue = false,
+      double fistValue = 0,
+      double lastValue = 1000000}) {
+    if (filterByType) {
+      return _db.ref().child('products').orderByChild('type').equalTo(type);
+    } else if (fillerByValue) {
+      return _db
+          .ref()
+          .child('products')
+          .orderByChild('price')
+          .startAt(fistValue)
+          .endAt(lastValue);
+    }
+    return _db.ref().child('products').limitToLast(100);
   }
-  // static Query getHomeProducts(
-  //     {bool filterByType = false,
-  //     String? type,
-  //     bool fillerByValue = false,
-  //     double fistValue = 0,
-  //     double lastValue = 1000000}) {
-  //   if (filterByType) {
-  //     return _db.ref().child('products').orderByChild('type').equalTo(type);
-  //   } else if (fillerByValue) {
-  //     return _db
-  //         .ref()
-  //         .child('products')
-  //         .orderByChild('price')
-  //         .startAt(fistValue)
-  //         .endAt(lastValue);
-  //   }
-  //   return _db.ref().child('products').limitToLast(100);
+
+  //   static Future<List<Product>> getHomeProducts() async {
+  //   List<Product> products = [];
+  //   final Query query = _db.ref().child('products').limitToLast(100);
+  //   final DataSnapshot dataSnapshot = await query.get();
+  //   final Map<String, dynamic> data =
+  //       jsonDecode(jsonEncode(dataSnapshot.value));
+  //   data.forEach((key, value) {
+  //     products.add(Product.fromMap(value));
+  //   });
+  //   return products;
   // }
 
   ///Asigna a un objeto de tipo Product en la base de datos la dirección Url por la cual este
@@ -94,9 +95,9 @@ class FirebaseRealtimeService {
 
   ///Este método obtiene una lista de objetos de tipo producto que obtiene desde
   ///la base de datos mediante la libreria de firebase. Es utilizado para mostrar los procutos filtrados pot tipo y tategoría.
-  static Future<List<ItemCard>> getFilteredProducts(
+  static Future<List<CardItem>> getFilteredProducts(
       {required String descripcion}) async {
-    List<ItemCard> products = [];
+    List<CardItem> products = [];
     final Query query = _db
         .ref()
         .child('products')
@@ -106,7 +107,7 @@ class FirebaseRealtimeService {
     final Map<String, dynamic> data =
         jsonDecode(jsonEncode(dataSnapshot.value));
     data.forEach((key, value) {
-      products.add(ItemCard(product: Product.fromMap(value)));
+      products.add(CardItem(product: Product.fromMap(value)));
     });
     return products;
   }
@@ -191,8 +192,21 @@ class FirebaseRealtimeService {
 
   ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
   ///que se encuentre registrado en la amplicación.
-  static Query getAddressesByUser({required String uid}) {
-    return _db.ref('addresses').orderByChild('userId').equalTo(uid);
+  static Future<List<Address>> getAddressesByUser({required String uid}) async {
+    //return _db.ref('addresses').orderByChild('userId').equalTo(uid);
+    List<Address> addresses = [];
+    final Query query =
+        _db.ref().child('addresses').orderByChild('userId').equalTo(uid);
+    final DataSnapshot dataSnapshot = await query.get();
+    if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+      final Map<String, dynamic> data =
+          jsonDecode(jsonEncode(dataSnapshot.value));
+      data.forEach((key, value) {
+        addresses.add(Address.fromMap(value));
+      });
+    }
+
+    return addresses;
   }
 
   ///Permiter actualizar los datos de dirrecion de un usuario. En casos
@@ -217,7 +231,8 @@ class FirebaseRealtimeService {
       'canton': address.canton,
       'id': id,
       'province': address.province,
-      'userId': address.userId
+      'userId': address.userId,
+      'last': address.last,
     });
   }
 

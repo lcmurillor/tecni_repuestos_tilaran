@@ -33,7 +33,7 @@ class ProductsFilterScreen extends StatelessWidget {
 
             ///Construye los objetos en base a lo resivido en la base de datos.
             builder:
-                (BuildContext context, AsyncSnapshot<List<ItemCard>> snapshot) {
+                (BuildContext context, AsyncSnapshot<List<CardItem>> snapshot) {
               if (snapshot.hasError) {
                 return NotificationsService.showErrorSnackbar(
                     'Ha ocurrido un error a la hora de cargar los datos.');
