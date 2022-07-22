@@ -26,10 +26,10 @@ class CategoryScreen extends StatelessWidget {
         ///Construción de la lista de categorias para mostar en la pantalla.
         body: FutureBuilder(
 
-            ///Hace un llamado a la base de datos y resive una lista de categorias.
+            ///Hace un llamado a la base de datos y recibe una lista de categorias.
             future: FirebaseRealtimeService.getCategories(type: type),
 
-            ///Construye los objetos en base a lo resivido en la base de datos.
+            ///Construye los objetos en base a lo recibido en la base de datos.
             builder:
                 (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
               if (snapshot.hasError) {

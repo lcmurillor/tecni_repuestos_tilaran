@@ -12,4 +12,3 @@ Está desarrollada con un enfoque principal en dispositivos móviles Android (ce
 
 ### Conoce a nuestro equipo de desarrollo
 - [Luis Carlos Murillo Rosales: Lider del proyecto, desarrollador y diseñador](https://www.linkedin.com/in/lcmurillor/)
-- [Hansel García López: Desarrollador](https://www.linkedin.com/in/hansel-garc%C3%ADa-l%C3%B3pez-28558a214/)

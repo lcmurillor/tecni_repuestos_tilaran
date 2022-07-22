@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
@@ -68,21 +69,71 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         Align(
                           alignment: Alignment.center,
                           child: CircleAvatar(
-                            child: Text(
-                              user.name.substring(0, 1).toUpperCase() +
-                                  '' +
-                                  user.lastname.substring(0, 1).toUpperCase(),
-                              style: CustomTextStyle.robotoMedium
-                                  .copyWith(fontSize: 50, color: Colors.white),
-                            ),
-                            backgroundColor: ColorStyle.mainGrey,
-                            maxRadius: 58,
-                          ),
+                              child: user.profileImg == ""
+                                  ? Text(
+                                      user.name.substring(0, 1).toUpperCase() +
+                                          '' +
+                                          user.lastname
+                                              .substring(0, 1)
+                                              .toUpperCase(),
+                                      style: CustomTextStyle.robotoMedium
+                                          .copyWith(
+                                              fontSize: 50,
+                                              color: Colors.white),
+                                    )
+                                  : const SizedBox(height: 0, width: 0),
+                              backgroundColor: ColorStyle.mainGrey,
+                              backgroundImage: NetworkImage(user.profileImg),
+                              maxRadius: 58,
+                              onBackgroundImageError: user.profileImg != ""
+                                  ? (e, stackTrace) {
+                                      print('e: ${e}');
+                                    }
+                                  : null),
                         ),
-                        Container(
-                          height: 40,
-                          width: 40,
-                          color: Colors.amber,
+                        Positioned(
+                          left: 215,
+                          bottom: 2,
+                          child: Container(
+                            height: 35,
+                            width: 35,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: ColorStyle.mainRed),
+                            child: IconButton(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              color: Colors.white,
+                              icon: const Icon(Icons.edit, size: 20),
+                              onPressed: () async {
+                                if (FirebaseAuthService.auth.currentUser !=
+                                    null) {
+                                  UserModel user = await FirebaseRealtimeService
+                                      .getUserByUid(
+                                          uid: FirebaseAuthService
+                                              .auth.currentUser!.uid);
+                                  if (user.administrator) {
+                                    final result = await FilePicker.platform
+                                        .pickFiles(
+                                            allowMultiple: false,
+                                            type: FileType.custom,
+                                            allowedExtensions: ['png', 'jpg']);
+                                    if (result == null) {
+                                      NotificationsService.showSnackbar(
+                                          'No ha selecionado ninguna imagen.');
+                                    } else {
+                                      final path = result.files.single.path;
+                                      final name = user.id;
+                                      FirebaseStorageService.uploadUserFile(
+                                          path!, name);
+                                      Navigator.pushReplacementNamed(
+                                          context, 'profile');
+                                    }
+                                  }
+                                }
+                              },
+                            ),
+                          ),
                         )
                       ],
                     ),

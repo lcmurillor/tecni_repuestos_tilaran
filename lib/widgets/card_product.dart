@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/screens/product_details_screen.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
@@ -22,7 +23,7 @@ class CardProduct extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: Column(children: [
         productImage(size),
-        productInfo(),
+        productInfo(context),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           ///Cambia la tipografía para que sea compatible con el signo de colones.
           Text(
@@ -56,26 +57,35 @@ class CardProduct extends StatelessWidget {
   }
 
   ///Éste médoto constuye la información que correspone al artículo.
-  ListTile productInfo() {
-    return ListTile(
-        contentPadding: const EdgeInsets.all(0),
-        title: Text(product.description,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 18)),
-        subtitle: Text('Disponibles: ${product.quantity}',
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style:
-                GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w600)));
+  GestureDetector productInfo(context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductDetailsScreen(product: product)));
+        //Navigator.pushNamed(context, 'productDetails');
+      },
+      child: ListTile(
+          contentPadding: const EdgeInsets.all(0),
+          title: Text(product.description,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 18)),
+          subtitle: Text('Disponibles: ${product.quantity}',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: GoogleFonts.roboto(
+                  fontSize: 15, fontWeight: FontWeight.w600))),
+    );
   }
 
   ///Éste método construye la imagen dentro del card de productos con todos los
   ///aspectos decorativos.
   GestureDetector productImage(Size size) {
-    ///Al precionar por sobre ina imagen, ya sea vacía o una imagen de producto.
+    ///Al presionar por sobre una imagen, ya sea vacía o una imagen de producto.
     ///permite abrir la galería y seleccionar una imagen para el respectivo producto.
-    ///Evaúa que solo los administradores pedan cambiar la imagen.
+    ///Evalúa que solo los administradores puedan cambiar la imagen.
     return GestureDetector(
       onTap: () async {
         if (FirebaseAuthService.auth.currentUser != null) {
