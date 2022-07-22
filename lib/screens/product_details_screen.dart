@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
@@ -34,6 +35,16 @@ class ProductDetailsScreen extends StatelessWidget {
                 Text(product.id),
                 Text(product.code),
                 Text(product.imageUrl),
+                product.imageUrl.startsWith('http')
+                    ? FadeInImage(
+                        placeholder:
+                            const AssetImage('assets/placeholder-image.png'),
+                        image: NetworkImage(product.imageUrl),
+                        placeholderFit: BoxFit.cover,
+                        fit: BoxFit.contain)
+                    : const Image(
+                        image: AssetImage('assets/placeholder-image.png'),
+                        fit: BoxFit.cover),
               ],
             )),
       ),

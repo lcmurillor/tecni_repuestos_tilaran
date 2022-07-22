@@ -64,7 +64,6 @@ class CardProduct extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => ProductDetailsScreen(product: product)));
-        //Navigator.pushNamed(context, 'productDetails');
       },
       child: ListTile(
           contentPadding: const EdgeInsets.all(0),
