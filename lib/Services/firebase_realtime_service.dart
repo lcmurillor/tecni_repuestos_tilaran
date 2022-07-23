@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/services/services.dart';
-import 'package:tecni_repuestos/widgets/widgets.dart';
 
 ///Ésta clase corresponde a la conexión a la base datos Firebase reialtime.
 ///En esta se ecuentra una instancia de conexión global y las respetivas consultas.
@@ -124,6 +123,13 @@ class FirebaseRealtimeService {
       user = UserModel.fromMap(value);
     });
     return user;
+  }
+
+  ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
+  ///y hace el llamado al método de conversión para retornar un usuario con todos sus
+  ///atributos.
+  static Query getUserQueryByUid({required String uid}) {
+    return _db.ref().child('users').orderByChild('id').equalTo(uid);
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo

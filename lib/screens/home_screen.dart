@@ -11,27 +11,29 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            appBar: const CustomAppBar(),
-            drawer: const CustomDrawer(),
+      child: Scaffold(
+        appBar: const CustomAppBar(),
+        drawer: const CustomDrawer(),
 
-            ///Construción de la lista de articulos para la pantalla principal.
-            body: FirebaseAnimatedList(
-              ///Resive la consulta de la base de datos.
-              query: FirebaseRealtimeService.getHomeProducts(),
-              defaultChild: const CustomProgressIndicator(),
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, snapshot, animation, index) {
-                if (!snapshot.exists) {
-                  return NotificationsService.showErrorSnackbar(
-                      'Ha ocurrido un error a la hora de cargar los datos.');
-                }
-                final product =
-                    Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
-                return FadeInRight(
-                  child: CardProduct(product: product),
-                );
-              },
-            )));
+        ///Construción de la lista de articulos para la pantalla principal.
+        body: FirebaseAnimatedList(
+          ///Resive la consulta de la base de datos.
+          query: FirebaseRealtimeService.getHomeProducts(),
+          defaultChild: const CustomProgressIndicator(),
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (context, snapshot, animation, index) {
+            if (!snapshot.exists) {
+              return NotificationsService.showErrorSnackbar(
+                  'Ha ocurrido un error a la hora de cargar los datos.');
+            }
+            final product =
+                Product.fromMap(jsonDecode(jsonEncode(snapshot.value)));
+            return FadeInRight(
+              child: CardProduct(product: product),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
