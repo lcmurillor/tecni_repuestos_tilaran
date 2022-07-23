@@ -12,11 +12,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-<<<<<<< HEAD
-        appBar: AppbarMethod(),
-        body: const Center(
-          child: Text('Tecni Repuestos Tilarán'),
-=======
         appBar: const CustomAppBar(),
         drawer: const CustomDrawer(),
 
@@ -37,7 +32,6 @@ class HomeScreen extends StatelessWidget {
               child: CardProduct(product: product),
             );
           },
->>>>>>> 0dfb15e22d6feb1338d920a263bad5ed944cd89c
         ),
       ),
     );
