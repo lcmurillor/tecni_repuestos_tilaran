@@ -135,7 +135,7 @@ class FirebaseRealtimeService {
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Future<UserModel> getUserByEmail({required String email, user}) async {
+  static Future<UserModel> getUserByEmail({required String email}) async {
     late UserModel user = UserModel(
         birthdate: 0,
         email: '',

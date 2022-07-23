@@ -72,9 +72,19 @@ class FirebaseAuthService {
 
   ///Recive el correo de un usuario registrado en la aplicación y envía un correo a este
   ///en el cual puede cambiar su contraseña.
-  static requestPassword(String email, BuildContext context) async {
-    await auth.sendPasswordResetEmail(email: email);
-    Navigator.pushReplacementNamed(context, 'login');
+  static Future<bool> requestPassword(
+      String email, BuildContext context) async {
+    bool error = false;
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        error = true;
+        NotificationsService.showErrorSnackbar(
+            'El usuario indicado no existe.');
+      }
+    }
+    return error;
   }
 
   ///Revice la contraseña del usuario registrado actualmente y la contraseña que ele usuario
