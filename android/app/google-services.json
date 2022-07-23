@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "883806792949-nsr81v6bk3tuuoves3c2p0o479d49o79.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.cr.tecnirepuestos",
+            "certificate_hash": "f28562e6ab50aa72ab842453d4e83b15de535b17"
+          }
+        },
+        {
           "client_id": "883806792949-08pddvl7ra6a05ohivjp3ribtvun2h1u.apps.googleusercontent.com",
           "client_type": 3
         }

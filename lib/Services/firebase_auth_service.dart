@@ -7,12 +7,12 @@ import 'package:tecni_repuestos/screens/screens.dart';
 ///Ésta clase corresponde a la conección que se tiene con la base de datos Firebase
 ///relacionada con el apartado de credenciales y autetificación de usuario.
 class FirebaseAuthService {
-  /// Valor estatatico para hacer llamado a éste en diferentes partes del programa
+  /// Valor estático para hacer llamado a éste en diferentes partes del programa
   /// retorna los valores del usuario y el estado de la instancia registrada.
   static final FirebaseAuth auth = FirebaseAuth.instance;
 
-  ///Médoto para inicicar sesión mediante el correo y la contraseña,
-  ///Valida si el usario existe o si los datos incresados corresponden a un usuario registrado
+  ///Médoto para iniciar sesión mediante el correo y la contraseña,
+  ///Valida si el usuario existe o si los datos ingresados corresponden a un usuario registrado
   ///sinó es así, retorna un mensaje en pantalla.
   ///Guarda los datos en un objeto de tipo User.
   static signIn(String email, String password, BuildContext context) async {
@@ -31,8 +31,8 @@ class FirebaseAuthService {
     }
   }
 
-  ///Permite serra la sesión de un usario registrado, además de esto navega a la página
-  ///principal y con esto actualiza las opciones disponibles en el menú laterañ.
+  ///Permite cerrar la sesión de un usuario registrado, además de esto navega a la página
+  ///principal y con esto actualiza las opciones disponibles en el menú lateral.
   static signOut(BuildContext context) async {
     try {
       await auth.signOut();
@@ -56,13 +56,13 @@ class FirebaseAuthService {
 
       ///Asigna el UID al objeto de tipo usuario y manda este objeto a la base de datos.
       userModel.id = userCredential.user!.uid;
-      FirebaseCloudService.setUser(userModel);
+      FirebaseRealtimeService.setUser(user: userModel);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         NotificationsService.showErrorSnackbar(
-            'La contraseña indica no cumple con los requerimintos mínimos.');
+            'La contraseña indica no cumple con los requerimientos mínimos.');
       } else if (e.code == 'email-already-in-use') {
         NotificationsService.showErrorSnackbar(
             'Ya existe una cuenta registrada con este correo.');
@@ -74,7 +74,36 @@ class FirebaseAuthService {
   ///en el cual puede cambiar su contraseña.
   static requestPassword(String email, BuildContext context) async {
     await auth.sendPasswordResetEmail(email: email);
-    Future.delayed(const Duration(milliseconds: 3000))
-        .then((value) => Navigator.pushReplacementNamed(context, 'login'));
+    Navigator.pushReplacementNamed(context, 'login');
+  }
+
+  ///Revice la contraseña del usuario registrado actualmente y la contraseña que ele usuario
+  ///desea definir como nueva contraseña, si la contraseña anterir es valida, realiza el cambio de las credenciales
+  ///del usuario.
+  static updatePassword(
+      String currentPassword, String newPassword, BuildContext context) async {
+    try {
+      //Evalua si la contraseña actual es la contraseña del usuario registado
+      await auth
+          .signInWithEmailAndPassword(
+              email: auth.currentUser!.email!, password: currentPassword)
+          .then((currentUser) {
+        ///Si se cumple con las credenciales del usuario, se utiliza los métodos de
+        ///firebase para actualizar la contraseña.
+        currentUser.user!.updatePassword(newPassword).then((_) {
+          NotificationsService.showSnackbar(
+              'Su contraseña fue cambiada exitosamente.');
+          Navigator.pop(context);
+        }).catchError((error) {
+          NotificationsService.showErrorSnackbar(
+              'Su contraseña no pudo ser cambiada porque no cumple los requisitos mínimos.');
+        });
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        NotificationsService.showErrorSnackbar(
+            'La contraseña actual no coincide.');
+      }
+    }
   }
 }

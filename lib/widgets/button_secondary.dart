@@ -23,7 +23,8 @@ class SecundaryButton extends StatelessWidget {
             overlayColor: MaterialStateProperty.all<Color>(Colors.transparent)),
         onPressed: () => onPressed(),
         child: Text(text,
-            style: CustomTextStyle.robotoMedium
-                .copyWith(color: ColorStyle.mainBlue, fontSize: fontSize)));
+            style: CustomTextStyle.robotoMedium.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: fontSize)));
   }
 }

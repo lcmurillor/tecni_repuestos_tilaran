@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
@@ -11,10 +10,10 @@ class CategoryScreen extends StatelessWidget {
   ///o accesorio que está buscando. Seguidamente despegará una pantalla donde se muestre una lista de
   ///productos que corespondan a la categoria que a especificado.
   const CategoryScreen(
-      {Key? key, required this.title, required this.stream, required this.icon})
+      {Key? key, required this.title, required this.icon, required this.type})
       : super(key: key);
   final String title;
-  final Stream<List<Category>> stream;
+  final String type;
   final IconData icon;
 
   @override
@@ -25,12 +24,12 @@ class CategoryScreen extends StatelessWidget {
         drawer: const CustomDrawer(),
 
         ///Construción de la lista de categorias para mostar en la pantalla.
-        body: StreamBuilder(
+        body: FutureBuilder(
 
-            ///Hace un llamado a la base de datos y resive una lista de categorias.
-            stream: stream,
+            ///Hace un llamado a la base de datos y recibe una lista de categorias.
+            future: FirebaseRealtimeService.getCategories(type: type),
 
-            ///Construye los objetos en base a lo resivido en la base de datos.
+            ///Construye los objetos en base a lo recibido en la base de datos.
             builder:
                 (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
               if (snapshot.hasError) {
@@ -44,19 +43,29 @@ class CategoryScreen extends StatelessWidget {
 
               final data = snapshot.data!;
 
+              ///Ordena el arreglo de datos alfabéticamente.
+              final orderData = data
+                ..sort((a, b) => a.description.compareTo(b.description));
+
               return Column(children: [
-                CategoryTitle(
-                  size: size,
-                  icon: icon,
-                  text: title,
-                ),
+                ///Construye el encabezado con el título de las categorías.
+                CategoryTitle(size: size, icon: icon, text: title),
+
+                ///Construye la lista de categorías.
                 Flexible(
                   child: ListView.separated(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: data.length,
+                      itemCount: orderData.length,
                       itemBuilder: (context, index) => ListTile(
                           title: Text(
-                            data[index].categoryLabel,
+                            orderData[index]
+                                    .description
+                                    .substring(0, 1)
+                                    .toUpperCase() +
+                                orderData[index]
+                                    .description
+                                    .substring(1)
+                                    .toLowerCase(),
                             style: CustomTextStyle.robotoMedium
                                 .copyWith(fontSize: 18),
                           ),
@@ -65,12 +74,18 @@ class CategoryScreen extends StatelessWidget {
                             color: ColorStyle.mainRed,
                           ),
                           onTap: () {
-                            Route route = CupertinoPageRoute(
+                            Route route = MaterialPageRoute(
                                 builder: (context) => ProductsFilterScreen(
-                                      category: data[index],
-                                      icon: Icons.settings,
-                                      title: data[index].categoryLabel,
-                                    ));
+                                    category: orderData[index],
+                                    icon: icon,
+                                    title: orderData[index]
+                                            .description
+                                            .substring(0, 1)
+                                            .toUpperCase() +
+                                        orderData[index]
+                                            .description
+                                            .substring(1)
+                                            .toLowerCase()));
                             Navigator.push(context, route);
                           }),
                       separatorBuilder: (_, __) => const Divider()),

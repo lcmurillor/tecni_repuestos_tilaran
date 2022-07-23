@@ -19,7 +19,7 @@ class PrimaryButton extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return MaterialButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        color: ColorStyle.mainRed,
+        color: Theme.of(context).colorScheme.primary,
         child: SizedBox(
           width: size.width * 0.80,
           height: size.width * 0.13,

@@ -16,44 +16,43 @@ class PasswordRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return ChangeNotifierProvider(
-        create: (_) => RequestPasswordFormProvider(),
-        child: Builder(builder: (context) {
-          return Scaffold(
-              body: Background(
-            useImg: true,
-            child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+    return Scaffold(
+        body: Background(
+      useImg: true,
+      useBackArrow: true,
+      child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              const SizedBox(height: 180),
+              Card(
+
+                  ///Título, subtítulo y formulario del card de "¿Olvidaste tu contraseña?".
+                  child: Padding(
+                padding: const EdgeInsets.all(15.0),
                 child: Column(
                   children: [
-                    const SizedBox(height: 220),
-                    CardContainer(
+                    const SizedBox(height: 10),
+                    Text('¿Olvidaste tu contraseña?',
+                        textAlign: TextAlign.center,
+                        style: CustomTextStyle.robotoSemiBold
+                            .copyWith(fontSize: size.width * 0.08)),
+                    const SizedBox(height: 20),
+                    Text(
+                        'Por favor, ingrese el correo electrónico con el que está regsistrado.',
+                        textAlign: TextAlign.center,
+                        style: CustomTextStyle.robotoMedium
+                            .copyWith(fontSize: size.width * 0.04)),
+                    const SizedBox(height: 20),
 
-                        ///Título, subtítulo y formulario del card de "¿Olvidaste tu contraseña?".
-                        child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        Text('¿Olvidaste tu contraseña?',
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyle.robotoSemiBold
-                                .copyWith(fontSize: size.width * 0.08)),
-                        const SizedBox(height: 20),
-                        Text(
-                            'Por favor, ingrese el correo electrónico con el que está regsistrado.',
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyle.robotoMedium.copyWith(
-                                fontSize: size.width * 0.04,
-                                color: ColorStyle.mainGrey)),
-                        const SizedBox(height: 20),
-
-                        ///LLamado al formulario.
-                        const _PasswordForm()
-                      ],
-                    ))
+                    ///LLamado al formulario.
+                    const _PasswordForm()
                   ],
-                )),
-          ));
-        }));
+                ),
+              ))
+            ],
+          )),
+    ));
   }
 }
 
@@ -65,32 +64,38 @@ class _PasswordForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final requestPasswordFormProvider =
-        Provider.of<RequestPasswordFormProvider>(context, listen: false);
-    return Form(
-      key: requestPasswordFormProvider.formKey,
-      child: Column(children: [
-        CustomTextInput(
-            height: 20,
-            hintText: 'Correo Electrónico',
-            icon: Icons.email,
-            onChanged: (value) => requestPasswordFormProvider.email = value,
-            keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-              if (!EmailValidator.validate(value ?? '')) {
-                return 'El correo no es válido.';
-              } else {
-                return null;
-              }
-            }),
-        PrimaryButton(
-            text: 'Solicitar cambio',
-            onPressed: () =>
-                _onFormSubmit(requestPasswordFormProvider, context)),
-        SecundaryButton(
-            text: 'Regresar',
-            onPressed: () => Navigator.pushReplacementNamed(context, 'login'))
-      ]),
+    return ChangeNotifierProvider(
+      create: (_) => RequestPasswordFormProvider(),
+      child: Builder(builder: (context) {
+        final requestPasswordFormProvider =
+            Provider.of<RequestPasswordFormProvider>(context, listen: false);
+        return Form(
+          key: requestPasswordFormProvider.formKey,
+          child: Column(children: [
+            CustomTextInput(
+                height: 20,
+                hintText: 'Correo Electrónico',
+                icon: Icons.email,
+                onChanged: (value) => requestPasswordFormProvider.email = value,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (!EmailValidator.validate(value ?? '')) {
+                    return 'El correo no es válido.';
+                  } else {
+                    return null;
+                  }
+                }),
+            PrimaryButton(
+                text: 'Solicitar cambio',
+                onPressed: () =>
+                    _onFormSubmit(requestPasswordFormProvider, context)),
+            SecundaryButton(
+                text: 'Regresar',
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, 'login'))
+          ]),
+        );
+      }),
     );
   }
 }
@@ -99,9 +104,9 @@ class _PasswordForm extends StatelessWidget {
 ///si éste está registrado.
 void _onFormSubmit(RequestPasswordFormProvider requestPasswordFormProvider,
     BuildContext context) {
-  FirebaseCloudService.getUserByEmail(requestPasswordFormProvider.email).then(
-      (UserModel? user) =>
-          _validateData(user, requestPasswordFormProvider, context));
+  // FirebaseFirestoreService.getUserByEmail(requestPasswordFormProvider.email)
+  //     .then((UserModel? user) =>
+  //         _validateData(user, requestPasswordFormProvider, context));
 }
 
 ///Función de evalución final, evalua que el formulario cumpla con los requerimientos

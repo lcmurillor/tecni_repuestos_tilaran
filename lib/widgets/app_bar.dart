@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tecni_repuestos/screens/placeholder_screen.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
+import 'package:tecni_repuestos/widgets/search_delegate.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  ///Este es la barra de menú superior con la herramienta de busqueda y que desplega el menú lateral.
+  ///Esta es la barra de menú superior con la herramienta de busqueda y que desplega el menú lateral.
   const CustomAppBar({
     Key? key,
   }) : super(key: key);
@@ -21,6 +21,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               width: 280,
               height: 35,
               child: TextField(
+                  onTap: () {
+                    showSearch(
+                        context: context, delegate: ProductsSearchDelegate());
+                  },
                   textAlignVertical: TextAlignVertical.bottom,
                   decoration: inputDecoration()))),
       leading: Builder(
@@ -43,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {
             Navigator.pushReplacement(
                 context,
-                CupertinoPageRoute(
+                MaterialPageRoute(
                     builder: (context) =>
                         const PlaceholderScreen(text: 'Carrito de compra')));
           },

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
+///Esta clase permite gestionar de manera controlada los diferentes tipos de cuadros de dialogo que son
+///usados por la aplicación para dar información o advertir al usuario.
 class NotificationsService {
   static GlobalKey<ScaffoldMessengerState> messengerKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -38,5 +40,70 @@ class NotificationsService {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)));
     messengerKey.currentState!.showSnackBar(snackBar);
+  }
+
+  ///Dialogo para indicar al usuario que está a punto de eliminar un elemento,
+  ///para que este método sea reutilizable para diferentes pantallas, se debe indicar
+  ///en el "text" un mensaje como "¿Está seguro que desea eliminar ... ?" seguido del nombre
+  ///o atributo descriptivo de lo que se busca eliminar y en la función "onPressed" se realiza el
+  ///llamado a la bae de datos al mento específico.
+  static displayDeleteDialog(
+      BuildContext context, String text, void Function()? onPressed) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+              elevation: 10,
+              title: Text('Eliminar',
+                  style: CustomTextStyle.robotoExtraBold.copyWith(fontSize: 35),
+                  textAlign: TextAlign.center),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(text,
+                      style: CustomTextStyle.robotoMedium,
+                      textAlign: TextAlign.center)
+                ],
+              ),
+              actions: actions(context, onPressed));
+        });
+  }
+
+  ///Esta lista corresponde a los dos botones que se encuentran en la parte inferior del cuadro de dialogo.
+  static List<Widget> actions(
+      BuildContext context, void Function()? onPressed) {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: TextButton(
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.all(0)),
+                overlayColor:
+                    MaterialStateProperty.all<Color>(Colors.transparent)),
+            onPressed: onPressed,
+            child: Text(
+              'Aceptar',
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            )),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: TextButton(
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.all(0)),
+                overlayColor:
+                    MaterialStateProperty.all<Color>(Colors.transparent)),
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Cancelar',
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            )),
+      ),
+    ];
   }
 }

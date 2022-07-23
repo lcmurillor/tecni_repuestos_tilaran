@@ -6,13 +6,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 class Background extends StatelessWidget {
   final Widget child;
   final bool useImg;
+  final bool useBackArrow;
 
   ///Es la imagen que se encuentra de fondo en multiples pantallas de la aplicación.
-  ///dentro de esta se encuentras los elementos que conforman el diseño visual y recibe
+  ///Dentro de esta se encuentras los elementos que conforman el diseño visual y recibe
   ///por parametros el widget el cual se espera construir ensima de este fondo y una indicación
-  ///para saber si es nesario mostrar o no el logo de la empresa.
-  const Background({Key? key, required this.child, this.useImg = false})
-      : super(key: key);
+  ///para saber si es necesario mostrar o no el logo de la empresa.
+  const Background({
+    Key? key,
+    required this.child,
+    this.useImg = false,
+    this.useBackArrow = false,
+  }) : super(key: key);
   final boxDecoration = const BoxDecoration(
       gradient: LinearGradient(colors: [
     Color.fromRGBO(255, 11, 0, 1),
@@ -22,34 +27,53 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Stack(children: [
-      containerHeightWidthBackground(size),
-      Positioned(top: -55, left: 15, child: _LineBlacks()),
-      Positioned(top: -40, left: 230, child: _LineBlacks()),
-      Positioned(top: -40, right: -110, child: _LineBlacks()),
-      Container(
-          padding: const EdgeInsets.symmetric(horizontal: 80),
-          width: double.infinity,
-          height: size.height * 0.3,
-          child: useImg
-              ? SvgPicture.asset(
-                  'assets/logo-white.svg',
-                  fit: BoxFit.contain,
-                )
-              : null),
+    return SafeArea(
+      child: Stack(children: [
+        containerHeightWidthBackground(size),
+        Positioned(top: -55, left: 15, child: _LineBlacks()),
+        Positioned(top: -40, left: 230, child: _LineBlacks()),
+        Positioned(top: -40, right: -110, child: _LineBlacks()),
 
-      ///Corresponde al fondo gris claro que abarca toda la mitad inferir del fondo.
-      Column(children: [
-        Container(height: size.height * 0.42),
-        Flexible(
-          child: Container(
-              color: const Color.fromRGBO(250, 250, 250, 1),
-              width: double.infinity,
-              height: size.height * 0.51),
-        )
+        Container(
+            padding: const EdgeInsets.symmetric(horizontal: 80),
+            width: double.infinity,
+            height: size.height * 0.3,
+            child: useImg
+                ? SvgPicture.asset(
+                    'assets/logo-white.svg',
+                    fit: BoxFit.contain,
+                  )
+                : null),
+
+        ///Corresponde al fondo gris claro que abarca toda la mitad inferir del fondo.
+        Column(children: [
+          ///Este es un contendor invisible el cual mantiene en la parte inferior el espacio gris.
+          Container(height: size.height * 0.40),
+          Flexible(
+            child: Container(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                width: double.infinity,
+                height: size.height * 0.60),
+          )
+        ]),
+
+        ///Acá se carga el widget que se espera ver sobre el background.
+        child,
+
+        ///Ésta es la flecha para navegar a la pantalla anterior.
+        Positioned(
+            //top: 0,
+            child: (useBackArrow)
+                ? IconButton(
+                    alignment: Alignment.topLeft,
+                    color: Colors.white,
+                    iconSize: 40,
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                : const SizedBox())
       ]),
-      child,
-    ]);
+    );
   }
 
   ///Corresponde al fondo rojo con degradado de la parte superior del fondo.

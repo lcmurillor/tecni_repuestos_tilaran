@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
+import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -31,18 +31,16 @@ class CustomDrawer extends StatelessWidget {
           _moldelListTile(
               'Repuestos',
               Icons.settings,
-              CategoryScreen(
-                  stream: FirebaseCloudService.getSparesCategory(),
-                  title: 'Repuestos',
-                  icon: Icons.settings),
+              const CategoryScreen(
+                  title: 'Repuestos', icon: Icons.settings, type: 'spare'),
               context),
           _moldelListTile(
               'Accesorios',
               Icons.sports_motorsports,
-              CategoryScreen(
-                  stream: FirebaseCloudService.getAccessoriesCategory(),
-                  title: 'Repuestos',
-                  icon: Icons.sports_motorsports),
+              const CategoryScreen(
+                  title: 'Accesorios',
+                  icon: Icons.sports_motorsports,
+                  type: 'accesorie'),
               context),
 
           ///Pirmera condición para evaluar el estado de usuario. Si no se encuentra
@@ -57,31 +55,31 @@ class CustomDrawer extends StatelessWidget {
           },
 
           ///Segunda condición para evaluar el estado de usuario. Si existe la instancia
-          ///de un usario en la aplicación evaluará el rango de este usuario y ahora
+          ///de un usuario en la aplicación, evaluará el rango de este usuario y ahora
           ///dispone de la opción de cerrar la sesión.
           if (FirebaseAuthService.auth.currentUser != null) ...{
-            StreamBuilder(
-              stream: FirebaseCloudService.getUserByUid(
-                  FirebaseAuthService.auth.currentUser!.uid),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<UserModel>> snapshot) {
+            FutureBuilder(
+              future: FirebaseRealtimeService.getUserByUid(
+                  uid: FirebaseAuthService.auth.currentUser!.uid),
+              builder:
+                  (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
                 if (snapshot.hasError) {
-                  NotificationsService.showErrorSnackbar(
-                      'Ha ocurrido un error con la carga de los datos.');
+                  return NotificationsService.showErrorSnackbar(
+                      'Ha ocurrido un error a la hora de cargar los datos.');
                 }
 
                 if (!snapshot.hasData) {
-                  return const SizedBox();
+                  return Container();
                 }
 
-                final data = snapshot.data!;
+                final user = snapshot.data!;
 
-                ///Última condición para evaluar el estado de usuario. Si existe la instancia
-                ///de un usario en la aplicación evaluará el rango de este usuario, si el usuario
+                ///Última condición para evaluar el rango de usuario. Si existe la instancia
+                ///de un usuario en la aplicación evaluará el rango de este usuario, si el usuario
                 ///es administrador o vendedor, dispondrá de mas o menos opciones administrativas
-                ///respetivamnete.
+                ///respectivamente.
                 return Column(children: [
-                  if (data[0].administrator) ...[
+                  if (user.administrator) ...[
                     _moldelListTile(
                         'Administrar pedidos',
                         MdiIcons.archiveCog,
@@ -92,7 +90,7 @@ class CustomDrawer extends StatelessWidget {
                         MdiIcons.accountCog,
                         const PlaceholderScreen(text: 'Adminitrar usuarios'),
                         context)
-                  ] else if (data[0].vendor) ...[
+                  ] else if (user.vendor) ...[
                     _moldelListTile(
                         'Administrar pedidos',
                         MdiIcons.archiveCog,
@@ -100,17 +98,18 @@ class CustomDrawer extends StatelessWidget {
                         context),
                   ],
                   _moldelListTile('Mi carrito', Icons.shopping_cart,
-                      const PlaceholderScreen(text: 'Mi carrito'), context),
+                      const MyCartScreen(), context),
                   _moldelListTile('Mis pedidos', MdiIcons.archive,
-                      const PlaceholderScreen(text: 'Mis pedidos'), context),
+                      const MyOrdersScreen(), context),
                   _moldelListTile('Mi perfil', MdiIcons.account,
-                      const ProfileScreen(), context),
+                      const UserProfileScreen(), context),
                   _moldelListTile(
                       'Cerrar sesión', MdiIcons.arrowLeftBox, null, context),
                 ]);
               },
             ),
           },
+
           _moldelListTile(
               'Acerca de', Icons.info, const AboutUsScreen(), context),
         ],
@@ -129,11 +128,10 @@ ListTile _moldelListTile(
   return ListTile(
     title: Text(title,
         style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 20)),
-    leading: Icon(icon, color: Colors.black, size: 35),
+    leading: Icon(icon, size: 35),
     onTap: () {
       if (page != null) {
-        Route route = CupertinoPageRoute(builder: (context) => page);
-        Navigator.push(context, route);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       } else {
         FirebaseAuthService.signOut(context);
       }

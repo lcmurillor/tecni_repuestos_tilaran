@@ -1,14 +1,19 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
+import 'package:tecni_repuestos/shared/preferences.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class RegisterScreen extends StatelessWidget {
+  ///En esta pantalla un usuario nuevo puede registrarese en la aplicación ingresando su información
+  ///personal básica. Estos datos son requeridos para faciliar porcesos de facturación y compras a
+  ///niveles administrativos.
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
@@ -23,17 +28,20 @@ class RegisterScreen extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    const SizedBox(height: 90),
-                    CardContainer(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          Text('Regístrate',
-                              style: CustomTextStyle.robotoSemiBold
-                                  .copyWith(fontSize: 45)),
-                          const SizedBox(height: 15),
-                          _RegisterForm()
-                        ],
+                    const SizedBox(height: 40),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            Text('Regístrate',
+                                style: CustomTextStyle.robotoSemiBold
+                                    .copyWith(fontSize: 45)),
+                            const SizedBox(height: 15),
+                            _RegisterForm()
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -51,6 +59,10 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
+///En este widget se crea el formulario con el cual se evaluan las condiciones de los datos ingresados
+///a la hora de crear un nuevo usuario, cada entrada tiene un formato esperado. si se cumple el formato
+///se envía todos los datos del formulario cargado a una función la cual registra el usuario y
+///guarda los datos en la base de datos.
 class _RegisterForm extends StatefulWidget {
   @override
   State<_RegisterForm> createState() => _RegisterFormState();
@@ -83,35 +95,35 @@ class _RegisterFormState extends State<_RegisterForm> {
                 }
               }),
 
-          ///Input correspondiente al nombre  para registrar el nuevo usuario.
+          ///Input correspondiente al nombre para registrar el nuevo usuario.
           CustomTextInput(
               hintText: 'Nombre',
               icon: Icons.person,
               onChanged: (value) => registerFormProvider.name = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El nombre es obligatorio';
+                  return 'El nombre es obligatorio.';
                 } else if (value.length < 2) {
-                  return 'EL nombre debe tener 2 o más caracteres.';
+                  return 'EL nombre debe contener 2 o más caracteres.';
                 }
                 return null;
               }),
 
-          ///Input correspondiente al nombre  para registrar el nuevo usuario.
+          ///Input correspondiente al Apellido para registrar el nuevo usuario.
           CustomTextInput(
               hintText: 'Apellidos',
               icon: Icons.person,
               onChanged: (value) => registerFormProvider.lastname = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El apellido es obligatorio';
+                  return 'El apellido es obligatorio.';
                 } else if (value.length < 2) {
-                  return 'El apellido debe tener 2 o más caracteres.';
+                  return 'El apellido debe contener 2 o más caracteres.';
                 }
                 return null;
               }),
 
-          ///Input correspondiente al Telefono para registrar el nuevo usuario.
+          ///Input correspondiente al Teléfono para registrar el nuevo usuario.
           CustomTextInput(
               hintText: 'Teléfono',
               icon: Icons.phone,
@@ -120,8 +132,8 @@ class _RegisterFormState extends State<_RegisterForm> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'El teléfono es obligatorio.';
-                } else if (value.length > 8) {
-                  return 'El teléfono no es valido.';
+                } else if (value.length < 8 || value.length > 8) {
+                  return 'El teléfono debe contener 8 números.';
                 }
                 return null;
               }),
@@ -131,7 +143,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               hintText: 'Fecha de nacimiento',
               icon: Icons.calendar_month_rounded,
               onChanged: (value) =>
-                  registerFormProvider.dateofbirth = int.parse(value),
+                  registerFormProvider.birthdate = int.parse(value),
               keyboardType: TextInputType.datetime,
               controller: _dateController,
               readOnly: true,
@@ -158,12 +170,60 @@ class _RegisterFormState extends State<_RegisterForm> {
                     }).then((selectedDate) {
                   if (selectedDate != null) {
                     _dateController.text =
-                        DateFormat('yyyy-MM-dd').format(selectedDate);
-                    //print(selectedDate.millisecondsSinceEpoch);
-                    registerFormProvider.dateofbirth =
+                        DateFormat('dd-MM-yyyy').format(selectedDate);
+                    registerFormProvider.birthdate =
                         selectedDate.millisecondsSinceEpoch;
                   }
                 });
+              }),
+
+          ///Input correspondiente del tipo de identificación para registrar el nuevo usuario.
+          DropdownButtonFormField<int>(
+            style: CustomTextStyle.robotoSemiBold.copyWith(
+                color: (Preferences.isDarkmode) ? Colors.white : Colors.black),
+            borderRadius: BorderRadius.circular(10),
+            decoration:
+                InputStyle.mainInput(hintText: '', icon: MdiIcons.fileAccount),
+            value: 1, //Este será el valor por defecto al dibujar el widget
+            items: const [
+              DropdownMenuItem(
+                value: 1,
+                child: Text(
+                  'Cédula de identidad',
+                ),
+              ),
+              DropdownMenuItem(
+                value: 2,
+                child: Text(
+                  'Persona Jurídica',
+                ),
+              ),
+              DropdownMenuItem(
+                value: 3,
+                child: Text(
+                  'Pasaporte',
+                ),
+              ),
+            ],
+            onChanged: (value) {
+              registerFormProvider.identificationType = value ?? 1;
+            },
+          ),
+          const SizedBox(height: 15),
+
+          ///Input correspondiente de la identificación para registrar el nuevo usuario.
+          CustomTextInput(
+              keyboardType: TextInputType.number,
+              hintText: 'Cédula',
+              icon: MdiIcons.cardAccountDetails,
+              onChanged: (value) => registerFormProvider.identification = value,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'La cédula es obligatoria.';
+                } else if (value.length < 7) {
+                  return 'El cédula debe contener 7 o más caracteres.';
+                }
+                return null;
               }),
 
           ///Input correspondiente al a contraseña para registrar el nuevo usuario.
@@ -174,10 +234,10 @@ class _RegisterFormState extends State<_RegisterForm> {
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Ingrese su contraseña';
+                  return 'Ingrese su contraseña.';
                 }
                 if (value.length < 6) {
-                  return 'La contraseña debe de tener más de 6 caracteres.';
+                  return 'La contraseña debe de contener más de 6 caracteres.';
                 }
                 return null;
               }),
@@ -192,10 +252,10 @@ class _RegisterFormState extends State<_RegisterForm> {
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Ingrese su contraseña';
+                  return 'Ingrese su contraseña.';
                 }
                 if (value.length < 6) {
-                  return 'La contraseña debe de tener más de 6 caracteres.';
+                  return 'La contraseña debe de contener más de 6 caracteres.';
                 }
                 return null;
               }),
@@ -228,27 +288,38 @@ class _RegisterFormState extends State<_RegisterForm> {
   }
 }
 
+///Evalua que el formualrio cumpla con las condiciones mínimas, si es así, se registra un usuario en la base
+///de datos de Firebase, seguidamente se guardan estos datos en la base de datos y se asocian los datos de
+///autentificación.
 void _onFormSubmit(
     RegisterFormProvider registerFormProvider, context, bool isActived) {
   final isValid = registerFormProvider.validateForm(isActived);
   UserModel user = UserModel(
-      birthdate: registerFormProvider.dateofbirth,
-      email: registerFormProvider.email,
-      id: 'undefied',
-      lastname: registerFormProvider.lastname,
-      name: registerFormProvider.name,
-      phone: registerFormProvider.phone);
+    birthdate: registerFormProvider.birthdate,
+    email: registerFormProvider.email,
+    id: 'undefied',
+    identification: registerFormProvider.identification,
+    identificationType: (registerFormProvider.identificationType == 0)
+        ? 1
+        : registerFormProvider.identificationType,
+    lastname: registerFormProvider.lastname,
+    name: registerFormProvider.name,
+    phone: registerFormProvider.phone,
+    profileImg: 'undefied',
+  );
   if (isValid) {
     FirebaseAuthService.logIn(registerFormProvider.email,
         registerFormProvider.password, user, context);
   }
 }
 
+///En este aprtado podemos agregar un enlace directo a una página con los términos y condiciones
+///para los usuarios de la aplicación.
 void _launchURL() async {
   const url = 'https://es.lipsum.com/';
   if (await canLaunchUrlString(url)) {
     await launchUrlString(url);
   } else {
-    NotificationsService.showErrorSnackbar('No se pudo motrar la página');
+    NotificationsService.showErrorSnackbar('No se pudo motrar la página.');
   }
 }

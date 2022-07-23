@@ -7,12 +7,18 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
+  ///Corresponde a la pantalla en la cual el usuario inicia sesión para poder hacer uso de las
+  ///diferentes funciones disponibles para los usuarios registrados (Estas funciones cambian según
+  ///el rango del usuario). si el usuario no tiene una cuente puede dirigirse a la pantalla para
+  ///crear una y si a olvidado su contraseña, puede solicitar una recuperación.
   const LoginScreen({Key? key, this.hasError = false}) : super(key: key);
   final bool hasError;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+    ///Este metodo es ultilizado para precargar la sesión del usuario si las credenciales de registro
+    ///se encuentran en el dispositivo, si esto no ejecuta correcatamente, muestra un mensaje de error.
     return ChangeNotifierProvider(
         create: (_) => LoginFormProvider(),
         child: Builder(builder: (context) {
@@ -29,18 +35,21 @@ class LoginScreen extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    const SizedBox(height: 180),
-                    CardContainer(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          // ,
-                          Text('Iniciar Sesión',
-                              style: CustomTextStyle.robotoSemiBold
-                                  .copyWith(fontSize: size.width * 0.11)),
-                          const SizedBox(height: 30),
-                          _LoginForm()
-                        ],
+                    const SizedBox(height: 170),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            // ,
+                            Text('Iniciar Sesión',
+                                style: CustomTextStyle.robotoSemiBold
+                                    .copyWith(fontSize: size.width * 0.11)),
+                            const SizedBox(height: 30),
+                            _LoginForm()
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -87,10 +96,10 @@ class _LoginForm extends StatelessWidget {
               onChanged: (value) => loginFormProvider.password = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Ingrese su contraseña';
+                  return 'Ingrese su contraseña.';
                 }
                 if (value.length < 6) {
-                  return 'Debe tener más de 6 caractéres';
+                  return 'Debe tener más de 6 caractéres.';
                 }
                 return null;
               }),
@@ -110,11 +119,16 @@ class _LoginForm extends StatelessWidget {
   }
 }
 
-///Función intermedia que hace una llamado a la base de datos para optener un usuario
+///Función intermedia que hace una llamado a la base de datos para obtener un usuario
 ///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
 void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
-  FirebaseCloudService.getUserByEmail(loginFormProvider.email).then(
-      (UserModel? user) => _validateData(user, loginFormProvider, context));
+  if (loginFormProvider.validateForm()) {
+    FirebaseRealtimeService.getUserByEmail(email: loginFormProvider.email).then(
+        (UserModel? user) => _validateData(user, loginFormProvider, context));
+  } else {
+    NotificationsService.showErrorSnackbar(
+        'No se han ingresado los datos para iniciar sesión.');
+  }
 }
 
 ///Función de evalución final, evalua que el formulario cumpla con los requerimientos
@@ -122,8 +136,7 @@ void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
 ///se puede iniciar la sesión.
 void _validateData(UserModel? user, LoginFormProvider loginFormProvider,
     BuildContext context) {
-  final isValid = loginFormProvider.validateForm();
-  if (null != user && !user.disabled && isValid) {
+  if (user != null && !user.disabled) {
     FirebaseAuthService.signIn(
         loginFormProvider.email, loginFormProvider.password, context);
   } else {
