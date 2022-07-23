@@ -140,8 +140,7 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
           province: addressFormProvider.province,
           userId: FirebaseAuthService.auth.currentUser!.uid,
           last: true);
-      FirebaseRealtimeService.setAddress(address: _address);
-      Navigator.popAndPushNamed(context, 'addresses');
+      FirebaseRealtimeService.setAddress(address: _address, context: context);
     } else {
       NotificationsService.showErrorSnackbar(
           'No se cumple con las condiciones mínimas para agregar la dirección.');
@@ -169,8 +168,8 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
             'No se cumple con las condiciones mínimas para actualizar la información.');
       }
     }).then((value) {
-      FirebaseRealtimeService.updateAddress(address: address!);
-      Navigator.popAndPushNamed(context, 'addresses');
+      FirebaseRealtimeService.updateAddress(
+          address: address!, context: context);
     });
   }
 }

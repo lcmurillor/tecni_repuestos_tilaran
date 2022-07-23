@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/services/services.dart';
+import 'package:flutter/material.dart';
 
 ///Ésta clase corresponde a la conexión a la base datos Firebase reialtime.
 ///En esta se ecuentra una instancia de conexión global y las respetivas consultas.
@@ -197,7 +199,6 @@ class FirebaseRealtimeService {
   ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
   ///que se encuentre registrado en la amplicación.
   static Future<List<Address>> getAddressesByUser({required String uid}) async {
-    //return _db.ref('addresses').orderByChild('userId').equalTo(uid);
     List<Address> addresses = [];
     final Query query =
         _db.ref().child('addresses').orderByChild('userId').equalTo(uid);
@@ -209,40 +210,59 @@ class FirebaseRealtimeService {
         addresses.add(Address.fromMap(value));
       });
     }
-
     return addresses;
   }
 
   ///Permiter actualizar los datos de dirrecion de un usuario. En casos
   ///donde no todos los datos fueron alterados, el modelo del dirrecciones guarda los datos
   ///anteririos y los sobreescrible.
-  static void updateAddress({required Address address}) {
-    _db.ref("addresses/${address.id}").update({
-      'address': address.address,
-      'canton': address.canton,
-      'id': address.id,
-      'province': address.province,
-      'last': address.last,
-    });
+  static Future<void> updateAddress({required Address address, context}) async {
+    Future(() => _setAddressFalse()).then((value) {
+      _db.ref("addresses/${address.id}").update({
+        'address': address.address,
+        'canton': address.canton,
+        'id': address.id,
+        'province': address.province,
+        'last': true,
+      });
+    }).then((value) => Navigator.popAndPushNamed(context, 'addresses'));
   }
 
   ///Agregan en la base de datoa de Firebase un nuevo registro de Dirreción de facturación
   ///"address". Para esto se asignan los datos de un modelo previamente establecido.
-  static void setAddress({required Address address}) {
-    final String id = _db.ref('addresses').push().key!;
-    _db.ref('addresses/$id').set({
-      'address': address.address,
-      'canton': address.canton,
-      'id': id,
-      'province': address.province,
-      'userId': address.userId,
-      'last': address.last,
+  static Future<void> setAddress({required Address address, context}) async {
+    _setAddressFalse().then((value) {
+      final String id = _db.ref('addresses').push().key!;
+      _db.ref('addresses/$id').set({
+        'address': address.address,
+        'canton': address.canton,
+        'id': id,
+        'province': address.province,
+        'userId': address.userId,
+        'last': true,
+      });
+    }).then((value) => Navigator.popAndPushNamed(context, 'addresses'));
+  }
+
+  ///Define el estado en "false" de todas las direcciones de un usuario para actualizar y definir
+  ///la última agregada o editada a "true"
+  static Future<void> _setAddressFalse() async {
+    DataSnapshot dataSnapshot = await _db
+        .ref()
+        .child('addresses')
+        .orderByChild('userId')
+        .equalTo(FirebaseAuthService.auth.currentUser!.uid)
+        .get();
+
+    Map<String, dynamic> data = jsonDecode(jsonEncode(dataSnapshot.value));
+    data.forEach((key, value) {
+      _db.ref().child('addresses/$key').update({'last': false});
     });
   }
 
   ///Elimina un registro de la base de dato de tipo "addresses" "Dirreción de facturación"
   ///identificado por su valor único.
-  static void deleteAddress({required String key}) {
+  static Future<void> deleteAddress({required String key}) async {
     _db.ref('addresses/$key').remove();
   }
 }

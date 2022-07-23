@@ -61,7 +61,7 @@ class CardAddress extends StatelessWidget {
                     size: 40,
                     color: ColorStyle.mainGreen,
                   ),
-                  onPressed: () =>
+                  onPressed: () async =>
                       DialogAddress.displayAddressDialog(context, address),
                 ),
 
@@ -75,7 +75,7 @@ class CardAddress extends StatelessWidget {
                             () {
                           FirebaseRealtimeService.deleteAddress(
                               key: address.id);
-                          Navigator.pop(context);
+                          Navigator.popAndPushNamed(context, 'addresses');
                         })),
               ],
             ),

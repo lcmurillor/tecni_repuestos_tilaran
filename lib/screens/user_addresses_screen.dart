@@ -81,7 +81,7 @@ class UserAddressesScreen extends StatelessWidget {
                     size: 50,
                     color: Colors.white,
                   ),
-                  onPressed: () =>
+                  onPressed: () async =>
                       DialogAddress.displayAddressDialog(context, null),
                 ),
               ),
