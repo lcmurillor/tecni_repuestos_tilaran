@@ -28,39 +28,41 @@ class LoginScreen extends StatelessWidget {
                   'Ha ocurrido un error al iniciar sesión.');
             }
           });
-          return Scaffold(
-              body: Background(
-            useImg: true,
-            child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 170),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            // ,
-                            Text('Iniciar Sesión',
-                                style: CustomTextStyle.robotoSemiBold
-                                    .copyWith(fontSize: size.width * 0.11)),
-                            const SizedBox(height: 30),
-                            _LoginForm()
-                          ],
+          return SafeArea(
+            child: Scaffold(
+                body: Background(
+              useImg: true,
+              child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 170),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              // ,
+                              Text('Iniciar Sesión',
+                                  style: CustomTextStyle.robotoSemiBold
+                                      .copyWith(fontSize: size.width * 0.11)),
+                              const SizedBox(height: 30),
+                              _LoginForm()
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    TertiaryButton(
-                        text: '¿No tiene una cuenta?',
-                        buttonText: 'Regístrate ahora',
-                        onPressed: () =>
-                            Navigator.pushReplacementNamed(context, 'register'))
-                  ],
-                )),
-          ));
+                      const SizedBox(height: 15),
+                      TertiaryButton(
+                          text: '¿No tiene una cuenta?',
+                          buttonText: 'Regístrate ahora',
+                          onPressed: () => Navigator.pushReplacementNamed(
+                              context, 'register'))
+                    ],
+                  )),
+            )),
+          );
         }));
   }
 }

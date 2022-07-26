@@ -60,21 +60,27 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       CustomTextStyle.robotoExtraBold.copyWith(fontSize: 40)),
               const SizedBox(height: 10),
               Expanded(
-                child: FirebaseAnimatedList(
-                  ///Resive la consulta de la base de datos.
-                  query: FirebaseRealtimeService.getCart(),
-                  defaultChild: const CustomProgressIndicator(),
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, snapshot, animation, index) {
-                    if (!snapshot.exists) {
-                      return NotificationsService.showErrorSnackbar(
-                          'Ha ocurrido un error a la hora de cargar los datos.');
-                    }
-                    final cart =
-                        Cart.fromMap(jsonDecode(jsonEncode(snapshot.value)));
-                    return CardListProduct(cart: cart);
-                  },
-                ),
+                child: (FirebaseAuthService.auth.currentUser != null)
+                    ? FirebaseAnimatedList(
+                        ///Resive la consulta de la base de datos.
+                        query: FirebaseRealtimeService.getCart(),
+                        defaultChild: const CustomProgressIndicator(),
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, snapshot, animation, index) {
+                          if (!snapshot.exists) {
+                            return NotificationsService.showErrorSnackbar(
+                                'Ha ocurrido un error a la hora de cargar los datos.');
+                          }
+                          final cart = Cart.fromMap(
+                              jsonDecode(jsonEncode(snapshot.value)));
+                          return CardListProduct(cart: cart);
+                        },
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                            'No disponde de productos en su carrito.'),
+                      ),
               ),
 
               ///Corresponde al espacio en la parte inferior de la pantalla en la cual se

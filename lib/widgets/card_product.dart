@@ -2,8 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
@@ -17,6 +17,7 @@ class CardProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final formatCurrency = NumberFormat.currency(symbol: "₡ ");
+    final count = Provider.of<MyCartInfoProvider>(context, listen: false);
     return Card(
 
         ///Construcción de los elementos dentro del contenedor.
@@ -45,28 +46,33 @@ class CardProduct extends StatelessWidget {
                   borderRadius: BorderRadius.circular(100)),
               child: IconButton(
                 onPressed: () {
-                  if (product.quantity >= 1) {
-                    FirebaseRealtimeService.validateSetCart(
-                            productId: product.id)
-                        .then((value) {
-                      if (value) {
-                        FirebaseRealtimeService.setCarts(
-                            cart: Cart(
-                                description: product.description,
-                                id: '',
-                                price: product.price,
-                                productId: product.id,
-                                quantity: 1,
-                                total: product.price,
-                                userId: ''));
-                      } else {
-                        NotificationsService.showErrorSnackbar(
-                            'Este producto fue agregado previamente a tu carrito.');
-                      }
-                    });
-                  } else {
-                    NotificationsService.showErrorSnackbar(
-                        'No podemos agregar este producto al carrito ya que actualmente no hay unidades disponibles.');
+                  if (FirebaseAuthService.auth.currentUser != null) {
+                    if (product.quantity >= 1) {
+                      FirebaseRealtimeService.validateSetCart(
+                              productId: product.id)
+                          .then((value) {
+                        if (value) {
+                          FirebaseRealtimeService.setCart(
+                                  cart: Cart(
+                                      description: product.description,
+                                      id: '',
+                                      price: product.price,
+                                      productId: product.id,
+                                      quantity: 1,
+                                      total: product.price,
+                                      userId: ''))
+                              .then((value) =>
+                                  FirebaseRealtimeService.getCartCount().then(
+                                      (value) => count.setCount(count: value)));
+                        } else {
+                          NotificationsService.showErrorSnackbar(
+                              'Este producto fue agregado previamente a tu carrito.');
+                        }
+                      });
+                    } else {
+                      NotificationsService.showErrorSnackbar(
+                          'No podemos agregar este producto al carrito ya que actualmente no hay unidades disponibles.');
+                    }
                   }
                 },
                 icon: const Icon(

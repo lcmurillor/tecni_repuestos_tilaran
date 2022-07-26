@@ -266,6 +266,8 @@ class FirebaseRealtimeService {
     _db.ref('addresses/$key').remove();
   }
 
+  ///Realiza la consulta con la base de datos para obtener una lista de productos agregados
+  ///al carrito de un usuario en específico.
   static Query getCart() {
     return _db
         .ref()
@@ -274,6 +276,9 @@ class FirebaseRealtimeService {
         .equalTo(FirebaseAuthService.auth.currentUser!.uid);
   }
 
+  ///Éste método relaiza una cosulta para optener todos los productos cuargados en el carrito de un usuario
+  ///seguidamente hace un recorrido de la lista para sumar los valores y retornar el total de compra de la
+  ///lista completa, tomando en cuenta el total que cada elemento (precio base x cantidad =  total).
   static Future<double> getCartTotal() async {
     double total = 0;
     if (FirebaseAuthService.auth.currentUser != null) {
@@ -295,6 +300,29 @@ class FirebaseRealtimeService {
     return total;
   }
 
+  ///Cuanta la cantidad de procutos en el cart del usuario para mostrarlo la notificación.
+  static Future<int> getCartCount() async {
+    int count = 0;
+    if (FirebaseAuthService.auth.currentUser != null) {
+      final Query query = _db
+          .ref()
+          .child('carts')
+          .orderByChild('userId')
+          .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+      final DataSnapshot dataSnapshot = await query.get();
+      if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+        final Map<String, dynamic> data =
+            jsonDecode(jsonEncode(dataSnapshot.value));
+        data.forEach((key, value) {
+          count++;
+        });
+      }
+    }
+    return count;
+  }
+
+  ///Éste método retorna la cantidad en existencia de un producto en específico, esto para hacer validaciones
+  ///y definir limites a la hora de adquirir existencias.
   static Future<int> getProductQuantity({required String key}) async {
     int quantity = 0;
     final Query query = _db.ref().child('products/$key');
@@ -307,7 +335,8 @@ class FirebaseRealtimeService {
     return quantity;
   }
 
-  static Future<void> setCarts({required Cart cart, context}) async {
+  ///Agrega un nuevo objeto de tipo cart en la base de datos asociado al usuario con la cuenta activa.
+  static Future<void> setCart({required Cart cart, context}) async {
     final String id = _db.ref('carts').push().key!;
     _db.ref('carts/$id').set({
       'description': cart.description,
@@ -320,6 +349,8 @@ class FirebaseRealtimeService {
     });
   }
 
+  ///Éste método permite actualizar la cantidad y el total de un cart en especifico en la base de datos
+  ///esto para guardar de manere más facil los pedidos del usuario y estimar los costos de estos.
   static Future<void> updateCartValue({required Cart cart}) async {
     _db.ref("carts/${cart.id}").update({
       'quantity': cart.quantity,
@@ -327,6 +358,8 @@ class FirebaseRealtimeService {
     });
   }
 
+  ///Valida si se puede agregar un producto al carrito o no en base a si el usuario está registrado y
+  ///además si existen existencia de ese producto en particular. Si no hay existencias, no se puede guardar en el carrito.
   static Future<bool> validateSetCart({required String productId}) async {
     bool isValid = true;
     if (FirebaseAuthService.auth.currentUser != null) {
@@ -348,6 +381,7 @@ class FirebaseRealtimeService {
     return isValid;
   }
 
+  /// Elimina todos los objetos del carrito de un usuario específico.
   static Future<void> deleteUserCart() async {
     final Query query = _db
         .ref('carts')
@@ -363,6 +397,7 @@ class FirebaseRealtimeService {
     }
   }
 
+  ///Elimina de la base de datos el carrito selecionado.
   static Future<void> deleteCart({required String key}) async {
     _db.ref('carts/$key').remove();
   }
