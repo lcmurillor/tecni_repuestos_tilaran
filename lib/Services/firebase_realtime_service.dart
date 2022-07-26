@@ -265,4 +265,20 @@ class FirebaseRealtimeService {
   static Future<void> deleteAddress({required String key}) async {
     _db.ref('addresses/$key').remove();
   }
+
+  static Query getQueryCart() {
+    return _db.ref().child('products').limitToLast(10);
+  }
+
+  static Future<List<Product>> getCart() async {
+    List<Product> products = [];
+    final Query query = _db.ref().child('products').limitToLast(5);
+    final DataSnapshot dataSnapshot = await query.get();
+    final Map<String, dynamic> data =
+        jsonDecode(jsonEncode(dataSnapshot.value));
+    data.forEach((key, value) {
+      products.add(Product.fromMap(value));
+    });
+    return products;
+  }
 }

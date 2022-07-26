@@ -23,9 +23,7 @@ class ProductDetailsScreen extends StatelessWidget {
               actionIcon: Icons.delete_rounded,
               size1: 42,
               iconColor: Colors.red,
-              onPressed: () {
-                //TODO: Realizar la funcion para vaciar el carrito.
-              },
+              onPressed: () {},
               navigatorOnPressed: () => Navigator.pop(context),
             ),
             body: Column(

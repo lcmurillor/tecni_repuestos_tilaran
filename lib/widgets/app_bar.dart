@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tecni_repuestos/screens/placeholder_screen.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/search_delegate.dart';
 
@@ -45,11 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           iconSize: 30,
           padding: const EdgeInsets.only(right: 12),
           onPressed: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const PlaceholderScreen(text: 'Carrito de compra')));
+            Navigator.pushNamed(context, 'myCart');
           },
         ),
       ],

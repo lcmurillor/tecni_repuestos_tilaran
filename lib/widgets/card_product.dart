@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:tecni_repuestos/models/models.dart';
-import 'package:tecni_repuestos/screens/product_details_screen.dart';
+import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 

@@ -13,7 +13,8 @@ void main() async {
   await Preferences.init();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-        create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode))
+        create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode)),
+    ChangeNotifierProvider(create: (_) => MyCartInfoProvider())
   ], child: const TecniRepuestoTilaran()));
 }
 
