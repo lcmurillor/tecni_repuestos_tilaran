@@ -5,13 +5,6 @@ class MyCartInfoProvider extends ChangeNotifier {
 
   setTotal({required double total}) {
     _total = total;
-  }
-
-  setPlusTotal({required double plus}) {
-    _total = _total + plus;
-  }
-
-  setNotification() {
     notifyListeners();
   }
 

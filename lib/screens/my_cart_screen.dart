@@ -8,7 +8,7 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
-class MyCartScreen extends StatelessWidget {
+class MyCartScreen extends StatefulWidget {
   ///En esta pantalla se muestra una lista de productos los cuales el usuario registrado a guardado
   ///con la tentativa de comprar o por lo mentos, tener guardados para su consulta posterior.
   ///La lista es idividual para cada usuario y cada uno solo puede tener una lista de articulos en el carrito.
@@ -17,62 +17,65 @@ class MyCartScreen extends StatelessWidget {
   const MyCartScreen({Key? key}) : super(key: key);
 
   @override
+  State<MyCartScreen> createState() => _MyCartScreenState();
+}
+
+class _MyCartScreenState extends State<MyCartScreen> {
+  @override
+  void initState() {
+    final globalTotal = Provider.of<MyCartInfoProvider>(context, listen: false);
+    Future.delayed(Duration.zero, () async {
+      FirebaseRealtimeService.getCartTotal()
+          .then((value) => globalTotal.setTotal(total: value));
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final total = Provider.of<MyCartInfoProvider>(context, listen: true);
+
     return SafeArea(
       child: Scaffold(
           appBar: CustomAppBarBackArrow(
             actionIcon: Icons.delete_outline_rounded,
             onPressed: () {
-              print('borrar lista');
+              NotificationsService.displayDeleteDialog(
+                context: context,
+                text: '¿Está seguro que desea vaciar el carrito?',
+                onPressed: () => {
+                  FirebaseRealtimeService.deleteUserCart(),
+                  Navigator.pushReplacementNamed(context, 'myCart')
+                },
+              );
             },
-            navigatorOnPressed: () => Navigator.pop(context),
+            navigatorOnPressed: () =>
+                Navigator.pushReplacementNamed(context, 'home'),
           ),
           body: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Text('Mi carrito',
                   style:
                       CustomTextStyle.robotoExtraBold.copyWith(fontSize: 40)),
-              const SizedBox(height: 20),
-              FutureBuilder(
-                  future: FirebaseRealtimeService.getCart(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Product>> snapshot) {
-                    if (snapshot.hasError) {
+              const SizedBox(height: 10),
+              Expanded(
+                child: FirebaseAnimatedList(
+                  ///Resive la consulta de la base de datos.
+                  query: FirebaseRealtimeService.getCart(),
+                  defaultChild: const CustomProgressIndicator(),
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, snapshot, animation, index) {
+                    if (!snapshot.exists) {
                       return NotificationsService.showErrorSnackbar(
                           'Ha ocurrido un error a la hora de cargar los datos.');
                     }
-
-                    if (!snapshot.hasData) {
-                      return const CustomProgressIndicator();
-                    }
-
-                    final data = snapshot.data!;
-
-                    ///Ordena el arreglo de datos alfabéticamente.
-                    final orderData = data
-                      ..sort((a, b) => a.description.compareTo(b.description));
-                    total.setTotal(total: 0);
-                    return SizedBox(
-                        height: size.height * 0.42,
-                        width: double.infinity,
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: orderData.length,
-                          itemBuilder: (context, index) {
-                            total.setPlusTotal(plus: orderData[index].price);
-                            return CardListProduct(
-                                description: orderData[index].description,
-                                productId: orderData[index].id,
-                                quantity: 1,
-                                total: orderData[index].price * 1,
-                                userID:
-                                    FirebaseAuthService.auth.currentUser!.uid);
-                          },
-                        ));
-                  }),
+                    final cart =
+                        Cart.fromMap(jsonDecode(jsonEncode(snapshot.value)));
+                    return CardListProduct(cart: cart);
+                  },
+                ),
+              ),
 
               ///Corresponde al espacio en la parte inferior de la pantalla en la cual se
               ///muestra el costo total de la compra por los productos del carrito y se disponde de
@@ -107,9 +110,9 @@ class MyCartScreen extends StatelessWidget {
   }
 
   ///Método que construye el reome de la orden de compra del usuario.
-  SizedBox _invoiceTotalInfo(BuildContext context) {
+  _invoiceTotalInfo(BuildContext context) {
     final formatCurrency = NumberFormat.currency(symbol: "₡ ");
-    final total = Provider.of<MyCartInfoProvider>(context, listen: true);
+    final globalTotal = Provider.of<MyCartInfoProvider>(context);
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -117,13 +120,13 @@ class MyCartScreen extends StatelessWidget {
           const SizedBox(height: 10),
           _moldeRowInfo(
               title: 'Subtotal: ',
-              value: formatCurrency.format((total.getTotal()))),
+              value: formatCurrency.format((globalTotal.getTotal()))),
           _moldeRowInfo(
               title: 'IVA: ',
-              value: formatCurrency.format((total.getTotal() * 0.13))),
+              value: formatCurrency.format((globalTotal.getTotal() * 0.13))),
           _moldeRowInfo(
               title: 'Total: ',
-              value: formatCurrency.format((total.getTotal() * 1.13)),
+              value: formatCurrency.format((globalTotal.getTotal() * 1.13)),
               color: ColorStyle.mainBlue)
         ],
       ),

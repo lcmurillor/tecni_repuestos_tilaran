@@ -70,13 +70,15 @@ class CardAddress extends StatelessWidget {
                     icon: Icon(MdiIcons.deleteForever,
                         size: 40, color: ColorStyle.mainRed),
                     onPressed: () => NotificationsService.displayDeleteDialog(
-                            context,
-                            '¿Está seguro que desea eliminar la dirrección: ${address.address}?',
-                            () {
-                          FirebaseRealtimeService.deleteAddress(
-                              key: address.id);
-                          Navigator.popAndPushNamed(context, 'addresses');
-                        })),
+                          context: context,
+                          text:
+                              '¿Está seguro que desea eliminar la dirrección: ${address.address}?',
+                          onPressed: () {
+                            FirebaseRealtimeService.deleteAddress(
+                                key: address.id);
+                            Navigator.popAndPushNamed(context, 'addresses');
+                          },
+                        )),
               ],
             ),
           ),

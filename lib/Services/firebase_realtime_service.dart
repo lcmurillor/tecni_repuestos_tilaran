@@ -266,35 +266,104 @@ class FirebaseRealtimeService {
     _db.ref('addresses/$key').remove();
   }
 
-  static Query getQueryCart() {
-    return _db.ref().child('products').limitToLast(10);
+  static Query getCart() {
+    return _db
+        .ref()
+        .child('carts')
+        .orderByChild('userId')
+        .equalTo(FirebaseAuthService.auth.currentUser!.uid);
   }
 
-  static Future<List<Product>> getCart() async {
-    List<Product> products = [];
-    final Query query = _db.ref().child('products').limitToLast(5);
+  static Future<double> getCartTotal() async {
+    double total = 0;
+    if (FirebaseAuthService.auth.currentUser != null) {
+      final Query query = _db
+          .ref()
+          .child('carts')
+          .orderByChild('userId')
+          .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+      final DataSnapshot dataSnapshot = await query.get();
+      if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+        final Map<String, dynamic> data =
+            jsonDecode(jsonEncode(dataSnapshot.value));
+        data.forEach((key, value) {
+          Cart cart = Cart.fromMap(value);
+          total += cart.total;
+        });
+      }
+    }
+    return total;
+  }
+
+  static Future<int> getProductQuantity({required String key}) async {
+    int quantity = 0;
+    final Query query = _db.ref().child('products/$key');
     final DataSnapshot dataSnapshot = await query.get();
-    final Map<String, dynamic> data =
-        jsonDecode(jsonEncode(dataSnapshot.value));
-    data.forEach((key, value) {
-      products.add(Product.fromMap(value));
-    });
-    return products;
+    if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+      final Map<String, dynamic> data =
+          jsonDecode(jsonEncode(dataSnapshot.value));
+      quantity = data['quantity'];
+    }
+    return quantity;
   }
 
-  ///Agregan en la base de datoa de Firebase un nuevo registro de Dirreción de facturación
-  ///"address". Para esto se asignan los datos de un modelo previamente establecido.
-  static Future<void> setCarts({required Address address, context}) async {
-    _setAddressFalse().then((value) {
-      final String id = _db.ref('addresses').push().key!;
-      _db.ref('addresses/$id').set({
-        'address': address.address,
-        'canton': address.canton,
-        'id': id,
-        'province': address.province,
-        'userId': address.userId,
-        'last': true,
+  static Future<void> setCarts({required Cart cart, context}) async {
+    final String id = _db.ref('carts').push().key!;
+    _db.ref('carts/$id').set({
+      'description': cart.description,
+      'id': id,
+      'productId': cart.productId,
+      'price': cart.price,
+      'quantity': cart.quantity,
+      'total': cart.total,
+      'userId': FirebaseAuthService.auth.currentUser!.uid,
+    });
+  }
+
+  static Future<void> updateCartValue({required Cart cart}) async {
+    _db.ref("carts/${cart.id}").update({
+      'quantity': cart.quantity,
+      'total': cart.total,
+    });
+  }
+
+  static Future<bool> validateSetCart({required String productId}) async {
+    bool isValid = true;
+    if (FirebaseAuthService.auth.currentUser != null) {
+      final Query query = _db
+          .ref('carts')
+          .orderByChild('userId')
+          .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+      final DataSnapshot dataSnapshot = await query.get();
+      if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+        final Map<String, dynamic> data =
+            jsonDecode(jsonEncode(dataSnapshot.value));
+        data.forEach((key, value) {
+          if (value['productId'] == productId) {
+            isValid = false;
+          }
+        });
+      }
+    }
+    return isValid;
+  }
+
+  static Future<void> deleteUserCart() async {
+    final Query query = _db
+        .ref('carts')
+        .orderByChild('userId')
+        .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+    final DataSnapshot dataSnapshot = await query.get();
+    if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+      final Map<String, dynamic> data =
+          jsonDecode(jsonEncode(dataSnapshot.value));
+      data.forEach((key, value) {
+        _db.ref('carts/$key').remove();
       });
-    }).then((value) => Navigator.popAndPushNamed(context, 'addresses'));
+    }
+  }
+
+  static Future<void> deleteCart({required String key}) async {
+    _db.ref('carts/$key').remove();
   }
 }
