@@ -47,8 +47,8 @@ class FirebaseAuthService {
   ///Permite crear un nuevos usuarios. Primeramente los registra con los sistemas de
   ///autentificación de firebase y luego guarda datos adicionales a este en la base de datos
   ///asociados con el UID. Al final guarda el usuario en la memoria y muestra la pantalla principal.
-  static logIn(String email, String password, UserModel userModel,
-      BuildContext context) async {
+  static logIn(
+      String email, String password, userModel, BuildContext context) async {
     try {
       ///Proceso de creación de un nuevo usuario en el apartado de "Autentificación" de Firebase.
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(

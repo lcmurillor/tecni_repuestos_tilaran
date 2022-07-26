@@ -56,8 +56,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               return NotificationsService.showErrorSnackbar(
                   'Ha ocurrido un error a la hora de cargar los datos.');
             }
-            final user =
-                UserModel.fromMap(jsonDecode(jsonEncode(snapshot.value)));
+            final user = User.fromMap(jsonDecode(jsonEncode(snapshot.value)));
             return Column(
               children: [
                 const SizedBox(height: 20),
@@ -166,7 +165,7 @@ class EditUserButton extends StatelessWidget {
         icon: const Icon(Icons.edit, size: 20),
         onPressed: () async {
           if (FirebaseAuthService.auth.currentUser != null) {
-            UserModel user = await FirebaseRealtimeService.getUserByUid(
+            User user = await FirebaseRealtimeService.getUserByUid(
                 uid: FirebaseAuthService.auth.currentUser!.uid);
 
             final result = await FilePicker.platform.pickFiles(

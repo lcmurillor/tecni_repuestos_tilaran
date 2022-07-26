@@ -114,15 +114,15 @@ class FirebaseRealtimeService {
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Future<UserModel> getUserByUid({required String uid}) async {
-    late UserModel user;
+  static Future<User> getUserByUid({required String uid}) async {
+    late User user;
     final Query query =
         _db.ref().child('users').orderByChild('id').equalTo(uid);
     final DataSnapshot dataSnapshot = await query.get();
     final Map<String, dynamic> data =
         jsonDecode(jsonEncode(dataSnapshot.value));
     data.forEach((key, value) {
-      user = UserModel.fromMap(value);
+      user = User.fromMap(value);
     });
     return user;
   }
@@ -137,8 +137,8 @@ class FirebaseRealtimeService {
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Future<UserModel> getUserByEmail({required String email}) async {
-    late UserModel user = UserModel(
+  static Future<User> getUserByEmail({required String email}) async {
+    late User user = User(
         birthdate: 0,
         email: '',
         id: '',
@@ -155,7 +155,7 @@ class FirebaseRealtimeService {
       final Map<String, dynamic> data =
           jsonDecode(jsonEncode(dataSnapshot.value));
       data.forEach((key, value) {
-        user = UserModel.fromMap(value);
+        user = User.fromMap(value);
       });
     } else {
       NotificationsService.showErrorSnackbar('Usuario o contraseña invalida.');
@@ -165,7 +165,7 @@ class FirebaseRealtimeService {
 
   ///Éste método permite crear un nuevo usuario en la base de datos. Es solo requerido cuando
   ///un usuario es registrado por primera vez.
-  static void setUser({required UserModel user}) {
+  static void setUser({required User user}) {
     _db.ref().child('users/${user.id}').set({
       'administrator': user.administrator,
       'birthdate': user.birthdate,
@@ -185,7 +185,7 @@ class FirebaseRealtimeService {
   ///Permite actualizar los datos del usuario identificado por medio del UID, en casos
   ///donde no todos los datos fueron alterados, el modelo del usuario guarda los datos
   ///anteririos y los sobreescrible.
-  static void updateUser({required UserModel user}) {
+  static void updateUser({required User user}) {
     _db.ref().child('users/${user.id}').update({
       'birthdate': user.birthdate,
       'identification': user.identification,
@@ -280,5 +280,21 @@ class FirebaseRealtimeService {
       products.add(Product.fromMap(value));
     });
     return products;
+  }
+
+  ///Agregan en la base de datoa de Firebase un nuevo registro de Dirreción de facturación
+  ///"address". Para esto se asignan los datos de un modelo previamente establecido.
+  static Future<void> setCarts({required Address address, context}) async {
+    _setAddressFalse().then((value) {
+      final String id = _db.ref('addresses').push().key!;
+      _db.ref('addresses/$id').set({
+        'address': address.address,
+        'canton': address.canton,
+        'id': id,
+        'province': address.province,
+        'userId': address.userId,
+        'last': true,
+      });
+    }).then((value) => Navigator.popAndPushNamed(context, 'addresses'));
   }
 }

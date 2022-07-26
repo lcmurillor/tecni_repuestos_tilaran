@@ -154,8 +154,8 @@ void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
 ///Función de evalución final, evalua que el formulario cumpla con los requerimientos
 ///mínimos y si el usuario registrado está activo en el sistema. Si se cumplen las condiciones
 ///se puede iniciar la sesión.
-void _validateData(UserModel? user, LoginFormProvider loginFormProvider,
-    BuildContext context) {
+void _validateData(
+    User? user, LoginFormProvider loginFormProvider, BuildContext context) {
   final isValid = loginFormProvider.validateForm();
   if (null != user && !user.disabled && isValid) {
     FirebaseAuthService.signIn(
