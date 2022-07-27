@@ -60,6 +60,7 @@ class CardProduct extends StatelessWidget {
   GestureDetector productInfo(context) {
     return GestureDetector(
       onTap: () {
+        print(product.id);
         Navigator.push(
             context,
             MaterialPageRoute(
