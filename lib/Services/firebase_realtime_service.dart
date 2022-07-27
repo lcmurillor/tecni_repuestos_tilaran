@@ -197,7 +197,7 @@ class FirebaseRealtimeService {
   }
 
   ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
-  ///que se encuentre registrado en la amplicación.
+  ///que se encuentre registrado en la aplicación.
   static Future<List<Address>> getAddressesByUser({required String uid}) async {
     List<Address> addresses = [];
     final Query query =
@@ -211,6 +211,35 @@ class FirebaseRealtimeService {
       });
     }
     return addresses;
+  }
+
+  ///Éste método permite obtener un objeto de tipo "Address" del usuario
+  ///que se encuentre registrado en la aplicación.
+  static Future<Address>? getAddressByUser({required String uid}) async {
+    Address address = Address(
+        address: '', canton: '', id: '', province: '', userId: '', last: false);
+
+    bool noLast = true;
+    final Query query =
+        _db.ref().child('addresses').orderByChild('userId').equalTo(uid);
+    final DataSnapshot dataSnapshot = await query.get();
+    if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+      final Map<String, dynamic> data =
+          jsonDecode(jsonEncode(dataSnapshot.value));
+      data.forEach((key, value) {
+        if (value['last']) {
+          noLast = false;
+          address = Address.fromMap(value);
+        }
+      });
+      if (noLast) {
+        data.forEach((key, value) {
+          address = Address.fromMap(value);
+        });
+      }
+    }
+
+    return address;
   }
 
   ///Permiter actualizar los datos de dirrecion de un usuario. En casos
@@ -253,11 +282,12 @@ class FirebaseRealtimeService {
         .orderByChild('userId')
         .equalTo(FirebaseAuthService.auth.currentUser!.uid)
         .get();
-
-    Map<String, dynamic> data = jsonDecode(jsonEncode(dataSnapshot.value));
-    data.forEach((key, value) {
-      _db.ref().child('addresses/$key').update({'last': false});
-    });
+    if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+      Map<String, dynamic> data = jsonDecode(jsonEncode(dataSnapshot.value));
+      data.forEach((key, value) {
+        _db.ref().child('addresses/$key').update({'last': false});
+      });
+    }
   }
 
   ///Elimina un registro de la base de dato de tipo "addresses" "Dirreción de facturación"
@@ -282,11 +312,7 @@ class FirebaseRealtimeService {
   static Future<double> getCartTotal() async {
     double total = 0;
     if (FirebaseAuthService.auth.currentUser != null) {
-      final Query query = _db
-          .ref()
-          .child('carts')
-          .orderByChild('userId')
-          .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+      final Query query = getCart();
       final DataSnapshot dataSnapshot = await query.get();
       if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
         final Map<String, dynamic> data =
@@ -304,11 +330,7 @@ class FirebaseRealtimeService {
   static Future<int> getCartCount() async {
     int count = 0;
     if (FirebaseAuthService.auth.currentUser != null) {
-      final Query query = _db
-          .ref()
-          .child('carts')
-          .orderByChild('userId')
-          .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+      final Query query = getCart();
       final DataSnapshot dataSnapshot = await query.get();
       if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
         final Map<String, dynamic> data =
@@ -363,10 +385,7 @@ class FirebaseRealtimeService {
   static Future<bool> validateSetCart({required String productId}) async {
     bool isValid = true;
     if (FirebaseAuthService.auth.currentUser != null) {
-      final Query query = _db
-          .ref('carts')
-          .orderByChild('userId')
-          .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+      final Query query = getCart();
       final DataSnapshot dataSnapshot = await query.get();
       if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
         final Map<String, dynamic> data =
@@ -383,10 +402,7 @@ class FirebaseRealtimeService {
 
   /// Elimina todos los objetos del carrito de un usuario específico.
   static Future<void> deleteUserCart() async {
-    final Query query = _db
-        .ref('carts')
-        .orderByChild('userId')
-        .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+    final Query query = getCart();
     final DataSnapshot dataSnapshot = await query.get();
     if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
       final Map<String, dynamic> data =

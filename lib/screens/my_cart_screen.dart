@@ -21,13 +21,22 @@ class MyCartScreen extends StatefulWidget {
 }
 
 class _MyCartScreenState extends State<MyCartScreen> {
+  ///En esta función se definen los valores por efecto para cargar la pantalla con los datos
+  ///actualizados.
   @override
   void initState() {
-    final globalTotal = Provider.of<MyCartInfoProvider>(context, listen: false);
+    final myCartInfo = Provider.of<MyCartInfoProvider>(context, listen: false);
     Future.delayed(Duration.zero, () async {
       FirebaseRealtimeService.getCartTotal()
-          .then((value) => globalTotal.setTotal(total: value));
+          .then((value) => myCartInfo.setTotal(total: value));
     });
+    if (FirebaseAuthService.auth.currentUser != null) {
+      FirebaseRealtimeService.getAddressByUser(
+              uid: FirebaseAuthService.auth.currentUser!.uid)
+          ?.then((value) {
+        myCartInfo.setAddress(address: value);
+      });
+    }
     super.initState();
   }
 
@@ -86,7 +95,6 @@ class _MyCartScreenState extends State<MyCartScreen> {
               ///Corresponde al espacio en la parte inferior de la pantalla en la cual se
               ///muestra el costo total de la compra por los productos del carrito y se disponde de
               ///la dirrreción a la cual se entregaría el paquete.
-
               Container(
                 height: size.height * 0.35,
                 width: size.width,
@@ -118,7 +126,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
   ///Método que construye el reome de la orden de compra del usuario.
   _invoiceTotalInfo(BuildContext context) {
     final formatCurrency = NumberFormat.currency(symbol: "₡ ");
-    final globalTotal = Provider.of<MyCartInfoProvider>(context);
+    final myCartInfo = Provider.of<MyCartInfoProvider>(context);
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -126,13 +134,13 @@ class _MyCartScreenState extends State<MyCartScreen> {
           const SizedBox(height: 10),
           _moldeRowInfo(
               title: 'Subtotal: ',
-              value: formatCurrency.format((globalTotal.getTotal()))),
+              value: formatCurrency.format((myCartInfo.getTotal()))),
           _moldeRowInfo(
               title: 'IVA: ',
-              value: formatCurrency.format((globalTotal.getTotal() * 0.13))),
+              value: formatCurrency.format((myCartInfo.getTotal() * 0.13))),
           _moldeRowInfo(
               title: 'Total: ',
-              value: formatCurrency.format((globalTotal.getTotal() * 1.13)),
+              value: formatCurrency.format((myCartInfo.getTotal() * 1.13)),
               color: ColorStyle.mainBlue)
         ],
       ),
@@ -173,6 +181,8 @@ class CardUserAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final myCartInfo = Provider.of<MyCartInfoProvider>(context);
+
     return Card(
       ///Permite darle una espacio a los costados horizontales del contenedor.
       child: Padding(
@@ -193,14 +203,17 @@ class CardUserAddress extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${'address.canton'}, ${'address.province'}.',
-                    style: CustomTextStyle.robotoMedium.copyWith(fontSize: 20),
+                    (myCartInfo.getAddress().canton == '')
+                        ? 'No tienes nunguna dirección de facturación.'
+                        : '${myCartInfo.getAddress().canton}, ${myCartInfo.getAddress().province}.',
+                    style: CustomTextStyle.robotoMedium.copyWith(fontSize: 17),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 10),
                   Text(
-                    'address.address',
+                    (myCartInfo.getAddress().address == '')
+                        ? 'Por favor , agrega una nueva dirreción.'
+                        : myCartInfo.getAddress().address,
                     style: CustomTextStyle.robotoMedium
                         .copyWith(fontSize: 15, color: ColorStyle.textGrey),
                     maxLines: 4,
