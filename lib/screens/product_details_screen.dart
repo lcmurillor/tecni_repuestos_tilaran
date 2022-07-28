@@ -37,13 +37,17 @@ class ProductDetailsScreen extends StatelessWidget {
               size1: 42,
               iconColor: Colors.red,
               onPressed: () {
-                NotificationsService.displayDeleteDialog(context,
-                    'Está seguro que desea eliminar ${product.description}',
-                    () {
-                  FirebaseRealtimeService.deleteProduct(key: product.id);
-                  NotificationsService.showSnackbar('Producto eliminado');
-                  Navigator.canPop(context);
-                });
+                NotificationsService.displayDeleteDialog(
+                  context,
+                  'Está seguro que desea eliminar ${product.description}',
+                  () {
+                    FirebaseRealtimeService.deleteProduct(
+                        productId: product.id);
+                    Navigator.pop(context);
+                    NotificationsService.showSnackbar('Producto eliminado');
+                    Navigator.pushReplacementNamed(context, 'home');
+                  },
+                );
               },
               navigatorOnPressed: () {
                 Navigator.push(
@@ -80,113 +84,99 @@ class ProductDetailsScreen extends StatelessWidget {
                     }
                   },
                   child: Container(
-                      width: 300,
-                      height: size.height * 0.25,
-                      margin: const EdgeInsets.symmetric(vertical: 15),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: [MainTheme.cardShadow]),
+                    width: 300,
+                    height: size.height * 0.25,
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: [MainTheme.cardShadow]),
 
-                      ///Este es el widget que se encarga de crear la imagen.
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: product.imageUrl.startsWith('http')
-                              ? FadeInImage(
-                                  placeholder: const AssetImage(
-                                      'assets/placeholder-image.png'),
-                                  image: NetworkImage(product.imageUrl),
-                                  placeholderFit: BoxFit.cover,
-                                  fit: BoxFit.contain)
-                              : const Image(
-                                  image: AssetImage(
-                                      'assets/placeholder-image.png'),
-                                  fit: BoxFit.cover))),
+                    ///Este es el widget que se encarga de crear la imagen.
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: product.imageUrl.startsWith('http')
+                          ? FadeInImage(
+                              placeholder: const AssetImage(
+                                  'assets/placeholder-image.png'),
+                              image: NetworkImage(product.imageUrl),
+                              placeholderFit: BoxFit.cover,
+                              fit: BoxFit.contain)
+                          : const Image(
+                              image: AssetImage('assets/placeholder-image.png'),
+                              fit: BoxFit.cover),
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  width: 300,
+                  child: Text(
+                    product.description,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w600),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
-                ),
-
-                // const SizedBox(height: 350),
-                moldeRowInfo(
-                  product.description,
-                  CustomTextStyle.robotoExtraBold,
-                  CustomTextStyle.robotoMedium
-                      .copyWith(color: ColorStyle.mainGrey),
-                  '',
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 moldeRowInfo(
                   'Código: ',
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  TextStyle(
-                      color: ColorStyle.mainBlue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
                   product.code,
+                  ColorStyle.mainBlue,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 moldeRowInfo(
                   'Costo: ',
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  TextStyle(
-                      color: ColorStyle.mainBlue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
-                  formatCurrency.format(
-                    product.cost,
-                  ),
+                  formatCurrency.format(product.cost),
+                  ColorStyle.mainBlue,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 moldeRowInfo(
                   'Localización: ',
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  TextStyle(
-                      color: ColorStyle.mainRed,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
                   product.location,
+                  ColorStyle.mainRed,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                moldeRowInfo(
+                  'Categoría: ',
+                  product.category,
+                  ColorStyle.mainRed,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 moldeRowInfo(
                   'Tipo: ',
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  TextStyle(
-                      color: ColorStyle.mainRed,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
                   tipo,
+                  ColorStyle.mainRed,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 moldeRowInfo(
-                    'Precio: ',
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    TextStyle(
-                        color: ColorStyle.mainRed,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
-                    formatCurrency.format(product.price)),
+                  'Precio: ',
+                  formatCurrency.format(product.price),
+                  ColorStyle.mainRed,
+                ),
                 const SizedBox(
                   height: 15,
                 ),
                 moldeRowInfo(
                   'Disponibles: ',
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  TextStyle(
-                      color: ColorStyle.mainRed,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
                   product.quantity.toString(),
+                  ColorStyle.mainRed,
                 ),
                 const SizedBox(
                   height: 15,
@@ -197,8 +187,7 @@ class ProductDetailsScreen extends StatelessWidget {
     );
   }
 
-  Padding moldeRowInfo(String text, TextStyle style, TextStyle style2,
-      [String text2 = '', TextAlign textalign = TextAlign.start]) {
+  Padding moldeRowInfo(String text, [String text2 = '', Color? color2]) {
     return Padding(
       padding: const EdgeInsets.only(left: 50),
       child: Row(
@@ -208,17 +197,21 @@ class ProductDetailsScreen extends StatelessWidget {
           Expanded(
             child: Text(text,
                 softWrap: true,
-                textAlign: textalign,
+                textAlign: TextAlign.start,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: style),
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black)),
           ),
           Expanded(
             child: Text(text2,
-                textAlign: textalign,
+                textAlign: TextAlign.start,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: style2),
+                style: TextStyle(
+                    fontSize: 16, fontWeight: FontWeight.w600, color: color2)),
           ),
         ],
       ),

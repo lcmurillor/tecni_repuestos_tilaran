@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
@@ -8,6 +9,8 @@ import 'package:tecni_repuestos/screens/screens.dart';
 ///import 'package:tecni_repuestos/shared/preferences.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
+
+import '../shared/preferences.dart';
 //import 'package:intl/intl.dart';
 
 class ProductEditInformationScreen extends StatelessWidget {
@@ -62,151 +65,142 @@ class _EditInfoForm extends StatelessWidget {
       child: Builder(builder: (context) {
         final editInfoProductProvider =
             Provider.of<EditInfoProductProvider>(context, listen: false);
-        return FutureBuilder(
-          future: FirebaseRealtimeService.getUserByUid(
-              uid: FirebaseAuthService.auth.currentUser!.uid),
-          builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
-            if (snapshot.hasError) {
-              return NotificationsService.showErrorSnackbar(
-                  'Ha ocurrido un error a la hora de cargar los datos.');
-            }
 
-            if (!snapshot.hasData) {
-              return const CustomProgressIndicator();
-            }
-
-            //     final user = snapshot.data!;
-            return Form(
-              key: editInfoProductProvider.formKey,
-              child: Column(
-                children: [
-                  ///Input correspondiente al nombre  para registrar el nuevo usuario.
-                  CustomTextInput(
-                      controller:
-                          TextEditingController(text: product.description),
-                      hintText: 'Nombre del producto',
-                      icon: Icons.person,
-                      onChanged: (value) =>
-                          editInfoProductProvider.description = value,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'El nombre es obligatorio';
-                        } else if (value.length < 2) {
-                          return 'EL nombre debe tener 2 o más caracteres.';
-                        }
-                        return null;
-                      }),
-
-                  ///Input correspondiente al nombre  para registrar el nuevo usuario.
-                  CustomTextInput(
-                      controller: TextEditingController(text: product.code),
-                      hintText: 'Código',
-                      icon: Icons.numbers,
-                      onChanged: (value) =>
-                          editInfoProductProvider.code = value,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'El apellido es obligatorio';
-                        } else if (value.length < 2) {
-                          return 'El apellido debe tener 2 o más caracteres.';
-                        }
-                        return null;
-                      }),
-
-                  ///Input correspondiente al Telefono para registrar el nuevo usuario.
-                  CustomTextInput(
-                      controller:
-                          TextEditingController(text: product.cost.toString()),
-                      hintText: 'Costo',
-                      icon: Icons.monetization_on,
-                      onChanged: (value) =>
-                          editInfoProductProvider.cost = value,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'El costo es obligatorio.';
-                        } else if (value.length < 3) {
-                          return 'El costo no es valido.';
-                        }
-                        return null;
-                      }),
-                  CustomTextInput(
-                      controller: TextEditingController(text: product.location),
-                      hintText: 'Localización',
-                      icon: Icons.location_on,
-                      onChanged: (value) =>
-                          editInfoProductProvider.location = value,
-                      keyboardType: TextInputType.name,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'La localización es obligatoria.';
-                        } else if (value.length < 2) {
-                          return 'La localización no es válida.';
-                        }
-                        return null;
-                      }),
-
-                  ///Input correspondiente al fecha para registrar el nuevo usuario.
-
-                  //Input correspondiente del tipo de identificación para registrar el nuevo usuario.
-
-                  ///Input correspondiente de la identificación para registrar el nuevo usuario.
-                  CustomTextInput(
-                      controller: TextEditingController(text: product.type),
-                      keyboardType: TextInputType.name,
-                      hintText: 'Tipo',
-                      icon: Icons.settings,
-                      onChanged: (value) =>
-                          editInfoProductProvider.type = value,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'La cédula es obligatoria.';
-                        } else if (value.length < 5) {
-                          return 'El tipo debe contener 4 o más caracteres.';
-                        }
-                        return null;
-                      }),
-
-                  CustomTextInput(
-                      controller:
-                          TextEditingController(text: product.price.toString()),
-                      hintText: 'Precio',
-                      icon: Icons.price_check,
-                      onChanged: (value) =>
-                          editInfoProductProvider.price = value,
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'El precio es obligatorio.';
-                        } else if (value.length < 2) {
-                          return 'El precio no es valido.';
-                        }
-                        return null;
-                      }),
-
-                  CustomTextInput(
-                      controller: TextEditingController(
-                          text: product.quantity.toString()),
-                      hintText: 'Disponibles',
-                      icon: Icons.monetization_on,
-                      onChanged: (value) =>
-                          editInfoProductProvider.quantity = value,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'El cantidad es obligatoria.';
-                        }
-                        return null;
-                      }),
-                  const SizedBox(height: 5),
-                  PrimaryButton(
-                      text: 'Aplicar cambio',
-                      onPressed: () => _onFormSubmit(
-                          editInfoProductProvider, context, product))
+        return Form(
+          key: editInfoProductProvider.formKey,
+          child: Column(
+            children: [
+              CustomTextInput(
+                  controller: TextEditingController(text: product.description),
+                  hintText: 'Nombre del producto',
+                  icon: Icons.person,
+                  onChanged: (value) =>
+                      editInfoProductProvider.description = value,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'El nombre es obligatorio';
+                    } else if (value.length < 2) {
+                      return 'EL nombre debe tener 2 o más caracteres.';
+                    }
+                    return null;
+                  }),
+              CustomTextInput(
+                  controller: TextEditingController(text: product.code),
+                  hintText: 'Código',
+                  icon: Icons.numbers,
+                  onChanged: (value) => editInfoProductProvider.code = value,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'El apellido es obligatorio';
+                    } else if (value.length < 2) {
+                      return 'El apellido debe tener 2 o más caracteres.';
+                    }
+                    return null;
+                  }),
+              CustomTextInput(
+                  controller:
+                      TextEditingController(text: product.cost.toString()),
+                  hintText: 'Costo',
+                  icon: Icons.monetization_on,
+                  onChanged: (value) => editInfoProductProvider.cost = value,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'El costo es obligatorio.';
+                    } else if (value.length < 3) {
+                      return 'El costo no es valido.';
+                    }
+                    return null;
+                  }),
+              CustomTextInput(
+                  controller: TextEditingController(text: product.location),
+                  hintText: 'Localización',
+                  icon: Icons.location_on,
+                  onChanged: (value) =>
+                      editInfoProductProvider.location = value,
+                  keyboardType: TextInputType.name,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'La localización es obligatoria.';
+                    } else if (value.length < 2) {
+                      return 'La localización no es válida.';
+                    }
+                    return null;
+                  }),
+              CustomTextInput(
+                  controller: TextEditingController(text: product.category),
+                  hintText: 'Categoría',
+                  icon: Icons.category,
+                  onChanged: (value) =>
+                      editInfoProductProvider.category = value,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'El nombre es obligatorio';
+                    } else if (value.length < 2) {
+                      return 'EL nombre debe tener 2 o más caracteres.';
+                    }
+                    return null;
+                  }),
+              DropdownButtonFormField<String>(
+                style: CustomTextStyle.robotoSemiBold.copyWith(
+                    color:
+                        (Preferences.isDarkmode) ? Colors.white : Colors.black),
+                borderRadius: BorderRadius.circular(10),
+                decoration:
+                    InputStyle.mainInput(hintText: '', icon: Icons.settings),
+                value:
+                    'spare', //Este será el valor por defecto al dibujar el widget
+                items: const [
+                  DropdownMenuItem(
+                    value: 'spare',
+                    child: Text('Repuesto'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'accesorie',
+                    child: Text('Accesorio'),
+                  ),
                 ],
+                onChanged: (value) {
+                  editInfoProductProvider.type = value.toString();
+                },
               ),
-            );
-          },
+              const SizedBox(height: 15),
+              CustomTextInput(
+                  controller:
+                      TextEditingController(text: product.price.toString()),
+                  hintText: 'Precio',
+                  icon: Icons.price_check,
+                  onChanged: (value) => editInfoProductProvider.price = value,
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'El precio es obligatorio.';
+                    } else if (value.length < 2) {
+                      return 'El precio no es valido.';
+                    }
+                    return null;
+                  }),
+              CustomTextInput(
+                  controller:
+                      TextEditingController(text: product.quantity.toString()),
+                  hintText: 'Disponibles',
+                  icon: Icons.format_list_numbered_outlined,
+                  onChanged: (value) =>
+                      editInfoProductProvider.quantity = value,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'El cantidad es obligatoria.';
+                    }
+                    return null;
+                  }),
+              const SizedBox(height: 5),
+              PrimaryButton(
+                  text: 'Aplicar cambio',
+                  onPressed: () =>
+                      _onFormSubmit(editInfoProductProvider, context, product))
+            ],
+          ),
         );
       }),
     );
@@ -244,7 +238,9 @@ void _onFormSubmit(EditInfoProductProvider editInfoFormProductProvider, context,
               ? product.quantity.toInt()
               : int.parse(editInfoFormProductProvider.quantity),
           id: product.id,
-          category: product.category,
+          category: (editInfoFormProductProvider.category == '')
+              ? product.category
+              : editInfoFormProductProvider.category,
           imageUrl: product.imageUrl);
     } else {
       NotificationsService.showErrorSnackbar(

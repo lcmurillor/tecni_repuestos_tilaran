@@ -7,6 +7,7 @@ class EditInfoProductProvider extends ChangeNotifier {
   String code = '';
   String cost = '';
   String location = '';
+  String category = '';
   String type = '';
   String price = '';
   String quantity = '';

@@ -200,8 +200,8 @@ class FirebaseRealtimeService {
     });
   }
 
-  static void deleteProduct({required String key}) {
-    _db.ref('Products/$key').remove();
+  static void deleteProduct({required String productId}) {
+    _db.ref('products/$productId').remove();
   }
 
   ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario

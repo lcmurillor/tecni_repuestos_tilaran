@@ -59,12 +59,21 @@ class CardProduct extends StatelessWidget {
   ///Éste médoto constuye la información que correspone al artículo.
   GestureDetector productInfo(context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (FirebaseAuthService.auth.currentUser != null) {
+          UserModel user = await FirebaseRealtimeService.getUserByUid(
+              uid: FirebaseAuthService.auth.currentUser!.uid);
+          if (user.administrator) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProductDetailsScreen(product: product)));
+          } else {
+            null;
+          }
+        }
         print(product.id);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ProductDetailsScreen(product: product)));
       },
       child: ListTile(
           contentPadding: const EdgeInsets.all(0),
