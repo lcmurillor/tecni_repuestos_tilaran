@@ -92,7 +92,7 @@ class CardProduct extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         if (FirebaseAuthService.auth.currentUser != null) {
-          UserModel user = await FirebaseRealtimeService.getUserByUid(
+          User user = await FirebaseRealtimeService.getUserByUid(
               uid: FirebaseAuthService.auth.currentUser!.uid);
           if (user.administrator) {
             Navigator.push(
@@ -104,7 +104,6 @@ class CardProduct extends StatelessWidget {
             null;
           }
         }
-        print(product.id);
       },
       child: ListTile(
           contentPadding: const EdgeInsets.all(0),

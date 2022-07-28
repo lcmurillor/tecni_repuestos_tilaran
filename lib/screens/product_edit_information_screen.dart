@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-//import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
-
-///import 'package:tecni_repuestos/shared/preferences.dart';
+import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/shared/preferences.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
-
-import '../shared/preferences.dart';
-//import 'package:intl/intl.dart';
 
 class ProductEditInformationScreen extends StatelessWidget {
   const ProductEditInformationScreen({Key? key, required this.product})

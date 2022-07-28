@@ -261,7 +261,8 @@ class FirebaseRealtimeService {
   ///Permiter actualizar los datos de dirrecion de un usuario. En casos
   ///donde no todos los datos fueron alterados, el modelo del dirrecciones guarda los datos
   ///anteririos y los sobreescrible.
-  static Future<void> updateAddress({required Address address, context}) async {
+  static Future<void> updateAddress(
+      {required Address address, required BuildContext context}) async {
     Future(() => _setAddressFalse()).then((value) {
       _db.ref("addresses/${address.id}").update({
         'address': address.address,
@@ -275,7 +276,8 @@ class FirebaseRealtimeService {
 
   ///Agregan en la base de datoa de Firebase un nuevo registro de Dirreción de facturación
   ///"address". Para esto se asignan los datos de un modelo previamente establecido.
-  static Future<void> setAddress({required Address address, context}) async {
+  static Future<void> setAddress(
+      {required Address address, required BuildContext context}) async {
     _setAddressFalse().then((value) {
       final String id = _db.ref('addresses').push().key!;
       _db.ref('addresses/$id').set({
@@ -287,6 +289,17 @@ class FirebaseRealtimeService {
         'last': true,
       });
     }).then((value) => Navigator.popAndPushNamed(context, 'addresses'));
+  }
+
+  static Future<void> updateLastAddress(
+      {required BuildContext context, required Address address}) async {
+    _setAddressFalse().then(
+      (value) {
+        _db.ref("addresses/${address.id}").update({
+          'last': true,
+        });
+      },
+    ).then((value) => Navigator.popAndPushNamed(context, 'myCart'));
   }
 
   ///Define el estado en "false" de todas las direcciones de un usuario para actualizar y definir

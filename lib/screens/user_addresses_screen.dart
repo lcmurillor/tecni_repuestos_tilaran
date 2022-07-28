@@ -70,7 +70,14 @@ class UserAddressesScreen extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       itemCount: address.length,
                       itemBuilder: (context, index) {
-                        return CardAddress(address: address[index]);
+                        return GestureDetector(
+                            onTap: () {
+                              if (comeFromMyCart) {
+                                FirebaseRealtimeService.updateLastAddress(
+                                    address: address[index], context: context);
+                              }
+                            },
+                            child: CardAddress(address: address[index]));
                       },
                     );
                   },
