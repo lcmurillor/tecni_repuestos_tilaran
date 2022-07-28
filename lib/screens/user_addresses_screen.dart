@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
@@ -10,19 +11,18 @@ class UserAddressesScreen extends StatelessWidget {
   ///Se pueden editar, eliminar, ver y agregar direciones para el usuario actualmente registrado.
   const UserAddressesScreen({
     Key? key,
-    this.comeFromMyCart = false,
   }) : super(key: key);
-  final bool comeFromMyCart;
 
   @override
   Widget build(BuildContext context) {
+    final currentScreen = Provider.of<ComeFromProvider>(context);
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBarBackArrow(
             useActions: false,
-            navigatorOnPressed: (comeFromMyCart)
-                ? () => Navigator.pushReplacementNamed(context, 'myCart')
-                : () => Navigator.pushReplacementNamed(context, 'profile')),
+            navigatorOnPressed: (currentScreen.getScreen() == 'profile')
+                ? () => Navigator.pushReplacementNamed(context, 'profile')
+                : () => Navigator.pushReplacementNamed(context, 'myCart')),
         body: Column(children: [
           const SizedBox(
             height: 50,
@@ -72,7 +72,7 @@ class UserAddressesScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                             onTap: () {
-                              if (comeFromMyCart) {
+                              if (currentScreen.getScreen() == 'myCart') {
                                 FirebaseRealtimeService.updateLastAddress(
                                     address: address[index], context: context);
                               }

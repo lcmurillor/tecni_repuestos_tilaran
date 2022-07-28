@@ -14,7 +14,8 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode)),
-    ChangeNotifierProvider(create: (_) => MyCartInfoProvider())
+    ChangeNotifierProvider(create: (_) => MyCartInfoProvider()),
+    ChangeNotifierProvider(create: (_) => ComeFromProvider())
   ], child: const TecniRepuestoTilaran()));
 }
 

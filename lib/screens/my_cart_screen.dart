@@ -26,6 +26,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
   @override
   void initState() {
     final myCartInfo = Provider.of<MyCartInfoProvider>(context, listen: false);
+
     Future.delayed(Duration.zero, () async {
       FirebaseRealtimeService.getCartTotal()
           .then((value) => myCartInfo.setTotal(total: value));
@@ -37,13 +38,14 @@ class _MyCartScreenState extends State<MyCartScreen> {
         myCartInfo.setAddress(address: value);
       });
     }
+    Provider.of<ComeFromProvider>(context, listen: false)
+        .setScreen(screen: 'myCart');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return SafeArea(
       child: Scaffold(
           appBar: CustomAppBarBackArrow(
@@ -233,12 +235,7 @@ class CardUserAddress extends StatelessWidget {
                     size: 40,
                     color: ColorStyle.textGrey,
                   ),
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const UserAddressesScreen(
-                                comeFromMyCart: true,
-                              ))),
+                  onPressed: () => Navigator.pushNamed(context, 'addresses'),
                 ),
               ],
             ),

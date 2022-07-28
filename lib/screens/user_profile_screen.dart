@@ -23,6 +23,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    Provider.of<ComeFromProvider>(context, listen: false)
+        .setScreen(screen: 'profile');
+
     return SafeArea(
       child: Scaffold(
         /// Se utiliza ese AppBar personalizado ya que es requerido para la navegación del usuario
