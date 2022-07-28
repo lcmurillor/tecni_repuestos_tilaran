@@ -233,7 +233,12 @@ class CardUserAddress extends StatelessWidget {
                     size: 40,
                     color: ColorStyle.textGrey,
                   ),
-                  onPressed: () => Navigator.pushNamed(context, 'addresses'),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserAddressesScreen(
+                                comeFromMyCart: true,
+                              ))),
                 ),
               ],
             ),

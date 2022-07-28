@@ -196,6 +196,22 @@ class FirebaseRealtimeService {
     });
   }
 
+  static void updateProduct({required Product product}) {
+    _db.ref().child('products/${product.id}').update({
+      'description': product.description,
+      'code': product.code,
+      'cost': product.cost,
+      'location': product.location,
+      'type': product.type,
+      'price': product.price,
+      'quantity': product.quantity
+    });
+  }
+
+  static void deleteProduct({required String key}) {
+    _db.ref('Products/$key').remove();
+  }
+
   ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
   ///que se encuentre registrado en la aplicación.
   static Future<List<Address>> getAddressesByUser({required String uid}) async {

@@ -32,6 +32,7 @@ class CustomTextInput extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final Function()? onTap;
+
   final TextEditingController? controller;
   final int maxLines;
 

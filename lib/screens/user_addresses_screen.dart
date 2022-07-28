@@ -8,7 +8,11 @@ class UserAddressesScreen extends StatelessWidget {
   ///En esta pantalla se almacenan y se gestionan las direcciones físicas del usuario
   ///las cuales se utilizan para identifiar el destino de los paquetes que solicite mediante la Aplicación.
   ///Se pueden editar, eliminar, ver y agregar direciones para el usuario actualmente registrado.
-  const UserAddressesScreen({Key? key}) : super(key: key);
+  const UserAddressesScreen({
+    Key? key,
+    this.comeFromMyCart = false,
+  }) : super(key: key);
+  final bool comeFromMyCart;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +20,9 @@ class UserAddressesScreen extends StatelessWidget {
       child: Scaffold(
         appBar: CustomAppBarBackArrow(
             useActions: false,
-            navigatorOnPressed: () =>
-                Navigator.pushReplacementNamed(context, 'profile')),
+            navigatorOnPressed: (comeFromMyCart)
+                ? () => Navigator.pushReplacementNamed(context, 'myCart')
+                : () => Navigator.pushReplacementNamed(context, 'profile')),
         body: Column(children: [
           const SizedBox(
             height: 50,
