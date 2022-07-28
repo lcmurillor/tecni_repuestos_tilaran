@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
@@ -38,19 +38,18 @@ class ProductDetailsScreen extends StatelessWidget {
               iconColor: Colors.red,
               onPressed: () {
                 NotificationsService.displayDeleteDialog(
-                  context,
-                  'Está seguro que desea eliminar ${product.description}',
-                  () {
-                    FirebaseRealtimeService.deleteProduct(
-                        productId: product.id);
-                    Navigator.pop(context);
-                    NotificationsService.showSnackbar('Producto eliminado');
-                    Navigator.pushReplacementNamed(context, 'home');
-                  },
-                );
+                    context: context,
+                    text:
+                        'Está seguro que desea eliminar ${product.description}',
+                    onPressed: () {
+                      FirebaseRealtimeService.deleteProduct(
+                          productId: product.id);
+                      NotificationsService.showSnackbar('Producto eliminado');
+                      Navigator.canPop(context);
+                    });
               },
               navigatorOnPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
@@ -64,9 +63,8 @@ class ProductDetailsScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     if (FirebaseAuthService.auth.currentUser != null) {
-                      UserModel user =
-                          await FirebaseRealtimeService.getUserByUid(
-                              uid: FirebaseAuthService.auth.currentUser!.uid);
+                      User user = await FirebaseRealtimeService.getUserByUid(
+                          uid: FirebaseAuthService.auth.currentUser!.uid);
                       if (user.administrator) {
                         final result = await FilePicker.platform.pickFiles(
                             allowMultiple: false,

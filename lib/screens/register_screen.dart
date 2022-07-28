@@ -294,7 +294,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 void _onFormSubmit(
     RegisterFormProvider registerFormProvider, context, bool isActived) {
   final isValid = registerFormProvider.validateForm(isActived);
-  UserModel user = UserModel(
+  User user = User(
     birthdate: registerFormProvider.birthdate,
     email: registerFormProvider.email,
     id: 'undefied',

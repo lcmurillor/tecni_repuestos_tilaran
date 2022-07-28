@@ -14,9 +14,6 @@ import '../shared/preferences.dart';
 //import 'package:intl/intl.dart';
 
 class ProductEditInformationScreen extends StatelessWidget {
-  ///Ésta pantalla corresponde al apartado donde el usuario puede editar su información.
-  ///Se muestra un formulario el cual esta previamente cargado con la información del usuario registrado
-  ///en este, el usuario puede editar lo que necesite.
   const ProductEditInformationScreen({Key? key, required this.product})
       : super(key: key);
   final Product product;
@@ -52,11 +49,8 @@ class ProductEditInformationScreen extends StatelessWidget {
   }
 }
 
-///Formulario el cual se carga con la información del usuario registrado en la aplicación y en donde este
-///puede editar sus datos personales.
 class _EditInfoForm extends StatelessWidget {
   const _EditInfoForm({Key? key, required this.product}) : super(key: key);
-  // final _dataController = TextEditingController();
   final Product product;
   @override
   Widget build(BuildContext context) {
@@ -249,7 +243,7 @@ void _onFormSubmit(EditInfoProductProvider editInfoFormProductProvider, context,
   }).then((value) {
     FirebaseRealtimeService.updateProduct(product: product);
     if (editInfoFormProductProvider.validateForm()) {
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => ProductDetailsScreen(product: product)));

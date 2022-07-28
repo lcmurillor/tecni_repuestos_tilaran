@@ -12,34 +12,36 @@ class UserPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Background(
-      useImg: true,
-      useBackArrow: true,
-      child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(height: 170),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Text('Cambiar contraseña',
-                          style: CustomTextStyle.robotoExtraBold
-                              .copyWith(fontSize: 28)),
-                      const SizedBox(height: 20),
-                      const _UpdatePasswordForm(),
-                    ],
+    return SafeArea(
+      child: Scaffold(
+          body: Background(
+        useImg: true,
+        useBackArrow: true,
+        child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                const SizedBox(height: 170),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        Text('Cambiar contraseña',
+                            style: CustomTextStyle.robotoExtraBold
+                                .copyWith(fontSize: 28)),
+                        const SizedBox(height: 20),
+                        const _UpdatePasswordForm(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 45)
-            ],
-          )),
-    ));
+                const SizedBox(height: 45)
+              ],
+            )),
+      )),
+    );
   }
 }
 

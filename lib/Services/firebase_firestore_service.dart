@@ -51,25 +51,24 @@ class FirebaseFirestoreService {
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del UID
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Stream<List<UserModel>> getUserByUid(String uid) {
+  static Stream<List<User>> getUserByUid(String uid) {
     final ref = _db.collection('users').where('id', isEqualTo: uid);
-    return ref.snapshots().map((list) =>
-        list.docs.map((doc) => UserModel.fromMap(doc.data())).toList());
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => User.fromMap(doc.data())).toList());
   }
 
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
-  static Future<UserModel?> getUserByEmail(String email) {
+  static Future<User?> getUserByEmail(String email) {
     return _db.collection('users').where('email', isEqualTo: email).get().then(
-        (snapshot) => 0 == snapshot.size
-            ? null
-            : UserModel.fromMap(snapshot.docs[0].data()));
+        (snapshot) =>
+            0 == snapshot.size ? null : User.fromMap(snapshot.docs[0].data()));
   }
 
   ///Éste método permite crear un nuevo usuario en la base de datos. Es solo requerido cuando
   ///un usuario es registrado por primera vez.
-  static void setUser(UserModel user) {
+  static void setUser(User user) {
     _db.collection("users").doc(user.id).set({
       'administrator': user.administrator,
       'birthdate': user.birthdate,
@@ -94,7 +93,7 @@ class FirebaseFirestoreService {
   ///Permite actualizar los datos del usuario identificado por medio del UID, en casos
   ///donde no todos los datos fueron alterados, el modelo del usuario guarda los datos
   ///anteririos y los sobreescrible.
-  static void updateUser(UserModel user) {
+  static void updateUser(User user) {
     _db.collection("users").doc(user.id).update({
       'name': user.name,
       'lastname': user.lastname,

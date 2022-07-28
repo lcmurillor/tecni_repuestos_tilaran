@@ -48,7 +48,9 @@ class NotificationsService {
   ///o atributo descriptivo de lo que se busca eliminar y en la función "onPressed" se realiza el
   ///llamado a la bae de datos al mento específico.
   static displayDeleteDialog(
-      BuildContext context, String text, void Function()? onPressed) {
+      {required BuildContext context,
+      required String text,
+      void Function()? onPressed}) {
     showDialog(
         context: context,
         barrierDismissible: true,

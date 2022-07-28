@@ -6,6 +6,7 @@ export 'package:tecni_repuestos/widgets/button_primary.dart';
 export 'package:tecni_repuestos/widgets/button_secondary.dart';
 export 'package:tecni_repuestos/widgets/button_tertiary.dart';
 export 'package:tecni_repuestos/widgets/card_address.dart';
+export 'package:tecni_repuestos/widgets/card_list_product.dart';
 export 'package:tecni_repuestos/widgets/card_login.dart';
 export 'package:tecni_repuestos/widgets/card_product.dart';
 export 'package:tecni_repuestos/widgets/category_title.dart';

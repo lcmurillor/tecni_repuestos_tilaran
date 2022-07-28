@@ -40,7 +40,7 @@ class CustomAppBarBackArrow extends StatelessWidget
       leading: (editIcon)
           ? IconButton(
               onPressed: navigatorOnPressed,
-              icon: const Icon(Icons.arrow_back_outlined, color: Colors.black),
+              icon: const Icon(Icons.arrow_back_outlined),
               iconSize: size,
             )
           : IconButton(

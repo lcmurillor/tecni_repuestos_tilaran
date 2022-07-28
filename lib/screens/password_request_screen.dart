@@ -1,7 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
-import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
@@ -103,26 +102,13 @@ class _PasswordForm extends StatelessWidget {
 ///Función intermedia que hace una llamado a la base de datos para optener un usuario
 ///si éste está registrado.
 void _onFormSubmit(RequestPasswordFormProvider requestPasswordFormProvider,
-    BuildContext context) {
-  // FirebaseFirestoreService.getUserByEmail(requestPasswordFormProvider.email)
-  //     .then((UserModel? user) =>
-  //         _validateData(user, requestPasswordFormProvider, context));
-}
-
-///Función de evalución final, evalua que el formulario cumpla con los requerimientos
-///mínimos y si las credenciales indicadas corresponden a un usuario registrado.
-void _validateData(
-    UserModel? user,
-    RequestPasswordFormProvider requestPasswordFormProvider,
-    BuildContext context) {
-  final isValid = requestPasswordFormProvider.validateForm();
-  if (null != user && !user.disabled && isValid) {
-    NotificationsService.showSnackbar(
-        'Se ha enviado la solicitud de cambio a su correo electrónico ${requestPasswordFormProvider.email}');
-    FirebaseAuthService.requestPassword(
-        requestPasswordFormProvider.email, context);
-  } else {
-    NotificationsService.showErrorSnackbar(
-        'El correo indicado no corresponde a ningún usuario.');
+    BuildContext context) async {
+  if (requestPasswordFormProvider.validateForm()) {
+    if (!await FirebaseAuthService.requestPassword(
+        requestPasswordFormProvider.email, context)) {
+      NotificationsService.showSnackbar(
+          'Se ha enviado la solicitud de cambio a su correo electrónico ${requestPasswordFormProvider.email}');
+      Navigator.pushReplacementNamed(context, 'login');
+    }
   }
 }

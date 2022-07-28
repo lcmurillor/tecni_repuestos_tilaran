@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/Services/services.dart';
-import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
 
 ///Ésta clase corresponde a la conección que se tiene con la base de datos Firebase
@@ -47,8 +46,8 @@ class FirebaseAuthService {
   ///Permite crear un nuevos usuarios. Primeramente los registra con los sistemas de
   ///autentificación de firebase y luego guarda datos adicionales a este en la base de datos
   ///asociados con el UID. Al final guarda el usuario en la memoria y muestra la pantalla principal.
-  static logIn(String email, String password, UserModel userModel,
-      BuildContext context) async {
+  static logIn(
+      String email, String password, userModel, BuildContext context) async {
     try {
       ///Proceso de creación de un nuevo usuario en el apartado de "Autentificación" de Firebase.
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
@@ -72,9 +71,19 @@ class FirebaseAuthService {
 
   ///Recive el correo de un usuario registrado en la aplicación y envía un correo a este
   ///en el cual puede cambiar su contraseña.
-  static requestPassword(String email, BuildContext context) async {
-    await auth.sendPasswordResetEmail(email: email);
-    Navigator.pushReplacementNamed(context, 'login');
+  static Future<bool> requestPassword(
+      String email, BuildContext context) async {
+    bool error = false;
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        error = true;
+        NotificationsService.showErrorSnackbar(
+            'El usuario indicado no existe.');
+      }
+    }
+    return error;
   }
 
   ///Revice la contraseña del usuario registrado actualmente y la contraseña que ele usuario

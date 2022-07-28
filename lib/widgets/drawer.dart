@@ -61,8 +61,7 @@ class CustomDrawer extends StatelessWidget {
             FutureBuilder(
               future: FirebaseRealtimeService.getUserByUid(
                   uid: FirebaseAuthService.auth.currentUser!.uid),
-              builder:
-                  (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                 if (snapshot.hasError) {
                   return NotificationsService.showErrorSnackbar(
                       'Ha ocurrido un error a la hora de cargar los datos.');
