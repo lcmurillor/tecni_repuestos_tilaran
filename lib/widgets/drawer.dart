@@ -84,11 +84,8 @@ class CustomDrawer extends StatelessWidget {
                         MdiIcons.archiveCog,
                         const PlaceholderScreen(text: 'Administrar pedidos'),
                         context),
-                    _moldelListTile(
-                        'Administrar usuarios',
-                        MdiIcons.accountCog,
-                        const PlaceholderScreen(text: 'Adminitrar usuarios'),
-                        context)
+                    _moldelListTile('Administrar usuarios', MdiIcons.accountCog,
+                        const AdminUsersScreen(), context),
                   ] else if (user.vendor) ...[
                     _moldelListTile(
                         'Administrar pedidos',

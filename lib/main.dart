@@ -73,6 +73,7 @@ class TecniRepuestoTilaran extends StatelessWidget {
           'register': (_) => const RegisterScreen(),
           'myCart': (_) => const MyCartScreen(),
           'profile': (_) => const UserProfileScreen(),
+          'adminusers': (_) => const AdminUsersScreen(),
         });
   }
 }
