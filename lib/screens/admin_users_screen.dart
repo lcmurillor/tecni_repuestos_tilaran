@@ -1,20 +1,20 @@
-// ignore_for_file: unused_element
-
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/services/services.dart';
-import 'package:tecni_repuestos/theme/themes.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
-class MyOrdersScreen extends StatelessWidget {
-  const MyOrdersScreen({Key? key, this.hasError = false}) : super(key: key);
+import '../theme/themes.dart';
+
+class AdminUsersScreen extends StatelessWidget {
+  const AdminUsersScreen({Key? key, this.hasError = false}) : super(key: key);
   final bool hasError;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Builder(builder: (context) {
       Future.delayed(Duration.zero, () {
         if (hasError) {
@@ -24,7 +24,7 @@ class MyOrdersScreen extends StatelessWidget {
       });
       // final navegacionModel = Provider.of<NavegacionModel>(context);
       return ChangeNotifierProvider(
-        create: (_) => _NavegacionModel(),
+        create: (_) => NavegacionModel(),
         child: Scaffold(
             bottomNavigationBar: const _Navegacion(),
             body: Background(
@@ -39,6 +39,10 @@ class MyOrdersScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           const SizedBox(height: 110),
+                          Text('USUARIOS',
+                              style: CustomTextStyle.robotoSemiBold.copyWith(
+                                  fontSize: size.width * 0.09,
+                                  color: Colors.white)),
                           Center(
                               child: Container(
                                   margin: const EdgeInsets.symmetric(
@@ -60,28 +64,19 @@ class MyOrdersScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   moldeRowInfo(
-                                      const EdgeInsets.fromLTRB(20, 10, 10, 9),
-                                      MdiIcons.barcode,
-                                      'CR452687230WS',
-                                      CustomTextStyle.robotoExtraBold),
-                                  moldeRowInfo(
-                                      const EdgeInsets.fromLTRB(20, 0, 10, 5),
                                       Icons.person,
                                       'Nombre completo del usuario',
-                                      CustomTextStyle.robotoMedium),
-                                  moldeRowInfo(
-                                      const EdgeInsets.fromLTRB(20, 5, 10, 5),
-                                      Icons.calendar_today_rounded,
-                                      '25/11/2022',
-                                      CustomTextStyle.robotoMedium),
-                                  // ,
+                                      CustomTextStyle.robotoExtraBold),
 
                                   moldeRowInfo(
-                                      const EdgeInsets.fromLTRB(20, 5, 10, 5),
-                                      MdiIcons.truckDelivery,
-                                      'Estado: ',
-                                      CustomTextStyle.robotoMedium,
-                                      'En camino')
+                                      Icons.email,
+                                      'direccion@correo.com',
+                                      CustomTextStyle.robotoMedium),
+                                  // ,
+                                  moldeRowInfo(Icons.phone, '+50685971841',
+                                      CustomTextStyle.robotoMedium),
+                                  moldeRowInfo(MdiIcons.accountCog, 'Rol: ',
+                                      CustomTextStyle.robotoMedium, 'Usuario')
                                 ],
                               ),
                             ),
@@ -98,26 +93,28 @@ class MyOrdersScreen extends StatelessWidget {
     });
   }
 
-  Row moldeRowInfo(
-      EdgeInsetsGeometry padding, IconData icon, String text, TextStyle style,
+  Padding moldeRowInfo(IconData icon, String text, TextStyle style,
       [String text2 = '']) {
-    return Row(
-      children: [
-        Padding(
-          padding: padding,
-          child: Icon(
-            icon,
-            color: Colors.redAccent[700],
-            size: 30,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
+            child: Icon(
+              icon,
+              color: Colors.redAccent[700],
+              size: 30,
+            ),
           ),
-        ),
-        Text(text, style: style),
-        Text(
-          text2,
-          style:
-              CustomTextStyle.robotoMedium.copyWith(color: ColorStyle.mainBlue),
-        ),
-      ],
+          Text(text, style: style),
+          Text(
+            text2,
+            style: CustomTextStyle.robotoMedium
+                .copyWith(color: ColorStyle.mainBlue),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -129,11 +126,11 @@ class _Navegacion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navegacionModel = Provider.of<_NavegacionModel>(context);
+    final _navegacionModel = Provider.of<NavegacionModel>(context);
 
     return BottomNavigationBar(
-        currentIndex: navegacionModel.currentPage,
-        onTap: (i) => navegacionModel.currentPage = i,
+        currentIndex: _navegacionModel.currentPage,
+        onTap: (i) => _navegacionModel.currentPage = i,
         items: const [
           BottomNavigationBarItem(
               icon: Icon(MdiIcons.archive), label: "Procesados"),
@@ -143,16 +140,11 @@ class _Navegacion extends StatelessWidget {
   }
 }
 
-///Función intermedia que hace una llamado a la base de datos para optener un usuario
-///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
 void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
   // FirebaseFirestoreService.getUserByEmail(loginFormProvider.email).then(
   //     (UserModel? user) => _validateData(user, loginFormProvider, context));
 }
 
-///Función de evalución final, evalua que el formulario cumpla con los requerimientos
-///mínimos y si el usuario registrado está activo en el sistema. Si se cumplen las condiciones
-///se puede iniciar la sesión.
 void _validateData(
     User? user, LoginFormProvider loginFormProvider, BuildContext context) {
   final isValid = loginFormProvider.validateForm();
@@ -169,7 +161,7 @@ InputDecoration _inputDecoration() {
   return InputDecoration(
       prefixStyle: GoogleFonts.roboto(
           color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
-      hintText: 'Busca un paquete',
+      hintText: 'Busca un usuario',
       hintStyle: GoogleFonts.roboto(
           color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
       prefixIcon: Padding(
@@ -187,7 +179,7 @@ InputDecoration _inputDecoration() {
 }
 
 //Logica de como se obtiene el numero del buttomnavigationbar
-class _NavegacionModel with ChangeNotifier {
+class NavegacionModel with ChangeNotifier {
   int _currentPage = 0;
   final PageController _pageController = PageController();
 
