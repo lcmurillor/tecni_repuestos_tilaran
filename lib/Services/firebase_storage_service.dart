@@ -50,4 +50,22 @@ class FirebaseStorageService {
           "Ha ocurrido un error a la hora de cargar la nueva imagen. Por favor, intentelo de nuevo.");
     }
   }
+
+  static Future<void> uploadOrderFile(String path, String name) async {
+    File file = File(path);
+    try {
+      await _storage.ref('orders/$name').putFile(file);
+    } catch (e) {
+      NotificationsService.showErrorSnackbar(
+          "Ha ocurrido un error a la hora se subir la nueva imagen. Por favor, inmtentelo de nuevo.");
+    }
+    try {
+      String url = await _storage.ref('orders/$name').getDownloadURL();
+      //
+      FirebaseRealtimeService.setOrderImg(orderId: name, url: url);
+    } catch (e) {
+      NotificationsService.showErrorSnackbar(
+          "Ha ocurrido un error a la hora de cargar la nueva imagen. Por favor, inmtentelo de nuevo.");
+    }
+  }
 }

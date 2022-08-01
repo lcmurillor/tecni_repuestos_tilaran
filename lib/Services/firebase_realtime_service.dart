@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/models/order.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:flutter/material.dart';
@@ -356,6 +356,16 @@ class FirebaseRealtimeService {
     return total;
   }
 
+  static Future<bool> haveCart() async {
+    bool have = false;
+    final Query query = getCart();
+    final DataSnapshot dataSnapshot = await query.get();
+    if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+      have = true;
+    }
+    return have;
+  }
+
   ///Cuanta la cantidad de procutos en el cart del usuario para mostrarlo la notificación.
   static Future<int> getCartCount() async {
     int count = 0;
@@ -446,5 +456,93 @@ class FirebaseRealtimeService {
   ///Elimina de la base de datos el carrito selecionado.
   static Future<void> deleteCart({required String key}) async {
     _db.ref('carts/$key').remove();
+  }
+
+  static Query getIrdersByUserId() {
+    return _db
+        .ref()
+        .child('orders')
+        .orderByChild('user/id')
+        .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+  }
+
+  static Future<String> setOrder({required BuildContext context}) async {
+    final Address address =
+        Provider.of<MyCartInfoProvider>(context, listen: false).getAddress();
+    final User user =
+        await getUserByUid(uid: FirebaseAuthService.auth.currentUser!.uid);
+    final Map<String, Map<String, dynamic>> carts =
+        await _getCats(uid: user.id);
+    final String id = _db.ref('orders').push().key!;
+
+    final Order order = Order(
+        address: address.toMap(),
+        arrivelDate:
+            DateTime.now().add(const Duration(days: 3)).microsecondsSinceEpoch,
+        attachment: '',
+        carts: carts,
+        date: DateTime.now().microsecondsSinceEpoch,
+        id: id,
+        shippingCode: 'N/A',
+        shippingMethod: 'Correos de Costa Rica',
+        status: 0,
+        user: user.toMap());
+
+    _db.ref('orders/$id').set(order.toMap());
+    return id;
+  }
+
+  static Future<Map<String, Map<String, dynamic>>> _getCats(
+      {required String uid}) async {
+    Map<String, Map<String, dynamic>> carts = {};
+    final Query query = getCart();
+    final DataSnapshot dataSnapshot = await query.get();
+    final Map<String, dynamic> data =
+        jsonDecode(jsonEncode(dataSnapshot.value));
+    data.forEach((key, value) {
+      carts.addEntries([MapEntry(key, value)]);
+    });
+
+    return carts;
+  }
+
+  static Future<bool> validateExistingOrders() async {
+    bool exists = false;
+    final Query query = getIrdersByUserId();
+    final DataSnapshot dataSnapshot = await query.get();
+    if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+      final Map<String, dynamic> data =
+          jsonDecode(jsonEncode(dataSnapshot.value));
+      data.forEach((key, value) {
+        if (value['status'] == 0) {
+          exists = true;
+        }
+      });
+    }
+
+    return exists;
+  }
+
+  static Future<void> deleteOrderStatus0() async {
+    final Query query = getIrdersByUserId();
+    final DataSnapshot dataSnapshot = await query.get();
+    if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
+      final Map<String, dynamic> data =
+          jsonDecode(jsonEncode(dataSnapshot.value));
+      data.forEach((key, value) {
+        if (value['status'] == 0) {
+          _db.ref().child('orders/$key').remove();
+        }
+      });
+    }
+  }
+
+  static setOrderImg({required String orderId, required String url}) async {
+    _db.ref().child('orders/$orderId').update({"attachment": url});
+  }
+
+  static Future<void> updateOrderStatus(
+      {required String orderId, required int status}) async {
+    _db.ref().child('orders/$orderId').update({"status": status});
   }
 }

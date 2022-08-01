@@ -1,15 +1,14 @@
 // ignore_for_file: unused_element
 
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
-
-import '../theme/themes.dart';
 
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({Key? key, this.hasError = false}) : super(key: key);

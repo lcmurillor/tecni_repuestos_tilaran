@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
@@ -45,6 +44,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final myCartInfo = Provider.of<MyCartInfoProvider>(context, listen: false);
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -107,14 +107,31 @@ class _MyCartScreenState extends State<MyCartScreen> {
                     const CardUserAddress(),
                     const SizedBox(height: 10),
                     PrimaryButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PlaceholderScreen(
-                                  text: 'metodos de pago'),
-                            ),
-                          );
+                        onPressed: () async {
+                          ///Valida si existen prodductos en el carrito.
+                          if (await FirebaseRealtimeService.haveCart()) {
+                            ///Valida si el usuario tiene un direción agregada.
+                            if (myCartInfo.getAddress().canton != '') {
+                              ///Valida si el usuario tiene otra orden No tramidada, si es así, elimina la anterir y define una nueva.
+                              if (await FirebaseRealtimeService
+                                  .validateExistingOrders()) {
+                                FirebaseRealtimeService.deleteOrderStatus0();
+                              }
+                              FirebaseRealtimeService.setOrder(context: context)
+                                  .then((value) =>
+                                      DialogMyCart.displayMyCartDialog(
+                                          context: context,
+                                          code: value,
+                                          total: (myCartInfo.getTotal() * 1.13)
+                                              .toStringAsFixed(2)));
+                            } else {
+                              NotificationsService.showErrorSnackbar(
+                                  'No tiene nungún dirección de facturación argegada.');
+                            }
+                          } else {
+                            NotificationsService.showErrorSnackbar(
+                                'No tiene nungún producto agregado al carrito.');
+                          }
                         },
                         text: "Pagar")
                   ],
