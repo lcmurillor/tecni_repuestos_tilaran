@@ -9,57 +9,40 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  ///Esta pantalla muestra la información básica del usuario correspondiente a su perfil
-  ///junto con botones los cuales lo redirigen a más opciones de personalización relacionadas
-  ///con su información personal.
-  const UserProfileScreen({Key? key}) : super(key: key);
+import 'screens.dart';
 
-  @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
-}
+class AdminUserProfileScreen extends StatelessWidget {
+  const AdminUserProfileScreen({Key? key, required this.user})
+      : super(key: key);
+  final User user;
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    Provider.of<ComeFromProvider>(context, listen: false)
-        .setScreen(screen: 'profile');
+    // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(
-        /// Se utiliza ese AppBar personalizado ya que es requerido para la navegación del usuario
-        /// además, en este AppBar es donde se encuentra el botón para cambiar el tema de la aplicación.
         appBar: CustomAppBarBackArrow(
-          actionIcon:
-              (Preferences.isDarkmode) ? Icons.dark_mode : Icons.light_mode,
-          iconColor:
-              (Preferences.isDarkmode) ? Colors.white : ColorStyle.mainGrey,
-          onPressed: () {
-            setState(() {
-              Preferences.isDarkmode = !Preferences.isDarkmode;
-              if (Preferences.isDarkmode) {
-                themeProvider.setDarkMode();
-              } else {
-                themeProvider.setLigthMode();
-              }
-            });
+          onPressed: () {},
+          navigatorOnPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AdminUsersScreen(),
+              ),
+            );
           },
-          navigatorOnPressed: () => Navigator.pushNamed(context, 'home'),
         ),
-
         body: FirebaseAnimatedList(
-          ///Recibe la consulta de la base de datos.
           query: FirebaseRealtimeService.getUserQueryByUid(
               uid: FirebaseAuthService.auth.currentUser!.uid),
-          defaultChild: const CustomProgressIndicator(),
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, snapshot, animation, index) {
             if (!snapshot.exists) {
               return NotificationsService.showErrorSnackbar(
                   'Ha ocurrido un error a la hora de cargar los datos.');
             }
-            final user = User.fromMap(jsonDecode(jsonEncode(snapshot.value)));
+            //  final user = User.fromMap(jsonDecode(jsonEncode(snapshot.value)));
             return Column(
               children: [
                 const SizedBox(height: 20),
@@ -89,14 +72,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 ),
                           backgroundColor: ColorStyle.mainGrey,
                           maxRadius: 58),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: _EditUserButton(
-                            refersh: () {
-                              setState(() {});
-                            },
-                          )),
                     ],
                   ),
                 ),
@@ -123,70 +98,41 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 InfoButton(
                     icon: MdiIcons.accountEdit,
                     onPressed: () {
-                      Navigator.pushNamed(context, 'editInformation');
+                      Navigator.pushNamed(context, 'myOrders');
                     },
-                    text: 'Editar mi información'),
+                    text: 'Gestionar Pedidos'),
                 InfoButton(
                     icon: MdiIcons.formTextboxPassword,
                     onPressed: () {
-                      Navigator.pushNamed(context, 'passwordChange');
+                      DialogSelectRol.displaySelectRol(
+                          context: context, user: user);
                     },
-                    text: 'Cambiar mi contraseña'),
+                    text: 'Cambiar rol del usuario'),
                 InfoButton(
                     icon: MdiIcons.mapPlus,
                     onPressed: () {
-                      Navigator.pushNamed(context, 'addresses');
+                      NotificationsService.displayDeleteDialog(
+                          context: context,
+                          text:
+                              'Está seguro que desea eliminar a ${user.name + ' ' + user.lastname}',
+                          onPressed: () {
+                            FirebaseRealtimeService.deleteUser(id: user.id);
+                            NotificationsService.showSnackbar(
+                                'Usuario eliminado');
+                            Navigator.canPop(context);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AdminUsersScreen(),
+                              ),
+                            );
+                          });
                     },
-                    text: 'Gestionar Direcciones'),
+                    text: 'Eliminar usuario'),
               ],
             );
           },
         ),
-      ),
-    );
-  }
-}
-
-class _EditUserButton extends StatelessWidget {
-  const _EditUserButton({
-    Key? key,
-    required this.refersh,
-  }) : super(key: key);
-  final void Function() refersh;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 35,
-      width: 35,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100), color: ColorStyle.mainRed),
-      child: IconButton(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        color: Colors.white,
-        icon: const Icon(Icons.edit, size: 20),
-        onPressed: () async {
-          if (FirebaseAuthService.auth.currentUser != null) {
-            User user = await FirebaseRealtimeService.getUserByUid(
-                uid: FirebaseAuthService.auth.currentUser!.uid);
-
-            final result = await FilePicker.platform.pickFiles(
-                allowMultiple: false,
-                type: FileType.custom,
-                allowedExtensions: ['png', 'jpg']);
-            if (result == null) {
-              NotificationsService.showSnackbar(
-                  'No ha selecionado ninguna imagen.');
-            } else {
-              final path = result.files.single.path;
-              final name = user.id;
-              FirebaseStorageService.uploadUserFile(path!, name);
-              //Navigator.pushReplacementNamed(context, 'profile');
-              refersh;
-            }
-          }
-        },
       ),
     );
   }

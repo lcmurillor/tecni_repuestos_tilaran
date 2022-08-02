@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
-import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:flutter/material.dart';
 
@@ -135,6 +134,14 @@ class FirebaseRealtimeService {
     return _db.ref().child('users').orderByChild('id').equalTo(uid);
   }
 
+  static Query getUsers() {
+    return _db.ref().child('users');
+  }
+
+  static Query getUser({required User user, required String id}) {
+    return _db.ref().child('users');
+  }
+
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
@@ -211,6 +218,10 @@ class FirebaseRealtimeService {
 
   static void deleteProduct({required String productId}) {
     _db.ref('products/$productId').remove();
+  }
+
+  static void deleteUser({required String id}) {
+    _db.ref('users/$id').remove();
   }
 
   ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
