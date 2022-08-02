@@ -54,7 +54,7 @@ class DialogMyCartVoucher {
                                         FirebaseRealtimeService.deleteUserCart()
                                             .then((value) =>
                                                 Navigator.pushReplacementNamed(
-                                                    context, 'myOrders'))));
+                                                    context, 'myOrder'))));
                           }
                         }
                       },

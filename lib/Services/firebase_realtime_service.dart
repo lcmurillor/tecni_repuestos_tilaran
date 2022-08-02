@@ -1,6 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:tecni_repuestos/models/models.dart';
-import 'package:tecni_repuestos/models/order.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:flutter/material.dart';
@@ -458,7 +457,7 @@ class FirebaseRealtimeService {
     _db.ref('carts/$key').remove();
   }
 
-  static Query getIrdersByUserId() {
+  static Query getOrdersByUserId() {
     return _db
         .ref()
         .child('orders')
@@ -508,7 +507,8 @@ class FirebaseRealtimeService {
 
   static Future<bool> validateExistingOrders() async {
     bool exists = false;
-    final Query query = getIrdersByUserId();
+    final Query query = getOrdersByUserId();
+
     final DataSnapshot dataSnapshot = await query.get();
     if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
       final Map<String, dynamic> data =
@@ -524,7 +524,7 @@ class FirebaseRealtimeService {
   }
 
   static Future<void> deleteOrderStatus0() async {
-    final Query query = getIrdersByUserId();
+    final Query query = getOrdersByUserId();
     final DataSnapshot dataSnapshot = await query.get();
     if (jsonDecode(jsonEncode(dataSnapshot.value)) != null) {
       final Map<String, dynamic> data =

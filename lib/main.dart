@@ -68,7 +68,7 @@ class TecniRepuestoTilaran extends StatelessWidget {
           'passwordChange': (_) => const UserPasswordScreen(),
           'passwordRequest': (_) => const PasswordRequestScreen(),
           'changePassword': (_) => const UserPasswordScreen(),
-          'myOrders': (_) => const MyOrdersScreen(),
+          'myOrder': (_) => const MyOrderScreen(),
           'shipment': (_) => const ShipmentDetailScreen(),
           'register': (_) => const RegisterScreen(),
           'myCart': (_) => const MyCartScreen(),

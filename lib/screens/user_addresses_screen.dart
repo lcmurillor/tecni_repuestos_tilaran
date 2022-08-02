@@ -29,16 +29,10 @@ class UserAddressesScreen extends StatelessWidget {
                   ? () => Navigator.pushReplacementNamed(context, 'profile')
                   : () => Navigator.pushReplacementNamed(context, 'myCart')),
           body: Column(children: [
-            const SizedBox(
-              height: 50,
-              width: double.infinity,
-            ),
+            const SizedBox(height: 50),
             Text('Direcciones de facturación',
                 style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 27)),
-            const SizedBox(
-              height: 40,
-              width: double.infinity,
-            ),
+            const SizedBox(height: 40),
             Expanded(
               child: Stack(
                 children: [

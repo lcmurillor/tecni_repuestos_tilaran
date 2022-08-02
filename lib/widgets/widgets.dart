@@ -1,3 +1,4 @@
+export 'package:tecni_repuestos/models/cart.dart';
 export 'package:tecni_repuestos/widgets/app_bar_back_arrow.dart';
 export 'package:tecni_repuestos/widgets/app_bar.dart';
 export 'package:tecni_repuestos/widgets/background.dart';

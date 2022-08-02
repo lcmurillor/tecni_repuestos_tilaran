@@ -7,17 +7,19 @@ class Background extends StatelessWidget {
   final Widget child;
   final bool useImg;
   final bool useBackArrow;
+  final bool navigatorToHome;
 
   ///Es la imagen que se encuentra de fondo en multiples pantallas de la aplicación.
   ///Dentro de esta se encuentras los elementos que conforman el diseño visual y recibe
   ///por parametros el widget el cual se espera construir ensima de este fondo y una indicación
   ///para saber si es necesario mostrar o no el logo de la empresa.
-  const Background({
-    Key? key,
-    required this.child,
-    this.useImg = false,
-    this.useBackArrow = false,
-  }) : super(key: key);
+  const Background(
+      {Key? key,
+      required this.child,
+      this.useImg = false,
+      this.useBackArrow = false,
+      this.navigatorToHome = false})
+      : super(key: key);
   final boxDecoration = const BoxDecoration(
       gradient: LinearGradient(colors: [
     Color.fromRGBO(255, 11, 0, 1),
@@ -69,8 +71,9 @@ class Background extends StatelessWidget {
                     color: Colors.white,
                     iconSize: 40,
                     icon: const Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.pop(context),
-                  )
+                    onPressed: () => (navigatorToHome)
+                        ? Navigator.pushReplacementNamed(context, 'home')
+                        : Navigator.pop(context))
                 : const SizedBox())
       ]),
     );

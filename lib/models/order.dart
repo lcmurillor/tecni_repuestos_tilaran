@@ -31,16 +31,16 @@ class Order {
   String toJson() => json.encode(toMap());
 
   factory Order.fromMap(Map<String, dynamic> json) => Order(
-      address: json["address"] ?? 'Undefined',
+      address: json["address"] ?? {},
       arrivelDate: json["arrivelDate"] ?? 0,
       attachment: json["attachment"] ?? 'undefined',
-      carts: json["carts"] ?? 'undefined',
+      carts: json["carts"]['cart'] ?? {},
       date: json["date"] ?? 0,
       id: json["id"] ?? 'undefined',
       shippingCode: json["shippingCode"] ?? 'undefined',
       shippingMethod: json["shippingMethod"] ?? 'undefined',
       status: json["status"] ?? 0,
-      user: json["user"] ?? 'undefined');
+      user: json["user"] ?? {});
 
   Map<String, dynamic> toMap() => {
         "address": address,
