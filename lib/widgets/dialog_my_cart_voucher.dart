@@ -29,8 +29,7 @@ class DialogMyCartVoucher {
                   children: [
                     Text(
                         'Adjunte el comprobante de pago por concepto de orden $code para iniciar el proceso de tramitar su compra.',
-                        style: CustomTextStyle.robotoSemiBold
-                            .copyWith(color: ColorStyle.mainGrey),
+                        style: CustomTextStyle.robotoSemiBold,
                         textAlign: TextAlign.center),
                     const SizedBox(height: 10),
                     PrimaryButton(
