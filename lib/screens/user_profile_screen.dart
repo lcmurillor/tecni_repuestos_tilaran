@@ -26,121 +26,130 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     Provider.of<ComeFromProvider>(context, listen: false)
         .setScreen(screen: 'profile');
 
-    return SafeArea(
-      child: Scaffold(
-        /// Se utiliza ese AppBar personalizado ya que es requerido para la navegación del usuario
-        /// además, en este AppBar es donde se encuentra el botón para cambiar el tema de la aplicación.
-        appBar: CustomAppBarBackArrow(
-          actionIcon:
-              (Preferences.isDarkmode) ? Icons.dark_mode : Icons.light_mode,
-          iconColor:
-              (Preferences.isDarkmode) ? Colors.white : ColorStyle.mainGrey,
-          onPressed: () {
-            setState(() {
-              Preferences.isDarkmode = !Preferences.isDarkmode;
-              if (Preferences.isDarkmode) {
-                themeProvider.setDarkMode();
-              } else {
-                themeProvider.setLigthMode();
-              }
-            });
-          },
-          navigatorOnPressed: () => Navigator.pushNamed(context, 'home'),
-        ),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacementNamed(context, 'home');
+        return false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          /// Se utiliza ese AppBar personalizado ya que es requerido para la navegación del usuario
+          /// además, en este AppBar es donde se encuentra el botón para cambiar el tema de la aplicación.
+          appBar: CustomAppBarBackArrow(
+            actionIcon:
+                (Preferences.isDarkmode) ? Icons.dark_mode : Icons.light_mode,
+            iconColor:
+                (Preferences.isDarkmode) ? Colors.white : ColorStyle.mainGrey,
+            onPressed: () {
+              setState(() {
+                Preferences.isDarkmode = !Preferences.isDarkmode;
+                if (Preferences.isDarkmode) {
+                  themeProvider.setDarkMode();
+                } else {
+                  themeProvider.setLigthMode();
+                }
+              });
+            },
+            navigatorOnPressed: () => Navigator.pushNamed(context, 'home'),
+          ),
 
-        body: FirebaseAnimatedList(
-          ///Resive la consulta de la base de datos.
-          query: FirebaseRealtimeService.getUserQueryByUid(
-              uid: FirebaseAuthService.auth.currentUser!.uid),
-          defaultChild: const CustomProgressIndicator(),
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, snapshot, animation, index) {
-            if (!snapshot.exists) {
-              return NotificationsService.showErrorSnackbar(
-                  'Ha ocurrido un error a la hora de cargar los datos.');
-            }
-            final user = User.fromMap(jsonDecode(jsonEncode(snapshot.value)));
-            return Column(
-              children: [
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.center,
-                  child: Stack(
-                    children: [
-                      CircleAvatar(
-                          child: user.profileImg.startsWith('http')
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: FadeInImage(
-                                      placeholder: const AssetImage(
-                                          'assets/placeholder-user.png'),
-                                      image: NetworkImage(user.profileImg),
-                                      placeholderFit: BoxFit.cover,
-                                      fit: BoxFit.contain),
-                                )
-                              : Text(
-                                  user.name.substring(0, 1).toUpperCase() +
-                                      '' +
-                                      user.lastname
-                                          .substring(0, 1)
-                                          .toUpperCase(),
-                                  style: CustomTextStyle.robotoMedium.copyWith(
-                                      fontSize: 50, color: Colors.white),
-                                ),
-                          backgroundColor: ColorStyle.mainGrey,
-                          maxRadius: 58),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: EditUserButton(
-                            refersh: () {
-                              setState(() {});
-                            },
-                          )),
-                    ],
+          body: FirebaseAnimatedList(
+            ///Resive la consulta de la base de datos.
+            query: FirebaseRealtimeService.getUserQueryByUid(
+                uid: FirebaseAuthService.auth.currentUser!.uid),
+            defaultChild: const CustomProgressIndicator(),
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, snapshot, animation, index) {
+              if (!snapshot.exists) {
+                return NotificationsService.showErrorSnackbar(
+                    'Ha ocurrido un error a la hora de cargar los datos.');
+              }
+              final user = User.fromMap(jsonDecode(jsonEncode(snapshot.value)));
+              return Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                            child: user.profileImg.startsWith('http')
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: FadeInImage(
+                                        placeholder: const AssetImage(
+                                            'assets/placeholder-user.png'),
+                                        image: NetworkImage(user.profileImg),
+                                        placeholderFit: BoxFit.cover,
+                                        fit: BoxFit.contain),
+                                  )
+                                : Text(
+                                    user.name.substring(0, 1).toUpperCase() +
+                                        '' +
+                                        user.lastname
+                                            .substring(0, 1)
+                                            .toUpperCase(),
+                                    style: CustomTextStyle.robotoMedium
+                                        .copyWith(
+                                            fontSize: 50, color: Colors.white),
+                                  ),
+                            backgroundColor: ColorStyle.mainGrey,
+                            maxRadius: 58),
+                        Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: EditUserButton(
+                              refersh: () {
+                                setState(() {});
+                              },
+                            )),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                    user.name.toUpperCase() + ' ' + user.lastname.toUpperCase(),
-                    style:
-                        CustomTextStyle.robotoExtraBold.copyWith(fontSize: 20)),
-                const SizedBox(height: 7),
-                Text(user.email,
-                    style: CustomTextStyle.robotoSemiBold
-                        .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
-                const SizedBox(height: 7),
-                Text('+506 ' + user.phone,
-                    style: CustomTextStyle.robotoSemiBold
-                        .copyWith(fontSize: 16, color: ColorStyle.mainRed)),
-                const SizedBox(height: 7),
-                Text(
-                    DateFormat('dd-MM-yyyy').format(
-                        DateTime.fromMillisecondsSinceEpoch(user.birthdate)),
-                    style: CustomTextStyle.robotoExtraBold
-                        .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
-                const SizedBox(height: 20),
-                InfoButton(
-                    icon: MdiIcons.accountEdit,
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'editInformation');
-                    },
-                    text: 'Editar mi información'),
-                InfoButton(
-                    icon: MdiIcons.formTextboxPassword,
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'passwordChange');
-                    },
-                    text: 'Cambiar mi contraseña'),
-                InfoButton(
-                    icon: MdiIcons.mapPlus,
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'addresses');
-                    },
-                    text: 'Gestionar Direcciones'),
-              ],
-            );
-          },
+                  const SizedBox(height: 20),
+                  Text(
+                      user.name.toUpperCase() +
+                          ' ' +
+                          user.lastname.toUpperCase(),
+                      style: CustomTextStyle.robotoExtraBold
+                          .copyWith(fontSize: 20)),
+                  const SizedBox(height: 7),
+                  Text(user.email,
+                      style: CustomTextStyle.robotoSemiBold
+                          .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
+                  const SizedBox(height: 7),
+                  Text('+506 ' + user.phone,
+                      style: CustomTextStyle.robotoSemiBold
+                          .copyWith(fontSize: 16, color: ColorStyle.mainRed)),
+                  const SizedBox(height: 7),
+                  Text(
+                      DateFormat('dd-MM-yyyy').format(
+                          DateTime.fromMillisecondsSinceEpoch(user.birthdate)),
+                      style: CustomTextStyle.robotoExtraBold
+                          .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
+                  const SizedBox(height: 20),
+                  InfoButton(
+                      icon: MdiIcons.accountEdit,
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'editInformation');
+                      },
+                      text: 'Editar mi información'),
+                  InfoButton(
+                      icon: MdiIcons.formTextboxPassword,
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'passwordChange');
+                      },
+                      text: 'Cambiar mi contraseña'),
+                  InfoButton(
+                      icon: MdiIcons.mapPlus,
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'addresses');
+                      },
+                      text: 'Gestionar Direcciones'),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element
-
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +20,6 @@ class MyOrdersScreen extends StatelessWidget {
               'Ha ocurrido un error en sus paquetes.');
         }
       });
-      // final navegacionModel = Provider.of<NavegacionModel>(context);
       return ChangeNotifierProvider(
         create: (_) => _NavegacionModel(),
         child: Scaffold(
@@ -31,10 +28,8 @@ class MyOrdersScreen extends StatelessWidget {
               useBackArrow: true,
               useImg: false,
               child: PageView(
-                //   controller: navegacionModel.pageController,
                 children: [
                   SingleChildScrollView(
-                      //   controller: navegacionModel.pageController,
                       physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
