@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/shared/preferences.dart';
@@ -98,7 +98,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         Positioned(
                             bottom: 0,
                             right: 0,
-                            child: EditUserButton(
+                            child: _EditUserButton(
                               refersh: () {
                                 setState(() {});
                               },
@@ -156,8 +156,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 }
 
-class EditUserButton extends StatelessWidget {
-  const EditUserButton({
+class _EditUserButton extends StatelessWidget {
+  const _EditUserButton({
     Key? key,
     required this.refersh,
   }) : super(key: key);
@@ -191,7 +191,6 @@ class EditUserButton extends StatelessWidget {
               final path = result.files.single.path;
               final name = user.id;
               FirebaseStorageService.uploadUserFile(path!, name);
-              //Navigator.pushReplacementNamed(context, 'profile');
               refersh;
             }
           }

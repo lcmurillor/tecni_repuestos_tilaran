@@ -1,8 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/services/services.dart';
-import 'package:flutter/material.dart';
 
 ///Ésta clase corresponde a la conexión a la base datos Firebase reialtime.
 ///En esta se ecuentra una instancia de conexión global y las respetivas consultas.
@@ -134,6 +134,14 @@ class FirebaseRealtimeService {
     return _db.ref().child('users').orderByChild('id').equalTo(uid);
   }
 
+  static Query getUsers() {
+    return _db.ref().child('users');
+  }
+
+  static Query getUser({required User user, required String id}) {
+    return _db.ref().child('users');
+  }
+
   ///Éste método selecciona un usuario de la base de datos Firebase por medio del correo
   ///y hace el llamado al método de conversión para retornar un usuario con todos sus
   ///atributos.
@@ -210,6 +218,10 @@ class FirebaseRealtimeService {
 
   static void deleteProduct({required String productId}) {
     _db.ref('products/$productId').remove();
+  }
+
+  static void deleteUser({required String id}) {
+    _db.ref('users/$id').remove();
   }
 
   ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
@@ -477,10 +489,10 @@ class FirebaseRealtimeService {
     final Order order = Order(
         address: address.toMap(),
         arrivelDate:
-            DateTime.now().add(const Duration(days: 3)).microsecondsSinceEpoch,
+            DateTime.now().add(const Duration(days: 3)).millisecondsSinceEpoch,
         attachment: '',
         carts: carts,
-        date: DateTime.now().microsecondsSinceEpoch,
+        date: DateTime.now().millisecondsSinceEpoch,
         id: id,
         shippingCode: 'N/A',
         shippingMethod: 'Correos de Costa Rica',

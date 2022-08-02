@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
-import 'package:tecni_repuestos/widgets/card.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class MyOrderScreen extends StatelessWidget {
@@ -24,7 +23,8 @@ class MyOrderScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 60),
               Text('Mis ordenes',
-                  style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 27)),
+                  style: CustomTextStyle.robotoExtraBold
+                      .copyWith(fontSize: 30, color: Colors.white)),
               const SizedBox(height: 40),
               Expanded(
                 child: FirebaseAnimatedList(
@@ -39,7 +39,7 @@ class MyOrderScreen extends StatelessWidget {
                     }
                     final order =
                         Order.fromMap(jsonDecode(jsonEncode(snapshot.value)));
-                    return CustomCard();
+                    return CustomCard(order: order);
                   },
                 ),
               ),
