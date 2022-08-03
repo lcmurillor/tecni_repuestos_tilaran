@@ -29,7 +29,7 @@ class CustomCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ShipmentDetailScreen(),
+              builder: (context) => ShipmentDetailScreen(order: order!),
             ),
           );
         }
@@ -97,22 +97,10 @@ class CustomCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ///Botón para cambiar la dirreción de facturación.
-                    IconButton(
-                        icon: Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 40,
-                          color: ColorStyle.textGrey,
-                        ),
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ShipmentDetailScreen()))),
-                  ],
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 40,
+                  color: ColorStyle.textGrey,
                 ),
               ),
             ],

@@ -49,6 +49,7 @@ class NotificationsService {
   ///llamado a la bae de datos al mento específico.
   static displayDeleteDialog(
       {required BuildContext context,
+      String title = 'Eliminar',
       required String text,
       void Function()? onPressed}) {
     showDialog(
@@ -57,7 +58,7 @@ class NotificationsService {
         builder: (context) {
           return AlertDialog(
               elevation: 10,
-              title: Text('Eliminar',
+              title: Text(title,
                   style: CustomTextStyle.robotoExtraBold.copyWith(fontSize: 35),
                   textAlign: TextAlign.center),
               shape: RoundedRectangleBorder(

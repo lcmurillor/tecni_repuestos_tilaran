@@ -469,6 +469,7 @@ class FirebaseRealtimeService {
     _db.ref('carts/$key').remove();
   }
 
+  ///Obtiene una lista de ordenes de la base de datos cuando estas pertenecen al usuario registrado.
   static Query getOrdersByUserId() {
     return _db
         .ref()
@@ -477,6 +478,8 @@ class FirebaseRealtimeService {
         .equalTo(FirebaseAuthService.auth.currentUser!.uid);
   }
 
+  ///Agrega un nuevo objeto de tipo order en la base de datos con los datos del usuario y
+  ///todos los productos que se encuentran en el carrito de compra.
   static Future<String> setOrder({required BuildContext context}) async {
     final Address address =
         Provider.of<MyCartInfoProvider>(context, listen: false).getAddress();
@@ -494,7 +497,7 @@ class FirebaseRealtimeService {
         carts: carts,
         date: DateTime.now().millisecondsSinceEpoch,
         id: id,
-        shippingCode: 'N/A',
+        shippingCode: 'Pendiente de definir',
         shippingMethod: 'Correos de Costa Rica',
         status: 0,
         user: user.toMap());
@@ -503,6 +506,7 @@ class FirebaseRealtimeService {
     return id;
   }
 
+  ///Realiza un conversión de datos para exportar una lista de cats a la base de datos en la orden.
   static Future<Map<String, Map<String, dynamic>>> _getCats(
       {required String uid}) async {
     Map<String, Map<String, dynamic>> carts = {};
@@ -517,6 +521,8 @@ class FirebaseRealtimeService {
     return carts;
   }
 
+  ///Esta función evista que exitan multiples ordenes sin procesar por usuario, identifica
+  ///si existe una orden sin procesar ya registrada por el usuario, si es así, la borra y la remplaza.
   static Future<bool> validateExistingOrders() async {
     bool exists = false;
     final Query query = getOrdersByUserId();
@@ -535,6 +541,8 @@ class FirebaseRealtimeService {
     return exists;
   }
 
+  ///Realiza un recorrido y borra todas las ordenes sin procesar de un usuario espeífico.
+  ///esto con el fin de eliminar datos basura. solo devería existir una orden sin procesar por usuario.
   static Future<void> deleteOrderStatus0() async {
     final Query query = getOrdersByUserId();
     final DataSnapshot dataSnapshot = await query.get();
