@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
@@ -140,8 +140,7 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
           province: addressFormProvider.province,
           userId: FirebaseAuthService.auth.currentUser!.uid,
           last: true);
-      FirebaseRealtimeService.setAddress(address: _address);
-      Navigator.popAndPushNamed(context, 'addresses');
+      FirebaseRealtimeService.setAddress(address: _address, context: context);
     } else {
       NotificationsService.showErrorSnackbar(
           'No se cumple con las condiciones mínimas para agregar la dirección.');
@@ -169,8 +168,8 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
             'No se cumple con las condiciones mínimas para actualizar la información.');
       }
     }).then((value) {
-      FirebaseRealtimeService.updateAddress(address: address!);
-      Navigator.popAndPushNamed(context, 'addresses');
+      FirebaseRealtimeService.updateAddress(
+          address: address!, context: context);
     });
   }
 }

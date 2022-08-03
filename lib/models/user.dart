@@ -4,9 +4,9 @@ export 'dart:convert';
 
 ///Éste objeto corresponde a un usuario de la base de datos con todos sus respectivos
 ///atributos.
-class UserModel {
+class User {
   ///Método constructor de usarios, requiere de todos los atrubutos para ser construido.
-  UserModel(
+  User(
       {this.administrator = false,
       required this.birthdate,
       this.disabled = false,
@@ -33,14 +33,14 @@ class UserModel {
   String profileImg;
   bool vendor;
 
-  factory UserModel.fromJson(String str) => UserModel.fromMap(json.decode(str));
+  factory User.fromJson(String str) => User.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
   ///Éste método recibe un objeto de tipo Map de la base de datos que corresponde a la interptretación
   ///de un archivo json el cual es el usuario, y lo convierte a un objeto de tipo UserModel para luego ser
   ///usado.
-  factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
+  factory User.fromMap(Map<String, dynamic> json) => User(
         administrator: json["administrator"] ?? false,
         birthdate: json["birthdate"] ?? 0,
         disabled: json["disabled"] ?? false,

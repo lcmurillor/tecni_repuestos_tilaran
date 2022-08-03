@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
-import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/shared/preferences.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
@@ -13,7 +13,9 @@ void main() async {
   await Preferences.init();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-        create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode))
+        create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode)),
+    ChangeNotifierProvider(create: (_) => MyCartInfoProvider()),
+    ChangeNotifierProvider(create: (_) => ComeFromProvider())
   ], child: const TecniRepuestoTilaran()));
 }
 
@@ -66,11 +68,11 @@ class TecniRepuestoTilaran extends StatelessWidget {
           'passwordChange': (_) => const UserPasswordScreen(),
           'passwordRequest': (_) => const PasswordRequestScreen(),
           'changePassword': (_) => const UserPasswordScreen(),
-          'myOrders': (_) => const MyOrdersScreen(),
-          'shipment': (_) => const ShipmentDetailScreen(),
+          'myOrder': (_) => const MyOrderScreen(),
           'register': (_) => const RegisterScreen(),
           'myCart': (_) => const MyCartScreen(),
           'profile': (_) => const UserProfileScreen(),
+          'adminusers': (_) => const AdminUsersScreen(),
         });
   }
 }

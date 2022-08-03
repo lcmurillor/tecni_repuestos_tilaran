@@ -48,14 +48,17 @@ class NotificationsService {
   ///o atributo descriptivo de lo que se busca eliminar y en la función "onPressed" se realiza el
   ///llamado a la bae de datos al mento específico.
   static displayDeleteDialog(
-      BuildContext context, String text, void Function()? onPressed) {
+      {required BuildContext context,
+      String title = 'Eliminar',
+      required String text,
+      void Function()? onPressed}) {
     showDialog(
         context: context,
         barrierDismissible: true,
         builder: (context) {
           return AlertDialog(
               elevation: 10,
-              title: Text('Eliminar',
+              title: Text(title,
                   style: CustomTextStyle.robotoExtraBold.copyWith(fontSize: 35),
                   textAlign: TextAlign.center),
               shape: RoundedRectangleBorder(

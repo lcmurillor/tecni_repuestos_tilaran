@@ -90,7 +90,7 @@ class _PrductItem extends StatelessWidget {
         //Navigator.pushNamed(context, 'details', arguments: product);
 
         if (FirebaseAuthService.auth.currentUser != null) {
-          UserModel user = await FirebaseRealtimeService.getUserByUid(
+          User user = await FirebaseRealtimeService.getUserByUid(
               uid: FirebaseAuthService.auth.currentUser!.uid);
           if (user.administrator) {
             final result = await FilePicker.platform.pickFiles(

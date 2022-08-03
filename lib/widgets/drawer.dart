@@ -61,8 +61,7 @@ class CustomDrawer extends StatelessWidget {
             FutureBuilder(
               future: FirebaseRealtimeService.getUserByUid(
                   uid: FirebaseAuthService.auth.currentUser!.uid),
-              builder:
-                  (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                 if (snapshot.hasError) {
                   return NotificationsService.showErrorSnackbar(
                       'Ha ocurrido un error a la hora de cargar los datos.');
@@ -85,11 +84,8 @@ class CustomDrawer extends StatelessWidget {
                         MdiIcons.archiveCog,
                         const PlaceholderScreen(text: 'Administrar pedidos'),
                         context),
-                    _moldelListTile(
-                        'Administrar usuarios',
-                        MdiIcons.accountCog,
-                        const PlaceholderScreen(text: 'Adminitrar usuarios'),
-                        context)
+                    _moldelListTile('Administrar usuarios', MdiIcons.accountCog,
+                        const AdminUsersScreen(), context),
                   ] else if (user.vendor) ...[
                     _moldelListTile(
                         'Administrar pedidos',
@@ -100,7 +96,7 @@ class CustomDrawer extends StatelessWidget {
                   _moldelListTile('Mi carrito', Icons.shopping_cart,
                       const MyCartScreen(), context),
                   _moldelListTile('Mis pedidos', MdiIcons.archive,
-                      const MyOrdersScreen(), context),
+                      const MyOrderScreen(), context),
                   _moldelListTile('Mi perfil', MdiIcons.account,
                       const UserProfileScreen(), context),
                   _moldelListTile(

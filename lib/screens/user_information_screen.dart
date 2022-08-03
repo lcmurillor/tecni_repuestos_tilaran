@@ -16,33 +16,35 @@ class UserInformationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Background(
-      useBackArrow: true,
-      child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(height: 60),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Text('Editar mi información',
-                          style: CustomTextStyle.robotoSemiBold
-                              .copyWith(fontSize: 30)),
-                      const SizedBox(height: 15),
-                      _EditInfoForm(),
-                    ],
+    return SafeArea(
+      child: Scaffold(
+          body: Background(
+        useBackArrow: true,
+        child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                const SizedBox(height: 60),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        Text('Editar mi información',
+                            style: CustomTextStyle.robotoSemiBold
+                                .copyWith(fontSize: 30)),
+                        const SizedBox(height: 15),
+                        _EditInfoForm(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 45)
-            ],
-          )),
-    ));
+                const SizedBox(height: 45)
+              ],
+            )),
+      )),
+    );
   }
 }
 
@@ -62,7 +64,7 @@ class _EditInfoForm extends StatelessWidget {
         return FutureBuilder(
           future: FirebaseRealtimeService.getUserByUid(
               uid: FirebaseAuthService.auth.currentUser!.uid),
-          builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
             if (snapshot.hasError) {
               return NotificationsService.showErrorSnackbar(
                   'Ha ocurrido un error a la hora de cargar los datos.');
@@ -236,10 +238,10 @@ class _EditInfoForm extends StatelessWidget {
 ///que no sean alterados por el usuario, asigna nuevamente los valores ya definidos y navega
 ///a la pantalla anterior.
 void _onFormSubmit(
-    EditInfoFormProvider editInfoFormProvider, context, UserModel user) async {
+    EditInfoFormProvider editInfoFormProvider, context, User user) async {
   Future.delayed(Duration.zero, () {
     if (editInfoFormProvider.validateForm()) {
-      user = UserModel(
+      user = User(
         birthdate: (editInfoFormProvider.birthdate == 0)
             ? user.birthdate
             : editInfoFormProvider.birthdate,
