@@ -92,7 +92,7 @@ class AdminUserProfileScreen extends StatelessWidget {
                 InfoButton(
                     icon: MdiIcons.accountEdit,
                     onPressed: () {
-                      Navigator.pushNamed(context, 'myOrders');
+                      Navigator.pushNamed(context, 'myOrder');
                     },
                     text: 'Gestionar Pedidos'),
                 InfoButton(

@@ -135,7 +135,7 @@ class FirebaseRealtimeService {
   }
 
   static Query getUsers() {
-    return _db.ref().child('users');
+    return _db.ref().child('users').orderByChild('disabled').equalTo(false);
   }
 
   static Query getUser({required User user, required String id}) {
@@ -204,6 +204,13 @@ class FirebaseRealtimeService {
     });
   }
 
+  static Future<void> updateUserRol({required User user}) async {
+    _db.ref().child('users/${user.id}').update({
+      'administrator': user.administrator,
+      'vendor': user.vendor,
+    });
+  }
+
   static void updateProduct({required Product product}) {
     _db.ref().child('products/${product.id}').update({
       'description': product.description,
@@ -221,7 +228,7 @@ class FirebaseRealtimeService {
   }
 
   static void deleteUser({required String id}) {
-    _db.ref('users/$id').remove();
+    _db.ref('users/$id').update({'disabled': true});
   }
 
   ///Éste método permite obtener una lista de un objeto de tipo "Address" del usuario
