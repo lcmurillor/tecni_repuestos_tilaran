@@ -1,10 +1,10 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/theme/color_style.dart';
+import 'package:tecni_repuestos/widgets/dialog_product.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class ProductsSearchDelegate extends SearchDelegate {
@@ -87,26 +87,10 @@ class _PrductItem extends StatelessWidget {
       title: Text(product.description),
       subtitle: Text('Disponibles: ${product.quantity}'),
       onTap: () async {
-        //Navigator.pushNamed(context, 'details', arguments: product);
-
-        if (FirebaseAuthService.auth.currentUser != null) {
-          User user = await FirebaseRealtimeService.getUserByUid(
-              uid: FirebaseAuthService.auth.currentUser!.uid);
-          if (user.administrator) {
-            final result = await FilePicker.platform.pickFiles(
-                allowMultiple: false,
-                type: FileType.custom,
-                allowedExtensions: ['png', 'jpg']);
-            if (result == null) {
-              NotificationsService.showSnackbar(
-                  'No ha selecionado ninguna imagen.');
-            } else {
-              final path = result.files.single.path;
-              final name = product.id;
-              FirebaseStorageService.uploadProductFile(path!, name);
-            }
-          }
-        }
+        Container(
+            height: 100,
+            width: 100,
+            child: DialogProdcut.displayProductDialog(context, product));
       },
     );
   }

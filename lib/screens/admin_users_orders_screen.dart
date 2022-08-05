@@ -29,7 +29,7 @@ class AdminUsersOrdersScreens extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 60),
-                Text('Mis ordenes',
+                Text('Administrar ordenes',
                     style: CustomTextStyle.robotoExtraBold
                         .copyWith(fontSize: 30, color: Colors.white)),
                 const SizedBox(height: 40),
