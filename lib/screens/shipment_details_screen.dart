@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
@@ -14,6 +15,7 @@ class ShipmentDetailScreen extends StatelessWidget {
   final Order order;
   @override
   Widget build(BuildContext context) {
+    final currentPage = Provider.of<ComeFromProvider>(context);
     return Builder(builder: (context) {
       return SafeArea(
         child: Scaffold(
@@ -29,6 +31,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Text('Detalles del envío',
+                          textAlign: TextAlign.center,
                           style: CustomTextStyle.robotoMedium
                               .copyWith(fontSize: 40)),
                       _orderInfo(context: context, order: order),
@@ -64,7 +67,7 @@ class ShipmentDetailScreen extends StatelessWidget {
                                 changeProgressColor: ColorStyle.mainGreen,
                                 currentValue: order.status.toDouble(),
                                 progressColor: ColorStyle.mainGreen,
-                                maxValue: 4,
+                                maxValue: 5,
                                 direction: Axis.vertical,
                                 verticalDirection: VerticalDirection.down,
                               ),
@@ -82,45 +85,36 @@ class ShipmentDetailScreen extends StatelessWidget {
                                             .copyWith(fontSize: 25)),
                                   ),
                                 ),
-                                _moldeRowStatus(
-                                    status: order.status, proces: 1),
-                                _moldeRowStatus(
-                                    status: order.status, proces: 2),
-                                _moldeRowStatus(
-                                    status: order.status, proces: 3),
-                                MaterialButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  color: ColorStyle.mainGreen,
-                                  child: SizedBox(
-                                    width: 90,
-                                    height: 40,
-                                    child: Center(
-                                      child: Text('Recibido',
-                                          style: CustomTextStyle.robotoMedium
-                                              .copyWith(
-                                                  fontSize: 20,
-                                                  color: Colors.white)),
-                                    ),
+                                if (currentPage.getScreen() ==
+                                    'adminOrder') ...{
+                                  _ActionButton(
+                                    order: order,
+                                    currentPage: currentPage,
+                                    title: 'Procesar',
+                                    process: 2,
                                   ),
-                                  onPressed: () {
-                                    if (order.status < 4) {
-                                      NotificationsService.displayDeleteDialog(
-                                          context: context,
-                                          title: 'Confirmar',
-                                          text:
-                                              '¿Está seguro que desea indicar que le a llegado la orden ${order.id}?',
-                                          onPressed: () {
-                                            FirebaseRealtimeService
-                                                .updateOrderStatus(
-                                                    orderId: order.id,
-                                                    status: 4);
-                                            Navigator.pushReplacementNamed(
-                                                context, 'myOrder');
-                                          });
-                                    }
-                                  },
-                                )
+                                  _ActionButton(
+                                      order: order,
+                                      currentPage: currentPage,
+                                      title: 'Enviar',
+                                      process: 3),
+                                  _ActionButton(
+                                      order: order,
+                                      currentPage: currentPage,
+                                      title: 'En camino',
+                                      process: 4),
+                                } else ...{
+                                  _moldeRowStatus(
+                                      status: order.status, proces: 2),
+                                  _moldeRowStatus(
+                                      status: order.status, proces: 3),
+                                  _moldeRowStatus(
+                                      status: order.status, proces: 4),
+                                },
+                                _ActionButton(
+                                    order: order,
+                                    currentPage: currentPage,
+                                    process: 5),
                               ],
                             ),
                           ]),
@@ -197,6 +191,77 @@ class ShipmentDetailScreen extends StatelessWidget {
               color: color, fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ],
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
+    Key? key,
+    required this.order,
+    required this.currentPage,
+    this.title = 'Recibido',
+    required this.process,
+  }) : super(key: key);
+
+  final Order order;
+  final ComeFromProvider currentPage;
+  final String title;
+  final int process;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: ColorStyle.mainGreen,
+      child: SizedBox(
+        width: 90,
+        height: 40,
+        child: Center(
+          child: Text(title,
+              style: CustomTextStyle.robotoMedium
+                  .copyWith(fontSize: 19, color: Colors.white)),
+        ),
+      ),
+      onPressed: () {
+        if (order.status < 2 && process == 2) {
+          NotificationsService.displayDeleteDialog(
+              context: context,
+              title: 'Confirmar',
+              text:
+                  '¿Está seguro que desea indicar el inicio de proceso de trámite de la orden: ${order.id}?',
+              onPressed: () {
+                FirebaseRealtimeService.updateOrderStatus(
+                    orderId: order.id, status: process);
+                Navigator.pushReplacementNamed(
+                    context, currentPage.getScreen());
+              });
+        }
+
+        if (order.status < 3 && process == 3) {
+          //TODO: Hacer dialog para agregar voucher, shippment code
+          FirebaseRealtimeService.updateOrderStatus(
+              orderId: order.id, status: process);
+          Navigator.pushReplacementNamed(context, currentPage.getScreen());
+        }
+        if (order.status < 4 && process == 4) {
+          FirebaseRealtimeService.updateOrderStatus(
+              orderId: order.id, status: process);
+          Navigator.pushReplacementNamed(context, currentPage.getScreen());
+        }
+        if (order.status < 5 && process == 5) {
+          NotificationsService.displayDeleteDialog(
+              context: context,
+              title: 'Confirmar',
+              text:
+                  '¿Está seguro que desea indicar que le ha llegado la orden ${order.id}?',
+              onPressed: () {
+                FirebaseRealtimeService.updateOrderStatus(
+                    orderId: order.id, status: process);
+                Navigator.pushReplacementNamed(
+                    context, currentPage.getScreen());
+              });
+        }
+      },
     );
   }
 }
