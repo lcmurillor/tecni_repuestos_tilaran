@@ -87,10 +87,7 @@ class _PrductItem extends StatelessWidget {
       title: Text(product.description),
       subtitle: Text('Disponibles: ${product.quantity}'),
       onTap: () async {
-        Container(
-            height: 100,
-            width: 100,
-            child: DialogProdcut.displayProductDialog(context, product));
+        DialogProdcut.displayProductDialog(context, product);
       },
     );
   }
