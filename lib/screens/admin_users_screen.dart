@@ -15,15 +15,16 @@ class AdminUsersScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Background(
+          navigatorToHome: true,
           useBackArrow: true,
           useImg: false,
           child: Column(
             children: [
-              const SizedBox(height: 110),
-              Text('USUARIOS',
-                  style: CustomTextStyle.robotoSemiBold.copyWith(
-                      fontSize: size.width * 0.09, color: Colors.white)),
               const SizedBox(height: 60),
+              Text('Usuarios',
+                  style: CustomTextStyle.robotoExtraBold
+                      .copyWith(fontSize: 30, color: Colors.white)),
+              const SizedBox(height: 40),
               Expanded(
                 child: FirebaseAnimatedList(
                   ///Recibe la consulta de los usuarios de la base de datos.

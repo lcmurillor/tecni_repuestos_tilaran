@@ -19,3 +19,4 @@ export 'package:tecni_repuestos/screens/product_details_screen.dart';
 export 'package:tecni_repuestos/screens/product_edit_information_screen.dart';
 export 'package:tecni_repuestos/screens/admin_users_screen.dart';
 export 'package:tecni_repuestos/screens/admin_user_profile_screen.dart';
+export 'package:tecni_repuestos/screens/admin_users_orders_screen.dart';

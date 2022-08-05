@@ -114,12 +114,14 @@ class CustomCard extends StatelessWidget {
 String _getStatus({required int status}) {
   switch (status) {
     case 1:
-      return 'En proceso';
+      return 'Pendiente de confirmar';
     case 2:
-      return 'Enviado';
+      return 'En proceso';
     case 3:
-      return 'En cammio';
+      return 'Enviado';
     case 4:
+      return 'En camino';
+    case 5:
       return 'Entregado';
     default:
       return 'En proceso';

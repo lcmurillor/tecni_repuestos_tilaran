@@ -138,6 +138,10 @@ class FirebaseRealtimeService {
     return _db.ref().child('users').orderByChild('disabled').equalTo(false);
   }
 
+  static Query getOrders() {
+    return _db.ref().child('orders');
+  }
+
   static Query getUser({required User user, required String id}) {
     return _db.ref().child('users');
   }
@@ -483,6 +487,12 @@ class FirebaseRealtimeService {
         .child('orders')
         .orderByChild('user/id')
         .equalTo(FirebaseAuthService.auth.currentUser!.uid);
+  }
+
+  static Query getOrdersByUserIdSelected(
+    String userId,
+  ) {
+    return _db.ref().child('orders').orderByChild('user/id').equalTo(userId);
   }
 
   ///Agrega un nuevo objeto de tipo order en la base de datos con los datos del usuario y

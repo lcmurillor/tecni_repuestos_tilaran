@@ -11,7 +11,6 @@ class AdminUserProfileScreen extends StatelessWidget {
   const AdminUserProfileScreen({Key? key, required this.user})
       : super(key: key);
   final User user;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -92,7 +91,14 @@ class AdminUserProfileScreen extends StatelessWidget {
                 InfoButton(
                     icon: MdiIcons.accountEdit,
                     onPressed: () {
-                      Navigator.pushNamed(context, 'myOrder');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AdminUsersOrdersScreens(
+                            user: user,
+                          ),
+                        ),
+                      );
                     },
                     text: 'Gestionar Pedidos'),
                 InfoButton(

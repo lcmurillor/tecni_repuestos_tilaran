@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
@@ -9,6 +10,8 @@ class MyOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentPage = Provider.of<ComeFromProvider>(context);
+    currentPage.setScreen(screen: 'myOrder');
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushReplacementNamed(context, 'home');
