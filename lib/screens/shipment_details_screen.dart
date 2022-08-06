@@ -235,20 +235,18 @@ class _ActionButton extends StatelessWidget {
                 Navigator.pushReplacementNamed(
                     context, currentPage.getScreen());
               });
-        }
-
-        if (order.status < 3 && process == 3) {
-          //TODO: Hacer dialog para agregar voucher, shippment code
+        } else if (order.status < 3 && process == 3) {
+          DialogOrderCode(context, order.status);
+          // NotificationsService.displaySetVoucher(
+          //     context: context, status: order.status);
+          FirebaseRealtimeService.updateOrderStatus(
+              orderId: order.id, status: process);
+          // Navigator.pushReplacementNamed(context, currentPage.getScreen());
+        } else if (order.status < 4 && process == 4) {
           FirebaseRealtimeService.updateOrderStatus(
               orderId: order.id, status: process);
           Navigator.pushReplacementNamed(context, currentPage.getScreen());
-        }
-        if (order.status < 4 && process == 4) {
-          FirebaseRealtimeService.updateOrderStatus(
-              orderId: order.id, status: process);
-          Navigator.pushReplacementNamed(context, currentPage.getScreen());
-        }
-        if (order.status < 5 && process == 5) {
+        } else if (order.status < 5 && process == 5) {
           NotificationsService.displayDeleteDialog(
               context: context,
               title: 'Confirmar',

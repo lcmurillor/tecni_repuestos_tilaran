@@ -9,7 +9,7 @@ class AdminUsersScreen extends StatelessWidget {
   final bool hasError;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     return SafeArea(

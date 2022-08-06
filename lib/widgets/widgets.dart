@@ -18,3 +18,4 @@ export 'package:tecni_repuestos/widgets/drawer.dart';
 export 'package:tecni_repuestos/widgets/progress_indicator.dart';
 export 'package:tecni_repuestos/widgets/text_input.dart';
 export 'package:tecni_repuestos/widgets/dialog_selectrol.dart';
+export 'package:tecni_repuestos/widgets/dialog_orderCode.dart';
