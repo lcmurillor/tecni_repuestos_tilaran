@@ -236,7 +236,9 @@ class _ActionButton extends StatelessWidget {
                     context, currentPage.getScreen());
               });
         } else if (order.status < 3 && process == 3) {
-          DialogOrderCode(context, order.status);
+          displaySetVoucher(context: context, status: order.status);
+          //DialogOrderCode(context, order.status);
+          print('Enviado');
           // NotificationsService.displaySetVoucher(
           //     context: context, status: order.status);
           FirebaseRealtimeService.updateOrderStatus(
