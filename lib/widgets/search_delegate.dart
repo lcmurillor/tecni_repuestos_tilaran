@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
-import 'package:tecni_repuestos/theme/color_style.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/dialog_product.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class ProductsSearchDelegate extends SearchDelegate {
   @override
   String? get searchFieldLabel => "Buscar un producto";
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context);
+  }
 
   @override
   List<Widget>? buildActions(BuildContext context) {

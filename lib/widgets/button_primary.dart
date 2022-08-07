@@ -8,18 +8,20 @@ class PrimaryButton extends StatelessWidget {
       {Key? key,
       required this.text,
       required this.onPressed,
-      this.fontSize = 18})
+      this.fontSize = 18,
+      this.color})
       : super(key: key);
   final String text;
   final void Function()? onPressed;
   final double fontSize;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return MaterialButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        color: Theme.of(context).colorScheme.primary,
+        color: (color == null) ? Theme.of(context).colorScheme.primary : color,
         child: SizedBox(
           width: size.width * 0.80,
           height: size.width * 0.13,

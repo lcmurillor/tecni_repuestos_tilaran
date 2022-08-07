@@ -26,6 +26,7 @@ class AdminUsersOrdersScreens extends StatelessWidget {
         child: Scaffold(
           body: Background(
             navigatorToHome: true,
+            useBackArrow: true,
             child: Column(
               children: [
                 const SizedBox(height: 60),
@@ -40,7 +41,6 @@ class AdminUsersOrdersScreens extends StatelessWidget {
                 ),
               ],
             ),
-            useBackArrow: true,
           ),
           bottomNavigationBar: _Navegation(),
         ),
@@ -113,7 +113,7 @@ class _ProcessedOrders extends StatelessWidget {
 
         final order = Order.fromMap(jsonDecode(jsonEncode(snapshot.value)));
         if (isProcessed) {
-          if (order.status < 4) {
+          if (order.status < 5 && order.status > 0) {
             return CustomCard(
               order: order,
             );
