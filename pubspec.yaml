@@ -35,7 +35,7 @@ dependencies:
   file_picker: ^4.6.1
   firebase_auth: ^3.5.0
   firebase_core: ^1.19.1
-  firebase_database: ^9.0.20
+  firebase_database: ^9.1.0
   firebase_storage: ^10.3.2
   flutter_animation_progress_bar: ^2.1.1
   flutter_localizations:

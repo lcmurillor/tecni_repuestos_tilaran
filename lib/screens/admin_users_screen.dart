@@ -9,9 +9,6 @@ class AdminUsersScreen extends StatelessWidget {
   final bool hasError;
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
-    // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
     return SafeArea(
       child: Scaffold(
         body: Background(
@@ -21,7 +18,7 @@ class AdminUsersScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 60),
-              Text('Usuarios',
+              Text('Administrar usuarios',
                   style: CustomTextStyle.robotoExtraBold
                       .copyWith(fontSize: 30, color: Colors.white)),
               const SizedBox(height: 40),

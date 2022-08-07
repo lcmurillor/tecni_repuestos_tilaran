@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/Services/firebase_realtime_service.dart';
-import 'package:tecni_repuestos/providers/order_form_provider.dart';
-import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
-import 'package:tecni_repuestos/widgets/widgets.dart';
 
 ///Esta clase permite gestionar de manera controlada los diferentes tipos de cuadros de dialogo que son
 ///usados por la aplicación para dar información o advertir al usuario.

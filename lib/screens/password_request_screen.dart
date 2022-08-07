@@ -15,43 +15,45 @@ class PasswordRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-        body: Background(
-      useImg: true,
-      useBackArrow: true,
-      child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(height: 180),
-              Card(
+    return SafeArea(
+      child: Scaffold(
+          body: Background(
+        useImg: true,
+        useBackArrow: true,
+        child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                const SizedBox(height: 180),
+                Card(
 
-                  ///Título, subtítulo y formulario del card de "¿Olvidaste tu contraseña?".
-                  child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Text('¿Olvidaste tu contraseña?',
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyle.robotoSemiBold
-                            .copyWith(fontSize: size.width * 0.08)),
-                    const SizedBox(height: 20),
-                    Text(
-                        'Por favor, ingrese el correo electrónico con el que está regsistrado.',
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyle.robotoMedium
-                            .copyWith(fontSize: size.width * 0.04)),
-                    const SizedBox(height: 20),
+                    ///Título, subtítulo y formulario del card de "¿Olvidaste tu contraseña?".
+                    child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Text('¿Olvidaste tu contraseña?',
+                          textAlign: TextAlign.center,
+                          style: CustomTextStyle.robotoSemiBold
+                              .copyWith(fontSize: size.width * 0.08)),
+                      const SizedBox(height: 20),
+                      Text(
+                          'Por favor, ingrese el correo electrónico con el que está regsistrado.',
+                          textAlign: TextAlign.center,
+                          style: CustomTextStyle.robotoMedium
+                              .copyWith(fontSize: size.width * 0.04)),
+                      const SizedBox(height: 20),
 
-                    ///LLamado al formulario.
-                    const _PasswordForm()
-                  ],
-                ),
-              ))
-            ],
-          )),
-    ));
+                      ///LLamado al formulario.
+                      const _PasswordForm()
+                    ],
+                  ),
+                ))
+              ],
+            )),
+      )),
+    );
   }
 }
 
