@@ -59,6 +59,21 @@ class DialogMyCartVoucher {
                         }
                       },
                     ),
+                    const SizedBox(height: 15),
+                    PrimaryButton(
+                      color: ColorStyle.textGrey,
+                      text: 'Continuar sin imagen',
+                      onPressed: () async {
+                        if (FirebaseAuthService.auth.currentUser != null) {
+                          FirebaseRealtimeService.updateOrderStatus(
+                                  orderId: code, status: 1)
+                              .then((value) =>
+                                  FirebaseRealtimeService.deleteUserCart().then(
+                                      (value) => Navigator.pushReplacementNamed(
+                                          context, 'myOrder')));
+                        }
+                      },
+                    ),
                     SecundaryButton(
                         text: 'Regresar',
                         onPressed: () => Navigator.pop(context))

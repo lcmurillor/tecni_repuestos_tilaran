@@ -231,23 +231,17 @@ class _ActionButton extends StatelessWidget {
                   '¿Está seguro que desea indicar el inicio de proceso de trámite de la orden: ${order.id}?',
               onPressed: () {
                 FirebaseRealtimeService.updateOrderStatus(
-                    orderId: order.id, status: process);
-                Navigator.pushReplacementNamed(
-                    context, currentPage.getScreen());
+                        orderId: order.id, status: process)
+                    .then((value) => Navigator.pushReplacementNamed(
+                        context, currentPage.getScreen()));
               });
         } else if (order.status < 3 && process == 3) {
-          displaySetVoucher(context: context, status: order.status);
-          //DialogOrderCode(context, order.status);
-          print('Enviado');
-          // NotificationsService.displaySetVoucher(
-          //     context: context, status: order.status);
-          FirebaseRealtimeService.updateOrderStatus(
-              orderId: order.id, status: process);
-          // Navigator.pushReplacementNamed(context, currentPage.getScreen());
+          DialogOrderCode.displaySetVoucher(context: context, order: order);
         } else if (order.status < 4 && process == 4) {
           FirebaseRealtimeService.updateOrderStatus(
-              orderId: order.id, status: process);
-          Navigator.pushReplacementNamed(context, currentPage.getScreen());
+                  orderId: order.id, status: process)
+              .then((value) => Navigator.pushReplacementNamed(
+                  context, currentPage.getScreen()));
         } else if (order.status < 5 && process == 5) {
           NotificationsService.displayDeleteDialog(
               context: context,
@@ -256,9 +250,9 @@ class _ActionButton extends StatelessWidget {
                   '¿Está seguro que desea indicar que le ha llegado la orden ${order.id}?',
               onPressed: () {
                 FirebaseRealtimeService.updateOrderStatus(
-                    orderId: order.id, status: process);
-                Navigator.pushReplacementNamed(
-                    context, currentPage.getScreen());
+                        orderId: order.id, status: process)
+                    .then((value) => Navigator.pushReplacementNamed(
+                        context, currentPage.getScreen()));
               });
         }
       },

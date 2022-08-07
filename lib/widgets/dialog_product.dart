@@ -7,10 +7,10 @@ import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:intl/intl.dart';
+import 'package:tecni_repuestos/widgets/button_primary.dart';
 
 class DialogProdcut {
   static displayProductDialog(BuildContext context, Product product) {
-    final size = MediaQuery.of(context).size;
     final formatCurrency = NumberFormat.currency(symbol: "₡ ");
     final count = Provider.of<MyCartInfoProvider>(context, listen: false);
     showDialog(
@@ -24,9 +24,9 @@ class DialogProdcut {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25)),
               content: SizedBox(
-                height: 380,
+                height: 420,
                 child: Column(children: [
-                  productImage(size, product),
+                  productImage(product),
                   productInfo(context, product),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +92,11 @@ class DialogProdcut {
                               ),
                               color: ColorStyle.mainRed,
                             ))
-                      ])
+                      ]),
+                  const SizedBox(height: 15),
+                  PrimaryButton(
+                      text: 'Regresar',
+                      onPressed: () => Navigator.pop(context)),
                 ]),
               ),
             ),
@@ -135,7 +139,7 @@ GestureDetector productInfo(context, Product product) {
 
 ///Éste método construye la imagen dentro del card de productos con todos los
 ///aspectos decorativos.
-GestureDetector productImage(Size size, Product product) {
+GestureDetector productImage(Product product) {
   ///Al presionar por sobre una imagen, ya sea vacía o una imagen de producto.
   ///permite abrir la galería y seleccionar una imagen para el respectivo producto.
   ///Evalúa que solo los administradores puedan cambiar la imagen.
@@ -166,7 +170,7 @@ GestureDetector productImage(Size size, Product product) {
     ///decorativos.
     child: Container(
         width: double.infinity,
-        height: size.height * 0.30,
+        height: 200,
         margin: const EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
