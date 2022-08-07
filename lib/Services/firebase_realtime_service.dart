@@ -582,4 +582,14 @@ class FirebaseRealtimeService {
       {required String orderId, required int status}) async {
     _db.ref().child('orders/$orderId').update({"status": status});
   }
+
+  static Future<void> updateOrderCode(
+      {required String orderId,
+      required int status,
+      required String code}) async {
+    _db
+        .ref()
+        .child('orders/$orderId')
+        .update({"status": status, "shippingCode": code});
+  }
 }

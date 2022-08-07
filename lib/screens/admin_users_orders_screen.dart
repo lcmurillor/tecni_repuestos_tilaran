@@ -113,7 +113,7 @@ class _ProcessedOrders extends StatelessWidget {
 
         final order = Order.fromMap(jsonDecode(jsonEncode(snapshot.value)));
         if (isProcessed) {
-          if (order.status == 4) {
+          if (order.status == 5) {
             return CustomCard(
               order: order,
             );
