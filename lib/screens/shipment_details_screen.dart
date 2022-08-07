@@ -87,22 +87,61 @@ class ShipmentDetailScreen extends StatelessWidget {
                                 ),
                                 if (currentPage.getScreen() ==
                                     'adminOrder') ...{
-                                  _ActionButton(
-                                    order: order,
-                                    currentPage: currentPage,
-                                    title: 'Procesar',
-                                    process: 2,
-                                  ),
-                                  _ActionButton(
-                                      order: order,
-                                      currentPage: currentPage,
-                                      title: 'Enviar',
-                                      process: 3),
-                                  _ActionButton(
-                                      order: order,
-                                      currentPage: currentPage,
-                                      title: 'En camino',
-                                      process: 4),
+                                  if (order.status < 2) ...{
+                                    _ActionButton(
+                                        order: order,
+                                        currentPage: currentPage,
+                                        title: 'Procesar',
+                                        process: 2)
+                                  } else ...{
+                                    SizedBox(
+                                        height: 50,
+                                        width: 100,
+                                        child: Icon(Icons.check,
+                                            color: ColorStyle.mainGreen,
+                                            size: 40))
+                                  },
+                                  if (order.status < 3) ...{
+                                    _ActionButton(
+                                        order: order,
+                                        currentPage: currentPage,
+                                        title: 'Enviar',
+                                        process: 3)
+                                  } else ...{
+                                    SizedBox(
+                                        height: 50,
+                                        width: 100,
+                                        child: Icon(Icons.check,
+                                            color: ColorStyle.mainGreen,
+                                            size: 40))
+                                  },
+                                  if (order.status < 4) ...{
+                                    _ActionButton(
+                                        order: order,
+                                        currentPage: currentPage,
+                                        title: 'En camino',
+                                        process: 4)
+                                  } else ...{
+                                    SizedBox(
+                                        height: 50,
+                                        width: 100,
+                                        child: Icon(Icons.check,
+                                            color: ColorStyle.mainGreen,
+                                            size: 40))
+                                  },
+                                  if (order.status < 5) ...{
+                                    _ActionButton(
+                                        order: order,
+                                        currentPage: currentPage,
+                                        process: 5)
+                                  } else ...{
+                                    SizedBox(
+                                        height: 50,
+                                        width: 100,
+                                        child: Icon(Icons.check,
+                                            color: ColorStyle.mainGreen,
+                                            size: 40))
+                                  },
                                 } else ...{
                                   _moldeRowStatus(
                                       status: order.status, proces: 2),
@@ -110,11 +149,11 @@ class ShipmentDetailScreen extends StatelessWidget {
                                       status: order.status, proces: 3),
                                   _moldeRowStatus(
                                       status: order.status, proces: 4),
+                                  _moldeRowStatus(
+                                      status: order.status,
+                                      proces: 5,
+                                      currentPage: currentPage),
                                 },
-                                _ActionButton(
-                                    order: order,
-                                    currentPage: currentPage,
-                                    process: 5),
                               ],
                             ),
                           ]),
@@ -129,13 +168,19 @@ class ShipmentDetailScreen extends StatelessWidget {
     });
   }
 
-  SizedBox _moldeRowStatus({required int status, required int proces}) {
+  SizedBox _moldeRowStatus(
+      {required int status,
+      required int proces,
+      ComeFromProvider? currentPage}) {
     return SizedBox(
       height: 50,
       width: 100,
       child: (status >= proces)
           ? Icon(Icons.check, color: ColorStyle.mainGreen, size: 40)
-          : const CustomProgressIndicator(),
+          : (status == 4 && proces == 5)
+              ? _ActionButton(
+                  order: order, currentPage: currentPage!, process: 5)
+              : const CustomProgressIndicator(),
     );
   }
 
@@ -219,7 +264,7 @@ class _ActionButton extends StatelessWidget {
         child: Center(
           child: Text(title,
               style: CustomTextStyle.robotoMedium
-                  .copyWith(fontSize: 19, color: Colors.white)),
+                  .copyWith(fontSize: 17, color: Colors.white)),
         ),
       ),
       onPressed: () {

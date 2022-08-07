@@ -5,8 +5,7 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class AdminUsersScreen extends StatelessWidget {
-  const AdminUsersScreen({Key? key, this.hasError = false}) : super(key: key);
-  final bool hasError;
+  const AdminUsersScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SafeArea(

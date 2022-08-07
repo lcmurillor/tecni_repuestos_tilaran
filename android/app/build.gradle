@@ -53,8 +53,8 @@ android {
         applicationId "co.cr.tecnirepuestos"
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 16
-        versionName '1.6.4'
+        versionCode 17
+        versionName '1.7.0'
         multiDexEnabled true
     }
 
