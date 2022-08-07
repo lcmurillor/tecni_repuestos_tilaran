@@ -59,9 +59,9 @@ class _Navegation extends StatelessWidget {
         onTap: (i) => navegacionModel.currentPage = i,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(MdiIcons.archiveCheck), label: 'Procesados'),
+              icon: Icon(MdiIcons.archiveClock), label: 'Pendientes'),
           BottomNavigationBarItem(
-              icon: Icon(MdiIcons.archiveClock), label: 'Pendientes')
+              icon: Icon(MdiIcons.archiveCheck), label: 'Procesados'),
         ]);
   }
 }
@@ -113,13 +113,13 @@ class _ProcessedOrders extends StatelessWidget {
 
         final order = Order.fromMap(jsonDecode(jsonEncode(snapshot.value)));
         if (isProcessed) {
-          if (order.status == 5) {
+          if (order.status < 4) {
             return CustomCard(
               order: order,
             );
           }
         } else {
-          if (order.status < 4) {
+          if (order.status == 5) {
             return CustomCard(
               order: order,
             );
