@@ -16,8 +16,8 @@ class AdminUserProfileScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBarBackArrow(
-          onPressed: () {},
           navigatorOnPressed: () {
+            // Navigator.restorablePushReplacementNamed(context, 'adminUser');
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
