@@ -114,7 +114,7 @@ class CustomCard extends StatelessWidget {
 String _getStatus({required int status}) {
   switch (status) {
     case 1:
-      return 'Pendiente de confirmar';
+      return 'Pendiente';
     case 2:
       return 'En proceso';
     case 3:
@@ -138,7 +138,7 @@ Padding _moldeRowInfo(
     child: Row(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: Icon(
             icon,
             color: ColorStyle.mainRed,
@@ -148,6 +148,8 @@ Padding _moldeRowInfo(
         Text(title, style: style),
         Text(
           text,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
           style:
               CustomTextStyle.robotoMedium.copyWith(color: ColorStyle.mainBlue),
         ),

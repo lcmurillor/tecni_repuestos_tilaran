@@ -22,146 +22,149 @@ class ShipmentDetailScreen extends StatelessWidget {
             body: Background(
           useBackArrow: true,
           useImg: false,
-          child: Column(
-            children: [
-              const SizedBox(height: 110),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      Text('Detalles del envío',
-                          textAlign: TextAlign.center,
-                          style: CustomTextStyle.robotoMedium
-                              .copyWith(fontSize: 40)),
-                      _orderInfo(context: context, order: order),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ///Corresponde a la columna izquierda donde se describen las diferentes estapas del envío.
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: 30,
-                                  width: 100,
-                                  child: Center(
-                                    child: Text('Etapa',
-                                        style: CustomTextStyle.robotoSemiBold
-                                            .copyWith(fontSize: 25)),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                const SizedBox(height: 110),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        Text('Detalles del envío',
+                            textAlign: TextAlign.center,
+                            style: CustomTextStyle.robotoMedium
+                                .copyWith(fontSize: 40)),
+                        _orderInfo(context: context, order: order),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ///Corresponde a la columna izquierda donde se describen las diferentes estapas del envío.
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                    width: 100,
+                                    child: Center(
+                                      child: Text('Etapa',
+                                          style: CustomTextStyle.robotoSemiBold
+                                              .copyWith(fontSize: 25)),
+                                    ),
                                   ),
-                                ),
-                                _moldeRow(text: 'En proceso'),
-                                _moldeRow(text: 'Enviado'),
-                                _moldeRow(text: 'En camino'),
-                                _moldeRow(text: 'Entregado'),
-                              ],
-                            ),
-
-                            ///Barra en el medio que muestra de manera gráfica el progreso del envío.
-                            SizedBox(
-                              height: 200,
-                              child: FAProgressBar(
-                                borderRadius: BorderRadius.circular(25),
-                                size: 10,
-                                backgroundColor: Colors.black12,
-                                changeProgressColor: ColorStyle.mainGreen,
-                                currentValue: order.status.toDouble(),
-                                progressColor: ColorStyle.mainGreen,
-                                maxValue: 5,
-                                direction: Axis.vertical,
-                                verticalDirection: VerticalDirection.down,
+                                  _moldeRow(text: 'En proceso'),
+                                  _moldeRow(text: 'Enviado'),
+                                  _moldeRow(text: 'En camino'),
+                                  _moldeRow(text: 'Entregado'),
+                                ],
                               ),
-                            ),
 
-                            ///Corresponde a la columna derecha donde se describre el estado del envio.
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: 30,
-                                  width: 100,
-                                  child: Center(
-                                    child: Text('Estado',
-                                        style: CustomTextStyle.robotoSemiBold
-                                            .copyWith(fontSize: 25)),
-                                  ),
+                              ///Barra en el medio que muestra de manera gráfica el progreso del envío.
+                              SizedBox(
+                                height: 200,
+                                child: FAProgressBar(
+                                  borderRadius: BorderRadius.circular(25),
+                                  size: 10,
+                                  backgroundColor: Colors.black12,
+                                  changeProgressColor: ColorStyle.mainGreen,
+                                  currentValue: order.status.toDouble(),
+                                  progressColor: ColorStyle.mainGreen,
+                                  maxValue: 5,
+                                  direction: Axis.vertical,
+                                  verticalDirection: VerticalDirection.down,
                                 ),
-                                if (currentPage.getScreen() ==
-                                    'adminOrder') ...{
-                                  if (order.status < 2) ...{
-                                    _ActionButton(
-                                        order: order,
-                                        currentPage: currentPage,
-                                        title: 'Procesar',
-                                        process: 2)
+                              ),
+
+                              ///Corresponde a la columna derecha donde se describre el estado del envio.
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                    width: 100,
+                                    child: Center(
+                                      child: Text('Estado',
+                                          style: CustomTextStyle.robotoSemiBold
+                                              .copyWith(fontSize: 25)),
+                                    ),
+                                  ),
+                                  if (currentPage.getScreen() ==
+                                      'adminOrder') ...{
+                                    if (order.status < 2) ...{
+                                      _ActionButton(
+                                          order: order,
+                                          currentPage: currentPage,
+                                          title: 'Procesar',
+                                          process: 2)
+                                    } else ...{
+                                      SizedBox(
+                                          height: 50,
+                                          width: 100,
+                                          child: Icon(Icons.check,
+                                              color: ColorStyle.mainGreen,
+                                              size: 40))
+                                    },
+                                    if (order.status < 3) ...{
+                                      _ActionButton(
+                                          order: order,
+                                          currentPage: currentPage,
+                                          title: 'Enviar',
+                                          process: 3)
+                                    } else ...{
+                                      SizedBox(
+                                          height: 50,
+                                          width: 100,
+                                          child: Icon(Icons.check,
+                                              color: ColorStyle.mainGreen,
+                                              size: 40))
+                                    },
+                                    if (order.status < 4) ...{
+                                      _ActionButton(
+                                          order: order,
+                                          currentPage: currentPage,
+                                          title: 'En camino',
+                                          process: 4)
+                                    } else ...{
+                                      SizedBox(
+                                          height: 50,
+                                          width: 100,
+                                          child: Icon(Icons.check,
+                                              color: ColorStyle.mainGreen,
+                                              size: 40))
+                                    },
+                                    if (order.status < 5) ...{
+                                      _ActionButton(
+                                          order: order,
+                                          currentPage: currentPage,
+                                          process: 5)
+                                    } else ...{
+                                      SizedBox(
+                                          height: 50,
+                                          width: 100,
+                                          child: Icon(Icons.check,
+                                              color: ColorStyle.mainGreen,
+                                              size: 40))
+                                    },
                                   } else ...{
-                                    SizedBox(
-                                        height: 50,
-                                        width: 100,
-                                        child: Icon(Icons.check,
-                                            color: ColorStyle.mainGreen,
-                                            size: 40))
+                                    _moldeRowStatus(
+                                        status: order.status, proces: 2),
+                                    _moldeRowStatus(
+                                        status: order.status, proces: 3),
+                                    _moldeRowStatus(
+                                        status: order.status, proces: 4),
+                                    _moldeRowStatus(
+                                        status: order.status,
+                                        proces: 5,
+                                        currentPage: currentPage),
                                   },
-                                  if (order.status < 3) ...{
-                                    _ActionButton(
-                                        order: order,
-                                        currentPage: currentPage,
-                                        title: 'Enviar',
-                                        process: 3)
-                                  } else ...{
-                                    SizedBox(
-                                        height: 50,
-                                        width: 100,
-                                        child: Icon(Icons.check,
-                                            color: ColorStyle.mainGreen,
-                                            size: 40))
-                                  },
-                                  if (order.status < 4) ...{
-                                    _ActionButton(
-                                        order: order,
-                                        currentPage: currentPage,
-                                        title: 'En camino',
-                                        process: 4)
-                                  } else ...{
-                                    SizedBox(
-                                        height: 50,
-                                        width: 100,
-                                        child: Icon(Icons.check,
-                                            color: ColorStyle.mainGreen,
-                                            size: 40))
-                                  },
-                                  if (order.status < 5) ...{
-                                    _ActionButton(
-                                        order: order,
-                                        currentPage: currentPage,
-                                        process: 5)
-                                  } else ...{
-                                    SizedBox(
-                                        height: 50,
-                                        width: 100,
-                                        child: Icon(Icons.check,
-                                            color: ColorStyle.mainGreen,
-                                            size: 40))
-                                  },
-                                } else ...{
-                                  _moldeRowStatus(
-                                      status: order.status, proces: 2),
-                                  _moldeRowStatus(
-                                      status: order.status, proces: 3),
-                                  _moldeRowStatus(
-                                      status: order.status, proces: 4),
-                                  _moldeRowStatus(
-                                      status: order.status,
-                                      proces: 5,
-                                      currentPage: currentPage),
-                                },
-                              ],
-                            ),
-                          ]),
-                    ],
+                                ],
+                              ),
+                            ]),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         )),
       );

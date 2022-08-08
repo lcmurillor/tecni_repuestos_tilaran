@@ -25,7 +25,6 @@ class AdminUsersOrdersScreens extends StatelessWidget {
         create: (_) => _NavegacionModel(),
         child: Scaffold(
           body: Background(
-            navigatorToHome: true,
             useBackArrow: true,
             child: Column(
               children: [
