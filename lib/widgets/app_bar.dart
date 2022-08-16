@@ -60,12 +60,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
       elevation: 3,
       actions: <Widget>[
         Badge(
-          elevation: 0,
-          showBadge: (count.getCount() != 0),
-          badgeContent: Text(
-            '${count.getCount()}',
-            style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w700),
+          elevation: 5,
+          showBadge: (count.getCount() > 0),
+          badgeContent: const Text(
+            '  ',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
           ),
           badgeColor: ColorStyle.mainGreen,
           position: BadgePosition.topStart(top: 0, start: 0),
@@ -79,7 +78,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               if (FirebaseAuthService.auth.currentUser == null ||
                   FirebaseAuthService.auth.currentUser!.isAnonymous) {
                 NotificationsService.showSnackbar(
-                    'Inicia sesión para disponder de las funciones de carrito de compras.');
+                    'Inicia sesión para disponer de las funciones de carrito de compras.');
               } else {
                 Navigator.pushNamed(context, 'myCart');
               }

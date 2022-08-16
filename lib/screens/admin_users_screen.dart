@@ -5,25 +5,22 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class AdminUsersScreen extends StatelessWidget {
-  const AdminUsersScreen({Key? key, this.hasError = false}) : super(key: key);
-  final bool hasError;
+  const AdminUsersScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
     return SafeArea(
       child: Scaffold(
         body: Background(
+          navigatorToHome: true,
           useBackArrow: true,
           useImg: false,
           child: Column(
             children: [
-              const SizedBox(height: 110),
-              Text('USUARIOS',
-                  style: CustomTextStyle.robotoSemiBold.copyWith(
-                      fontSize: size.width * 0.09, color: Colors.white)),
               const SizedBox(height: 60),
+              Text('Administrar usuarios',
+                  style: CustomTextStyle.robotoExtraBold
+                      .copyWith(fontSize: 30, color: Colors.white)),
+              const SizedBox(height: 40),
               Expanded(
                 child: FirebaseAnimatedList(
                   ///Recibe la consulta de los usuarios de la base de datos.

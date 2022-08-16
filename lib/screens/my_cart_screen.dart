@@ -223,7 +223,7 @@ class CardUserAddress extends StatelessWidget {
                 children: [
                   Text(
                     (myCartInfo.getAddress().canton == '')
-                        ? 'No tienes nunguna dirección de facturación.'
+                        ? 'No tienes ninguna dirección de facturación.'
                         : '${myCartInfo.getAddress().canton}, ${myCartInfo.getAddress().province}.',
                     style: CustomTextStyle.robotoMedium.copyWith(fontSize: 17),
                     maxLines: 2,

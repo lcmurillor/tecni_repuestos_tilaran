@@ -21,40 +21,43 @@ class RegisterScreen extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => RegisterFormProvider(),
         child: Builder(builder: (context) {
-          return Scaffold(
-              body: Background(
-            useImg: false,
-            child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 40),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            Text('Regístrate',
-                                style: CustomTextStyle.robotoSemiBold
-                                    .copyWith(fontSize: 45)),
-                            const SizedBox(height: 15),
-                            _RegisterForm()
-                          ],
+          return SafeArea(
+            child: Scaffold(
+                body: Background(
+              useImg: false,
+              child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              Text('Regístrate',
+                                  style: CustomTextStyle.robotoSemiBold
+                                      .copyWith(fontSize: 45)),
+                              const SizedBox(height: 15),
+                              _RegisterForm()
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    TertiaryButton(
-                        text: '¿Ya tiene una cuenta?',
-                        buttonText: 'Iniciar sesión',
-                        onPressed: () => Navigator.pushNamed(context, 'login')),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                  ],
-                )),
-          ));
+                      const SizedBox(height: 15),
+                      TertiaryButton(
+                          text: '¿Ya tiene una cuenta?',
+                          buttonText: 'Iniciar sesión',
+                          onPressed: () =>
+                              Navigator.pushNamed(context, 'login')),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    ],
+                  )),
+            )),
+          );
         }));
   }
 }

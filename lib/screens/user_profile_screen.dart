@@ -42,11 +42,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 (Preferences.isDarkmode) ? Colors.white : ColorStyle.mainGrey,
             onPressed: () {
               setState(() {
-                Preferences.isDarkmode = !Preferences.isDarkmode;
                 if (Preferences.isDarkmode) {
-                  themeProvider.setDarkMode();
-                } else {
                   themeProvider.setLigthMode();
+                  Preferences.isDarkmode = false;
+                } else {
+                  themeProvider.setDarkMode();
+                  Preferences.isDarkmode = true;
                 }
               });
             },

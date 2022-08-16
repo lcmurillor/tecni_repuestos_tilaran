@@ -138,6 +138,10 @@ class FirebaseRealtimeService {
     return _db.ref().child('users').orderByChild('disabled').equalTo(false);
   }
 
+  static Query getOrders() {
+    return _db.ref().child('orders');
+  }
+
   static Query getUser({required User user, required String id}) {
     return _db.ref().child('users');
   }
@@ -485,6 +489,12 @@ class FirebaseRealtimeService {
         .equalTo(FirebaseAuthService.auth.currentUser!.uid);
   }
 
+  static Query getOrdersByUserIdSelected(
+    String userId,
+  ) {
+    return _db.ref().child('orders').orderByChild('user/id').equalTo(userId);
+  }
+
   ///Agrega un nuevo objeto de tipo order en la base de datos con los datos del usuario y
   ///todos los productos que se encuentran en el carrito de compra.
   static Future<String> setOrder({required BuildContext context}) async {
@@ -571,5 +581,17 @@ class FirebaseRealtimeService {
   static Future<void> updateOrderStatus(
       {required String orderId, required int status}) async {
     _db.ref().child('orders/$orderId').update({"status": status});
+  }
+
+  static Future<void> updateOrderCode(
+      {required String orderId,
+      required int status,
+      required String shippingCode,
+      required int arrivelDate}) async {
+    _db.ref().child('orders/$orderId').update({
+      "status": status,
+      "shippingCode": shippingCode,
+      "arrivelDate": arrivelDate,
+    });
   }
 }

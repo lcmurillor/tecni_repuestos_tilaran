@@ -47,7 +47,7 @@ class CardProduct extends StatelessWidget {
               child: IconButton(
                 onPressed: () {
                   if (FirebaseAuthService.auth.currentUser != null) {
-                    if (product.quantity >= 1) {
+                    if (product.quantity > 0) {
                       FirebaseRealtimeService.validateSetCart(
                               productId: product.id)
                           .then((value) {
@@ -61,9 +61,12 @@ class CardProduct extends StatelessWidget {
                                       quantity: 1,
                                       total: product.price,
                                       userId: ''))
-                              .then((value) =>
-                                  FirebaseRealtimeService.getCartCount().then(
-                                      (value) => count.setCount(count: value)));
+                              .then((value) {
+                            FirebaseRealtimeService.getCartCount()
+                                .then((value) => count.setCount(count: value));
+                            NotificationsService.showSnackbar(
+                                '${product.description} fue agregado a tu carrito.');
+                          });
                         } else {
                           NotificationsService.showErrorSnackbar(
                               'Este producto fue agregado previamente a tu carrito.');

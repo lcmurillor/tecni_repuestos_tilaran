@@ -11,33 +11,16 @@ class AdminUserProfileScreen extends StatelessWidget {
   const AdminUserProfileScreen({Key? key, required this.user})
       : super(key: key);
   final User user;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBarBackArrow(
-          onPressed: () {},
-          navigatorOnPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AdminUsersScreen(),
-              ),
-            );
-          },
-        ),
-        body: FirebaseAnimatedList(
-          query: FirebaseRealtimeService.getUserQueryByUid(
-              uid: FirebaseAuthService.auth.currentUser!.uid),
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, snapshot, animation, index) {
-            if (!snapshot.exists) {
-              return NotificationsService.showErrorSnackbar(
-                  'Ha ocurrido un error a la hora de cargar los datos.');
-            }
-            //  final user = User.fromMap(jsonDecode(jsonEncode(snapshot.value)));
-            return Column(
+        child: Scaffold(
+            appBar: CustomAppBarBackArrow(
+              navigatorOnPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            body: Column(
               children: [
                 const SizedBox(height: 20),
                 Align(
@@ -92,7 +75,14 @@ class AdminUserProfileScreen extends StatelessWidget {
                 InfoButton(
                     icon: MdiIcons.accountEdit,
                     onPressed: () {
-                      Navigator.pushNamed(context, 'myOrder');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AdminUsersOrdersScreens(
+                            user: user,
+                          ),
+                        ),
+                      );
                     },
                     text: 'Gestionar Pedidos'),
                 InfoButton(
@@ -124,10 +114,6 @@ class AdminUserProfileScreen extends StatelessWidget {
                     },
                     text: 'Eliminar usuario'),
               ],
-            );
-          },
-        ),
-      ),
-    );
+            )));
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tecni_repuestos/Services/firebase_realtime_service.dart';
 import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
-import 'package:tecni_repuestos/widgets/button_primary.dart';
+import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class DialogSelectRol {
   static displaySelectRol(
@@ -59,7 +59,8 @@ class _StateFullState extends State<StateFull> {
           onChanged: (value) {
             setSelectedRadio(int.parse(value.toString()));
           },
-          title: const Text('Administrador'),
+          title: Text('Administrador',
+              style: CustomTextStyle.robotoExtraBold.copyWith(fontSize: 22)),
         ),
         RadioListTile(
           activeColor: ColorStyle.mainRed,
@@ -68,7 +69,8 @@ class _StateFullState extends State<StateFull> {
           onChanged: (value) {
             setSelectedRadio(int.parse(value.toString()));
           },
-          title: const Text('Vendedor'),
+          title: Text('Vendedor',
+              style: CustomTextStyle.robotoExtraBold.copyWith(fontSize: 22)),
         ),
         RadioListTile(
           activeColor: ColorStyle.mainRed,
@@ -77,7 +79,8 @@ class _StateFullState extends State<StateFull> {
           onChanged: (value) {
             setSelectedRadio(int.parse(value.toString()));
           },
-          title: const Text('Usuario'),
+          title: Text('Usuario',
+              style: CustomTextStyle.robotoExtraBold.copyWith(fontSize: 22)),
         ),
         PrimaryButton(
             text: 'Asignar rol',

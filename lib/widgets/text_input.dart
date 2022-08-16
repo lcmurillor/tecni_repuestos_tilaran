@@ -9,7 +9,7 @@ class CustomTextInput extends StatelessWidget {
       required this.hintText,
       required this.icon,
       required this.onChanged,
-      required this.validator,
+      this.validator,
       this.autocorrect = false,
       this.controller,
       this.height = 15,

@@ -79,11 +79,8 @@ class CustomDrawer extends StatelessWidget {
                 ///respectivamente.
                 return Column(children: [
                   if (user.administrator) ...[
-                    _moldelListTile(
-                        'Administrar pedidos',
-                        MdiIcons.archiveCog,
-                        const PlaceholderScreen(text: 'Administrar pedidos'),
-                        context),
+                    _moldelListTile('Administrar pedidos', MdiIcons.archiveCog,
+                        const AdminUsersOrdersScreens(), context),
                     _moldelListTile('Administrar usuarios', MdiIcons.accountCog,
                         const AdminUsersScreen(), context),
                   ] else if (user.vendor) ...[
