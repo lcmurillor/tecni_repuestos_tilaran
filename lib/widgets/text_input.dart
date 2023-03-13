@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
 class CustomTextInput extends StatelessWidget {
-  ///Corresponde a una istancia de un objeto de tipo TextFormField, personalizado
+  ///Corresponde a una instancia de un objeto de tipo TextFormField, personalizado
   ///para que todos los inputs tengan el mismo aspecto.
   const CustomTextInput(
       {Key? key,

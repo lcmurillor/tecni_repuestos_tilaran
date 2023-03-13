@@ -34,7 +34,7 @@ class DialogMyCart {
                         textAlign: TextAlign.center),
                     const SizedBox(height: 10),
                     const CustomTextOuput(
-                        data: 'CR51015102420010178491',
+                        data: 'CR50015102410010031021',
                         icon: Icons.copy_outlined),
                     const CustomTextOuput(
                         data: '+50688353896', icon: Icons.copy_outlined),
