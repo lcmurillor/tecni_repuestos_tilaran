@@ -1,0 +1,2 @@
+C:/Users/lcmur/Desktop/tecni_repuestos_tilaran/android/app/.cxx/RelWithDebInfo/4w2938z3/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/lcmur/Desktop/tecni_repuestos_tilaran/android/app/.cxx/RelWithDebInfo/4w2938z3/arm64-v8a/CMakeFiles/rebuild_cache.dir

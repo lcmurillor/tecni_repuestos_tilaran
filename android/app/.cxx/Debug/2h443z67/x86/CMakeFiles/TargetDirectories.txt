@@ -1,0 +1,2 @@
+C:/Users/lcmur/Desktop/tecni_repuestos_tilaran/android/app/.cxx/Debug/2h443z67/x86/CMakeFiles/edit_cache.dir
+C:/Users/lcmur/Desktop/tecni_repuestos_tilaran/android/app/.cxx/Debug/2h443z67/x86/CMakeFiles/rebuild_cache.dir

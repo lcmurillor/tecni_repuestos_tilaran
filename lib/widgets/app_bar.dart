@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,15 +59,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
       backgroundColor: ColorStyle.mainRed,
       elevation: 3,
       actions: <Widget>[
-        Badge(
-          elevation: 5,
+        badges.Badge(
+          badgeStyle: badges.BadgeStyle(
+            elevation: 5,
+            badgeColor: ColorStyle.mainGreen,
+          ),
           showBadge: (count.getCount() > 0),
           badgeContent: const Text(
             '  ',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
           ),
-          badgeColor: ColorStyle.mainGreen,
-          position: BadgePosition.topStart(top: 0, start: 0),
+          position: badges.BadgePosition.topStart(top: 0, start: 0),
           child: IconButton(
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,

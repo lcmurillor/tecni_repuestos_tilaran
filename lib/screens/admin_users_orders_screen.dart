@@ -56,7 +56,7 @@ class _Navegation extends StatelessWidget {
     return BottomNavigationBar(
         currentIndex: navegacionModel.currentPage,
         onTap: (i) => navegacionModel.currentPage = i,
-        items: const [
+        items: [
           BottomNavigationBarItem(
               icon: Icon(MdiIcons.archiveClock), label: 'Pendientes'),
           BottomNavigationBarItem(
