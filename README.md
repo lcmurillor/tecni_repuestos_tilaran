@@ -12,6 +12,7 @@ Está desarrollada con un enfoque principal en dispositivos móviles Android (ce
 
 ## Aspectos requridos para la compilación de la aplicación
 Aunque se puede actualizar la aplicación con las últimas versiones de Android, kotlin y gradle, para mantener la integración de la aplicación recomiendo lo siguente para el entorno de desarrollo.
+- RECOMIENDO descargar este releas el cual es la ultima versión estable 1.7.0 [Ultima versión estable](https://github.com/lcmurillor/tecni_repuestos_tilaran/releases/tag/v1.7.0)
 - Flutter en su versión 3.0.4 [Puede encontrarla aqui](https://docs.flutter.dev/release/archive)
 - Java JDK 11 [Puede encontrarla aqui](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
   - Seguidamente ajustar el JAVA_HOME y los Path en la variables de entorno.
