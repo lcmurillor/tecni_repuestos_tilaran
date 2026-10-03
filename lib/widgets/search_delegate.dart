@@ -34,8 +34,8 @@ class ProductsSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return FirebaseAnimatedList(
-      query: FirebaseRealtimeService.getSearchedProducts(description: query),
+    return LocalAnimatedList(
+      query: LocalDataService.getSearchedProducts(description: query),
       defaultChild: const CustomProgressIndicator(),
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, snapshot, animation, index) {
@@ -64,22 +64,22 @@ class ProductsSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return _emptyContainer();
     }
-    return const CustomProgressIndicator();
+    return buildResults(context);
   }
 }
 
 class _PrductItem extends StatelessWidget {
-  const _PrductItem({Key? key, required this.product}) : super(key: key);
+  const _PrductItem({required this.product});
 
   final Product product;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: product.imageUrl.startsWith('http')
+      leading: product.imageUrl.startsWith('assets/')
           ? FadeInImage(
               placeholder: const AssetImage('assets/placeholder-image.png'),
-              image: NetworkImage(product.imageUrl),
+              image: AssetImage(product.imageUrl),
               placeholderFit: BoxFit.cover,
               fit: BoxFit.cover,
               width: 50,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
@@ -91,7 +91,7 @@ class _StateFullState extends State<StateFull> {
                     : (selectedRadio == 2)
                         ? {user.administrator = false, user.vendor = true}
                         : {user.administrator = false, user.vendor = false};
-                FirebaseRealtimeService.updateUserRol(user: user)
+                LocalDataService.updateUserRol(user: user)
                     .then((value) => Navigator.pop(context));
               });
             })

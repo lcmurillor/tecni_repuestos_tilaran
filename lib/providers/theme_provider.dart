@@ -7,12 +7,12 @@ class ThemeProvider extends ChangeNotifier {
   ThemeProvider({required bool isDarkmode})
       : currentTheme = isDarkmode ? MainTheme.darkTheme : MainTheme.lightTheme;
 
-  setLigthMode() {
+  void setLigthMode() {
     currentTheme = MainTheme.lightTheme;
     notifyListeners();
   }
 
-  setDarkMode() {
+  void setDarkMode() {
     currentTheme = MainTheme.darkTheme;
     notifyListeners();
   }

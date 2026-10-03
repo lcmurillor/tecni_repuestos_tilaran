@@ -1,9 +1,9 @@
-import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart';
 
 class ComeFromProvider extends ChangeNotifier {
   String _screen = '';
 
-  setScreen({required String screen}) {
+  void setScreen({required String screen}) {
     _screen = screen;
   }
 

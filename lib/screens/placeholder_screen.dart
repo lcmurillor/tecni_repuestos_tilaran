@@ -3,7 +3,7 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class PlaceholderScreen extends StatelessWidget {
-  const PlaceholderScreen({Key? key, required this.text}) : super(key: key);
+  const PlaceholderScreen({super.key, required this.text});
   final String text;
 
   @override

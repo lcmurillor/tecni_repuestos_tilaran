@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.1 <3.0.0"
+  sdk: ">=3.9.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -27,30 +27,42 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  animate_do: ^4.2.0
-  badges: ^3.1.2
-  cloud_firestore: ^5.6.5
-  cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
+  animate_do: ^5.1.0
+#  badges: ^3.1.2 # Sustituido por Badge del SDK
+# Firebase / servicios externos desactivados para el prototipo:
+#  cloud_firestore: ^5.6.5
+  cupertino_icons: ^2.0.0
   email_validator: ^3.0.0
-  file_picker: ^9.0.2
-  firebase_auth: ^5.5.1
-  firebase_core: ^3.12.1
-  firebase_database: ^11.3.4
-  firebase_storage: ^12.4.4
+#  file_picker: ^9.0.2 # Cargas deshabilitadas
+# Firebase / servicios externos desactivados para el prototipo:
+#  firebase_auth: ^5.5.1
+# Firebase / servicios externos desactivados para el prototipo:
+#  firebase_core: ^3.12.1
+# Firebase / servicios externos desactivados para el prototipo:
+#  firebase_database: ^11.3.4
+# Firebase / servicios externos desactivados para el prototipo:
+#  firebase_storage: ^12.4.4
   flutter_animation_progress_bar: ^2.1.1
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.17
-  font_awesome_flutter: ^10.1.0
-  google_fonts: ^6.2.1
-  google_sign_in: ^6.3.0
-  material_design_icons_flutter: ^7.0.7296
+# Iconos sustituidos por Material Icons del SDK:
+#  font_awesome_flutter: ^10.1.0
+# Firebase / servicios externos desactivados para el prototipo:
+#  google_fonts: ^6.2.1
+# Firebase / servicios externos desactivados para el prototipo:
+#  google_sign_in: ^6.3.0
+# Iconos sustituidos por Material Icons del SDK:
+#  material_design_icons_flutter: ^7.0.7296
+  intl: any
   provider: ^6.0.3
   shared_preferences: ^2.0.15
   url_launcher: ^6.1.0
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
 
@@ -63,9 +75,22 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto-regular.ttf
+          weight: 400
+        - asset: assets/fonts/roboto-medium.ttf
+          weight: 500
+        - asset: assets/fonts/roboto-bold.ttf
+          weight: 700
+        - asset: assets/fonts/roboto-black.ttf
+          weight: 900
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/products/
+    - assets/fonts/roboto_license.txt
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

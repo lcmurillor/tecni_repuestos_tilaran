@@ -1,6 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
@@ -186,7 +186,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                 color: (Preferences.isDarkmode) ? Colors.white : Colors.black),
             borderRadius: BorderRadius.circular(10),
             decoration:
-                InputStyle.mainInput(hintText: '', icon: MdiIcons.fileAccount),
+                InputStyle.mainInput(hintText: '', icon: Icons.assignment_ind),
             value: 1, //Este será el valor por defecto al dibujar el widget
             items: const [
               DropdownMenuItem(
@@ -218,7 +218,7 @@ class _RegisterFormState extends State<_RegisterForm> {
           CustomTextInput(
               keyboardType: TextInputType.number,
               hintText: 'Cédula',
-              icon: MdiIcons.cardAccountDetails,
+              icon: Icons.badge,
               onChanged: (value) => registerFormProvider.identification = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -311,7 +311,7 @@ void _onFormSubmit(
     profileImg: 'undefied',
   );
   if (isValid) {
-    FirebaseAuthService.logIn(registerFormProvider.email,
+    DemoAuthService.logIn(registerFormProvider.email,
         registerFormProvider.password, user, context);
   }
 }

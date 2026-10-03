@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
   ///diferentes funciones disponibles para los usuarios registrados (Estas funciones cambian según
   ///el rango del usuario). si el usuario no tiene una cuente puede dirigirse a la pantalla para
   ///crear una y si a olvidado su contraseña, puede solicitar una recuperación.
-  const LoginScreen({Key? key, this.hasError = false}) : super(key: key);
+  const LoginScreen({super.key, this.hasError = false});
   final bool hasError;
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,8 @@ class _LoginForm extends StatelessWidget {
 ///si éste está registrado, de ahí se hacen el resto de evaluaciones de autetificación.
 void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
   if (loginFormProvider.validateForm()) {
-    FirebaseRealtimeService.getUserByEmail(email: loginFormProvider.email)
+    LocalDataService.getUserByEmail(email: loginFormProvider.email)
+        // ignore: use_build_context_synchronously
         .then((User? user) => _validateData(user, loginFormProvider, context));
   } else {
     NotificationsService.showErrorSnackbar(
@@ -139,7 +140,7 @@ void _onFormSubmit(LoginFormProvider loginFormProvider, BuildContext context) {
 void _validateData(
     User? user, LoginFormProvider loginFormProvider, BuildContext context) {
   if (user != null && !user.disabled) {
-    FirebaseAuthService.signIn(
+    DemoAuthService.signIn(
         loginFormProvider.email, loginFormProvider.password, context);
   } else {
     NotificationsService.showErrorSnackbar(

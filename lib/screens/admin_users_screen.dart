@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class AdminUsersScreen extends StatelessWidget {
-  const AdminUsersScreen({Key? key}) : super(key: key);
+  const AdminUsersScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,9 +22,9 @@ class AdminUsersScreen extends StatelessWidget {
                       .copyWith(fontSize: 30, color: Colors.white)),
               const SizedBox(height: 40),
               Expanded(
-                child: FirebaseAnimatedList(
+                child: LocalAnimatedList(
                   ///Recibe la consulta de los usuarios de la base de datos.
-                  query: FirebaseRealtimeService.getUsers(),
+                  query: LocalDataService.getUsers(),
                   defaultChild: const CustomProgressIndicator(),
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, snapshot, animation, index) {

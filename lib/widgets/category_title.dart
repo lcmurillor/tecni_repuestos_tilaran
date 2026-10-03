@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 class CategoryTitle extends StatelessWidget {
   ///Ésteme método se encarga de construir en la parte superior un encabesado con un icono
@@ -25,7 +25,7 @@ class CategoryTitle extends StatelessWidget {
           const SizedBox(width: 10),
           Text(text,
               style:
-                  GoogleFonts.roboto(fontSize: 40, fontWeight: FontWeight.w500))
+                  TextStyle(fontSize: 40, fontWeight: FontWeight.w500))
         ]));
   }
 }

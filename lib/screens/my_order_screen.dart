@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class MyOrderScreen extends StatelessWidget {
-  const MyOrderScreen({Key? key}) : super(key: key);
+  const MyOrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final currentPage = Provider.of<ComeFromProvider>(context);
     currentPage.setScreen(screen: 'myOrder');
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushReplacementNamed(context, 'home');
@@ -30,9 +31,9 @@ class MyOrderScreen extends StatelessWidget {
                       .copyWith(fontSize: 30, color: Colors.white)),
               const SizedBox(height: 40),
               Expanded(
-                child: FirebaseAnimatedList(
+                child: LocalAnimatedList(
                   ///Resive la consulta de la base de datos.
-                  query: FirebaseRealtimeService.getOrdersByUserId(),
+                  query: LocalDataService.getOrdersByUserId(),
                   defaultChild: const CustomProgressIndicator(),
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, snapshot, animation, index) {

@@ -1,10 +1,10 @@
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart'; // Cargas deshabilitadas.
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:intl/intl.dart';
 import 'package:tecni_repuestos/widgets/button_primary.dart';
@@ -50,14 +50,14 @@ class DialogProdcut {
                                 borderRadius: BorderRadius.circular(100)),
                             child: IconButton(
                               onPressed: () {
-                                if (FirebaseAuthService.auth.currentUser !=
+                                if (DemoAuthService.auth.currentUser !=
                                     null) {
                                   if (product.quantity > 0) {
-                                    FirebaseRealtimeService.validateSetCart(
+                                    LocalDataService.validateSetCart(
                                             productId: product.id)
                                         .then((value) {
                                       if (value) {
-                                        FirebaseRealtimeService.setCart(
+                                        LocalDataService.setCart(
                                                 cart: Cart(
                                                     description:
                                                         product.description,
@@ -68,7 +68,7 @@ class DialogProdcut {
                                                     total: product.price,
                                                     userId: ''))
                                             .then((value) {
-                                          FirebaseRealtimeService.getCartCount()
+                                          LocalDataService.getCartCount()
                                               .then((value) =>
                                                   count.setCount(count: value));
                                           NotificationsService.showSnackbar(
@@ -109,9 +109,9 @@ class DialogProdcut {
 GestureDetector productInfo(context, Product product) {
   return GestureDetector(
     onTap: () async {
-      if (FirebaseAuthService.auth.currentUser != null) {
-        User user = await FirebaseRealtimeService.getUserByUid(
-            uid: FirebaseAuthService.auth.currentUser!.uid);
+      if (DemoAuthService.auth.currentUser != null) {
+        User user = await LocalDataService.getUserByUid(
+            uid: DemoAuthService.auth.currentUser!.uid);
         if (user.administrator) {
           Navigator.push(
               context,
@@ -133,7 +133,7 @@ GestureDetector productInfo(context, Product product) {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style:
-                GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w600))),
+                TextStyle(fontSize: 15, fontWeight: FontWeight.w600))),
   );
 }
 
@@ -145,22 +145,24 @@ GestureDetector productImage(Product product) {
   ///Evalúa que solo los administradores puedan cambiar la imagen.
   return GestureDetector(
     onTap: () async {
-      if (FirebaseAuthService.auth.currentUser != null) {
-        User user = await FirebaseRealtimeService.getUserByUid(
-            uid: FirebaseAuthService.auth.currentUser!.uid);
+      if (DemoAuthService.auth.currentUser != null) {
+        User user = await LocalDataService.getUserByUid(
+            uid: DemoAuthService.auth.currentUser!.uid);
         if (user.administrator) {
-          final result = await FilePicker.platform.pickFiles(
-              allowMultiple: false,
-              type: FileType.custom,
-              allowedExtensions: ['png', 'jpg']);
-          if (result == null) {
-            NotificationsService.showSnackbar(
-                'No ha selecionado ninguna imagen.');
-          } else {
-            final path = result.files.single.path;
-            final name = product.id;
-            FirebaseStorageService.uploadProductFile(path!, name);
-          }
+          DemoStorageService.notice();
+// final result = await FilePicker.platform.pickFiles(
+//               allowMultiple: false,
+//               type: FileType.custom,
+//               allowedExtensions: ['png', 'jpg']);
+//           if (result == null) {
+//             NotificationsService.showSnackbar(
+//                 'No ha selecionado ninguna imagen.');
+//           } else {
+//             final path = result.files.single.path;
+//             final name = product.id;
+//             DemoStorageService.uploadProductFile(path!, name);
+//           }
+
         }
       }
     },
@@ -180,11 +182,11 @@ GestureDetector productImage(Product product) {
         ///Este es el widget que se encarga de crear la imagen.
         child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: product.imageUrl.startsWith('http')
+            child: product.imageUrl.startsWith('assets/')
                 ? FadeInImage(
                     placeholder:
                         const AssetImage('assets/placeholder-image.png'),
-                    image: NetworkImage(product.imageUrl),
+                    image: AssetImage(product.imageUrl),
                     placeholderFit: BoxFit.cover,
                     fit: BoxFit.contain)
                 : const Image(

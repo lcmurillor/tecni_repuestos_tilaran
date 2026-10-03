@@ -10,8 +10,7 @@ class CategoryScreen extends StatelessWidget {
   ///o accesorio que está buscando. Seguidamente despegará una pantalla donde se muestre una lista de
   ///productos que corespondan a la categoria que a especificado.
   const CategoryScreen(
-      {Key? key, required this.title, required this.icon, required this.type})
-      : super(key: key);
+      {super.key, required this.title, required this.icon, required this.type});
   final String title;
   final String type;
   final IconData icon;
@@ -28,7 +27,7 @@ class CategoryScreen extends StatelessWidget {
           body: FutureBuilder(
 
               ///Hace un llamado a la base de datos y recibe una lista de categorias.
-              future: FirebaseRealtimeService.getCategories(type: type),
+              future: LocalDataService.getCategories(type: type),
 
               ///Construye los objetos en base a lo recibido en la base de datos.
               builder: (BuildContext context,
@@ -89,7 +88,7 @@ class CategoryScreen extends StatelessWidget {
                                               .toLowerCase()));
                               Navigator.push(context, route);
                             }),
-                        separatorBuilder: (_, __) => const Divider()),
+                        separatorBuilder: (_, _) => const Divider()),
                   )
                 ]);
               })),

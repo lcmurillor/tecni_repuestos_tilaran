@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:tecni_repuestos/theme/themes.dart';
 
 class InfoButton extends StatelessWidget {
@@ -54,7 +54,7 @@ class InfoButton extends StatelessWidget {
                   ),
 
                   ///ICONO en el costado derecho
-                  _faIconButtons(FontAwesomeIcons.chevronRight),
+                  _faIconButtons(Icons.chevron_right),
                 ],
               )),
           onTap: onPressed),
@@ -62,8 +62,8 @@ class InfoButton extends StatelessWidget {
   }
 }
 
-FaIcon _faIconButtons(IconData faicon) {
-  return FaIcon(
+Icon _faIconButtons(IconData faicon) {
+  return Icon(
     faicon,
     size: 30,
     color: ColorStyle.textGrey,

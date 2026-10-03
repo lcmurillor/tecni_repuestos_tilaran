@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/Services/services.dart';
+
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 
 class CustomDrawer extends StatelessWidget {
   ///Éste widget corresponde al menú lateral desplegable que permite la navegación
   ///por la palicación.
-  const CustomDrawer({Key? key}) : super(key: key);
+  const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +45,9 @@ class CustomDrawer extends StatelessWidget {
           ///Pirmera condición para evaluar el estado de usuario. Si no se encuentra
           ///ningún usuario registrado en los archivos del dispositivo el menú solo
           ///va a mostrar loas funciones más basicas.
-          if (FirebaseAuthService.auth.currentUser == null ||
-              FirebaseAuthService.auth.currentUser!.isAnonymous) ...{
-            _moldelListTile('Inicia sesión', MdiIcons.arrowRightBox,
+          if (DemoAuthService.auth.currentUser == null ||
+              DemoAuthService.auth.currentUser!.isAnonymous) ...{
+            _moldelListTile('Inicia sesión', Icons.login,
                 const LoginScreen(), context),
             _moldelListTile(
                 'Regístrate', Icons.person_add, const RegisterScreen(), context)
@@ -57,10 +56,10 @@ class CustomDrawer extends StatelessWidget {
           ///Segunda condición para evaluar el estado de usuario. Si existe la instancia
           ///de un usuario en la aplicación, evaluará el rango de este usuario y ahora
           ///dispone de la opción de cerrar la sesión.
-          if (FirebaseAuthService.auth.currentUser != null) ...{
+          if (DemoAuthService.auth.currentUser != null) ...{
             FutureBuilder(
-              future: FirebaseRealtimeService.getUserByUid(
-                  uid: FirebaseAuthService.auth.currentUser!.uid),
+              future: LocalDataService.getUserByUid(
+                  uid: DemoAuthService.auth.currentUser!.uid),
               builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                 if (snapshot.hasError) {
                   return NotificationsService.showErrorSnackbar(
@@ -79,25 +78,25 @@ class CustomDrawer extends StatelessWidget {
                 ///respectivamente.
                 return Column(children: [
                   if (user.administrator) ...[
-                    _moldelListTile('Administrar pedidos', MdiIcons.archiveCog,
+                    _moldelListTile('Administrar pedidos', Icons.inventory,
                         const AdminUsersOrdersScreens(), context),
-                    _moldelListTile('Administrar usuarios', MdiIcons.accountCog,
+                    _moldelListTile('Administrar usuarios', Icons.manage_accounts,
                         const AdminUsersScreen(), context),
                   ] else if (user.vendor) ...[
                     _moldelListTile(
                         'Administrar pedidos',
-                        MdiIcons.archiveCog,
+                        Icons.inventory,
                         const PlaceholderScreen(text: 'Administrar pedidos'),
                         context),
                   ],
                   _moldelListTile('Mi carrito', Icons.shopping_cart,
                       const MyCartScreen(), context),
-                  _moldelListTile('Mis pedidos', MdiIcons.archive,
+                  _moldelListTile('Mis pedidos', Icons.inventory_2,
                       const MyOrderScreen(), context),
-                  _moldelListTile('Mi perfil', MdiIcons.account,
+                  _moldelListTile('Mi perfil', Icons.person,
                       const UserProfileScreen(), context),
                   _moldelListTile(
-                      'Cerrar sesión', MdiIcons.arrowLeftBox, null, context),
+                      'Modo prototipo', Icons.info_outline, null, context),
                 ]);
               },
             ),
@@ -126,7 +125,7 @@ ListTile _moldelListTile(
       if (page != null) {
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       } else {
-        FirebaseAuthService.signOut(context);
+        DemoAuthService.signOut(context);
       }
     },
   );

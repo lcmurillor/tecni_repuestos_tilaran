@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/services/services.dart';
+
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
@@ -81,7 +81,7 @@ class AddressForm extends StatelessWidget {
                       ? TextEditingController(text: address!.canton)
                       : null,
                   hintText: 'Cantón',
-                  icon: MdiIcons.mapMarker,
+                  icon: Icons.location_on,
                   onChanged: (value) => addressFormProvider.canton = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -94,7 +94,7 @@ class AddressForm extends StatelessWidget {
                       ? TextEditingController(text: address!.province)
                       : null,
                   hintText: 'Provincia',
-                  icon: MdiIcons.mapMarker,
+                  icon: Icons.location_on,
                   onChanged: (value) => addressFormProvider.province = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -138,9 +138,9 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
           canton: addressFormProvider.canton,
           id: 'undefined',
           province: addressFormProvider.province,
-          userId: FirebaseAuthService.auth.currentUser!.uid,
+          userId: DemoAuthService.auth.currentUser!.uid,
           last: true);
-      FirebaseRealtimeService.setAddress(address: _address, context: context);
+      LocalDataService.setAddress(address: _address, context: context);
     } else {
       NotificationsService.showErrorSnackbar(
           'No se cumple con las condiciones mínimas para agregar la dirección.');
@@ -168,7 +168,7 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
             'No se cumple con las condiciones mínimas para actualizar la información.');
       }
     }).then((value) {
-      FirebaseRealtimeService.updateAddress(
+      LocalDataService.updateAddress(
           address: address!, context: context);
     });
   }

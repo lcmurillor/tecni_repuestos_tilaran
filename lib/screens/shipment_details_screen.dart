@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
@@ -183,7 +183,7 @@ class ShipmentDetailScreen extends StatelessWidget {
           : (status == 4 && proces == 5)
               ? _ActionButton(
                   order: order, currentPage: currentPage!, process: 5)
-              : const CustomProgressIndicator(),
+              : const Center(child: Text('Pendiente', style: TextStyle(fontSize: 13))),
     );
   }
 
@@ -219,11 +219,11 @@ class ShipmentDetailScreen extends StatelessWidget {
     );
   }
 
-  Row _moldeRowInfo(
+  Wrap _moldeRowInfo(
       {required String title,
       required String value,
       Color color = const Color.fromRGBO(143, 143, 143, 1)}) {
-    return Row(
+    return Wrap(
       children: [
         Text(title,
             textAlign: TextAlign.center,
@@ -278,7 +278,7 @@ class _ActionButton extends StatelessWidget {
               text:
                   '¿Está seguro que desea indicar el inicio de proceso de trámite de la orden: ${order.id}?',
               onPressed: () {
-                FirebaseRealtimeService.updateOrderStatus(
+                LocalDataService.updateOrderStatus(
                         orderId: order.id, status: process)
                     .then((value) => Navigator.pushReplacementNamed(
                         context, currentPage.getScreen()));
@@ -286,7 +286,7 @@ class _ActionButton extends StatelessWidget {
         } else if (order.status < 3 && process == 3) {
           DialogOrderCode.displaySetVoucher(context: context, order: order);
         } else if (order.status < 4 && process == 4) {
-          FirebaseRealtimeService.updateOrderStatus(
+          LocalDataService.updateOrderStatus(
                   orderId: order.id, status: process)
               .then((value) => Navigator.pushReplacementNamed(
                   context, currentPage.getScreen()));
@@ -297,7 +297,7 @@ class _ActionButton extends StatelessWidget {
               text:
                   '¿Está seguro que desea indicar que le ha llegado la orden ${order.id}?',
               onPressed: () {
-                FirebaseRealtimeService.updateOrderStatus(
+                LocalDataService.updateOrderStatus(
                         orderId: order.id, status: process)
                     .then((value) => Navigator.pushReplacementNamed(
                         context, currentPage.getScreen()));

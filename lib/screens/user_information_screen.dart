@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
@@ -62,8 +62,8 @@ class _EditInfoForm extends StatelessWidget {
         final editInfoFormProvider =
             Provider.of<EditInfoFormProvider>(context, listen: false);
         return FutureBuilder(
-          future: FirebaseRealtimeService.getUserByUid(
-              uid: FirebaseAuthService.auth.currentUser!.uid),
+          future: LocalDataService.getUserByUid(
+              uid: DemoAuthService.auth.currentUser!.uid),
           builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
             if (snapshot.hasError) {
               return NotificationsService.showErrorSnackbar(
@@ -176,7 +176,7 @@ class _EditInfoForm extends StatelessWidget {
                             : Colors.black),
                     borderRadius: BorderRadius.circular(10),
                     decoration: InputStyle.mainInput(
-                        hintText: '', icon: MdiIcons.fileAccount),
+                        hintText: '', icon: Icons.assignment_ind),
 
                     value:
                         1, //Este será el valor por defecto al dibujar el widget
@@ -206,7 +206,7 @@ class _EditInfoForm extends StatelessWidget {
                           TextEditingController(text: user.identification),
                       keyboardType: TextInputType.number,
                       hintText: 'Cédula',
-                      icon: MdiIcons.cardAccountDetails,
+                      icon: Icons.badge,
                       onChanged: (value) =>
                           editInfoFormProvider.identification = value,
                       validator: (value) {
@@ -269,7 +269,7 @@ void _onFormSubmit(
           'No se cumple con las condiciones mínimas para actualizar la información.');
     }
   }).then((value) {
-    FirebaseRealtimeService.updateUser(user: user);
+    LocalDataService.updateUser(user: user);
     if (editInfoFormProvider.validateForm()) {
       Navigator.pushReplacementNamed(context, 'profile');
       NotificationsService.showSnackbar(

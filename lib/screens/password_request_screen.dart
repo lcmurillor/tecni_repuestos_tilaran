@@ -10,7 +10,7 @@ class PasswordRequestScreen extends StatelessWidget {
   ///usuario haya olvidado la contraseña. En este espacio se valida que el correo cumpla con
   ///el respectivo formato y además que el correo corresponda a un usuario registrado y activo,
   ///si es así, se le envía un correo para cambiar su contraseña con las herramientas de Firebase.
-  const PasswordRequestScreen({Key? key}) : super(key: key);
+  const PasswordRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class _PasswordForm extends StatelessWidget {
   ///Formulario en el que se ingresa la el correo electrónico, se valida su formato
   ///y si corresponde a un usuario, si se comple, se hace un llamado a los métodos de
   ///autetintificación de los servicios de Firebase.
-  const _PasswordForm({Key? key}) : super(key: key);
+  const _PasswordForm();
 
   @override
   Widget build(BuildContext context) {
@@ -106,10 +106,11 @@ class _PasswordForm extends StatelessWidget {
 void _onFormSubmit(RequestPasswordFormProvider requestPasswordFormProvider,
     BuildContext context) async {
   if (requestPasswordFormProvider.validateForm()) {
-    if (!await FirebaseAuthService.requestPassword(
+    if (!await DemoAuthService.requestPassword(
         requestPasswordFormProvider.email, context)) {
       NotificationsService.showSnackbar(
           'Se ha enviado la solicitud de cambio a su correo electrónico ${requestPasswordFormProvider.email}');
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, 'login');
     }
   }

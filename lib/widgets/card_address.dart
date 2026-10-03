@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
@@ -23,7 +23,7 @@ class CardAddress extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: Icon(
-              MdiIcons.mapMarkerRadius,
+              Icons.location_on,
               color: ColorStyle.mainRed,
               size: 50,
             ),
@@ -67,14 +67,14 @@ class CardAddress extends StatelessWidget {
 
                 ///Botón para eliminar la dirreción de faturación.
                 IconButton(
-                    icon: Icon(MdiIcons.deleteForever,
+                    icon: Icon(Icons.delete_forever,
                         size: 40, color: ColorStyle.mainRed),
                     onPressed: () => NotificationsService.displayDeleteDialog(
                           context: context,
                           text:
                               '¿Está seguro que desea eliminar la dirrección: ${address.address}?',
                           onPressed: () {
-                            FirebaseRealtimeService.deleteAddress(
+                            LocalDataService.deleteAddress(
                                 key: address.id);
                             Navigator.popAndPushNamed(context, 'addresses');
                           },

@@ -25,10 +25,10 @@ class ProductsFilterScreen extends StatelessWidget {
         drawer: const CustomDrawer(),
 
         ///Construción de la lista de productos para la pantalla de productos filtrados por categoría.
-        body: FirebaseAnimatedList(
+        body: LocalAnimatedList(
           ///Hace un llamado a la base de datos y resive una lista de productos filtrado por el tipo
           ///(pude ser tanto un repuesto como un accesorio) y por la categoría especifica de cada uno.
-          query: FirebaseRealtimeService.getFilteredProducts(
+          query: LocalDataService.getFilteredProducts(
               description: category.description),
           defaultChild: const CustomProgressIndicator(),
           physics: const BouncingScrollPhysics(),

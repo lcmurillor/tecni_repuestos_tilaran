@@ -5,7 +5,7 @@ class CustomTextInput extends StatelessWidget {
   ///Corresponde a una istancia de un objeto de tipo TextFormField, personalizado
   ///para que todos los inputs tengan el mismo aspecto.
   const CustomTextInput(
-      {Key? key,
+      {super.key,
       required this.hintText,
       required this.icon,
       required this.onChanged,
@@ -18,8 +18,7 @@ class CustomTextInput extends StatelessWidget {
       this.onFieldSubmitted,
       this.onTap,
       this.readOnly = false,
-      this.maxLines = 1})
-      : super(key: key);
+      this.maxLines = 1});
 
   final bool autocorrect;
   final bool obscureText;

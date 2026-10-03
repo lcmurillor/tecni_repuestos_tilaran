@@ -15,7 +15,7 @@ class MainTheme {
     ),
 
     ///Configuración del card.
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         elevation: 10,
@@ -39,7 +39,7 @@ class MainTheme {
     ),
 
     ///Configuración del card.
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         elevation: 10,

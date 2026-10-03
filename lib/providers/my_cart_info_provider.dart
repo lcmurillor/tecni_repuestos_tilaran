@@ -1,4 +1,4 @@
-import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart';
 import 'package:tecni_repuestos/models/models.dart';
 
 class MyCartInfoProvider extends ChangeNotifier {
@@ -8,7 +8,7 @@ class MyCartInfoProvider extends ChangeNotifier {
   Address _address = Address(
       address: '', canton: '', id: '', province: '', userId: '', last: false);
 
-  setTotal({required double total}) {
+  void setTotal({required double total}) {
     _total = total;
     notifyListeners();
   }
@@ -17,7 +17,7 @@ class MyCartInfoProvider extends ChangeNotifier {
     return _total;
   }
 
-  setCount({required int count}) {
+  void setCount({required int count}) {
     _count = count;
     notifyListeners();
   }
@@ -26,7 +26,7 @@ class MyCartInfoProvider extends ChangeNotifier {
     return _count;
   }
 
-  setAddress({required Address address}) {
+  void setAddress({required Address address}) {
     _address = address;
     notifyListeners();
   }

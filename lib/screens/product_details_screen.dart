@@ -1,6 +1,6 @@
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart'; // Cargas deshabilitadas.
 import 'package:flutter/material.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
@@ -8,8 +8,7 @@ import '../theme/themes.dart';
 import 'screens.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({Key? key, required this.product})
-      : super(key: key);
+  const ProductDetailsScreen({super.key, required this.product});
 
   final Product product;
 
@@ -42,7 +41,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     text:
                         'Está seguro que desea eliminar ${product.description}',
                     onPressed: () {
-                      FirebaseRealtimeService.deleteProduct(
+                      LocalDataService.deleteProduct(
                           productId: product.id);
                       NotificationsService.showSnackbar('Producto eliminado');
                       Navigator.canPop(context);
@@ -62,22 +61,24 @@ class ProductDetailsScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    if (FirebaseAuthService.auth.currentUser != null) {
-                      User user = await FirebaseRealtimeService.getUserByUid(
-                          uid: FirebaseAuthService.auth.currentUser!.uid);
+                    if (DemoAuthService.auth.currentUser != null) {
+                      User user = await LocalDataService.getUserByUid(
+                          uid: DemoAuthService.auth.currentUser!.uid);
                       if (user.administrator) {
-                        final result = await FilePicker.platform.pickFiles(
-                            allowMultiple: false,
-                            type: FileType.custom,
-                            allowedExtensions: ['png', 'jpg']);
-                        if (result == null) {
-                          NotificationsService.showSnackbar(
-                              'No ha selecionado ninguna imagen.');
-                        } else {
-                          final path = result.files.single.path;
-                          final name = product.id;
-                          FirebaseStorageService.uploadProductFile(path!, name);
-                        }
+                        DemoStorageService.notice();
+// final result = await FilePicker.platform.pickFiles(
+//                             allowMultiple: false,
+//                             type: FileType.custom,
+//                             allowedExtensions: ['png', 'jpg']);
+//                         if (result == null) {
+//                           NotificationsService.showSnackbar(
+//                               'No ha selecionado ninguna imagen.');
+//                         } else {
+//                           final path = result.files.single.path;
+//                           final name = product.id;
+//                           DemoStorageService.uploadProductFile(path!, name);
+//                         }
+
                       }
                     }
                   },
@@ -93,11 +94,11 @@ class ProductDetailsScreen extends StatelessWidget {
                     ///Este es el widget que se encarga de crear la imagen.
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: product.imageUrl.startsWith('http')
+                      child: product.imageUrl.startsWith('assets/')
                           ? FadeInImage(
                               placeholder: const AssetImage(
                                   'assets/placeholder-image.png'),
-                              image: NetworkImage(product.imageUrl),
+                              image: AssetImage(product.imageUrl),
                               placeholderFit: BoxFit.cover,
                               fit: BoxFit.contain)
                           : const Image(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/services/services.dart';
+
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
@@ -8,8 +8,7 @@ import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
 class AdminUserProfileScreen extends StatelessWidget {
-  const AdminUserProfileScreen({Key? key, required this.user})
-      : super(key: key);
+  const AdminUserProfileScreen({super.key, required this.user});
   final User user;
   @override
   Widget build(BuildContext context) {
@@ -28,33 +27,31 @@ class AdminUserProfileScreen extends StatelessWidget {
                   child: Stack(
                     children: [
                       CircleAvatar(
-                          child: user.profileImg.startsWith('http')
+                          backgroundColor: ColorStyle.mainGrey,
+                          maxRadius: 58,
+                          child: user.profileImg.startsWith('assets/')
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
                                   child: FadeInImage(
                                       placeholder: const AssetImage(
                                           'assets/placeholder-user.png'),
-                                      image: NetworkImage(user.profileImg),
+                                      image: AssetImage(user.profileImg),
                                       placeholderFit: BoxFit.cover,
                                       fit: BoxFit.contain),
                                 )
                               : Text(
-                                  user.name.substring(0, 1).toUpperCase() +
-                                      '' +
-                                      user.lastname
+                                  '${user.name.substring(0, 1).toUpperCase()}${user.lastname
                                           .substring(0, 1)
-                                          .toUpperCase(),
+                                          .toUpperCase()}',
                                   style: CustomTextStyle.robotoMedium.copyWith(
                                       fontSize: 50, color: Colors.white),
-                                ),
-                          backgroundColor: ColorStyle.mainGrey,
-                          maxRadius: 58),
+                                )),
                     ],
                   ),
                 ),
                 const SizedBox(height: 20),
                 Text(
-                    user.name.toUpperCase() + ' ' + user.lastname.toUpperCase(),
+                    '${user.name.toUpperCase()} ${user.lastname.toUpperCase()}',
                     style:
                         CustomTextStyle.robotoExtraBold.copyWith(fontSize: 20)),
                 const SizedBox(height: 7),
@@ -62,7 +59,7 @@ class AdminUserProfileScreen extends StatelessWidget {
                     style: CustomTextStyle.robotoSemiBold
                         .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
                 const SizedBox(height: 7),
-                Text('+506 ' + user.phone,
+                Text('+506 ${user.phone}',
                     style: CustomTextStyle.robotoSemiBold
                         .copyWith(fontSize: 16, color: ColorStyle.mainRed)),
                 const SizedBox(height: 7),
@@ -73,7 +70,7 @@ class AdminUserProfileScreen extends StatelessWidget {
                         .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
                 const SizedBox(height: 20),
                 InfoButton(
-                    icon: MdiIcons.accountEdit,
+                    icon: Icons.manage_accounts,
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
@@ -86,21 +83,21 @@ class AdminUserProfileScreen extends StatelessWidget {
                     },
                     text: 'Gestionar Pedidos'),
                 InfoButton(
-                    icon: MdiIcons.formTextboxPassword,
+                    icon: Icons.password,
                     onPressed: () {
                       DialogSelectRol.displaySelectRol(
                           context: context, user: user);
                     },
                     text: 'Cambiar rol del usuario'),
                 InfoButton(
-                    icon: MdiIcons.mapPlus,
+                    icon: Icons.add_location_alt,
                     onPressed: () {
                       NotificationsService.displayDeleteDialog(
                           context: context,
                           text:
-                              'Está seguro que desea eliminar a ${user.name + ' ' + user.lastname}',
+                              'Está seguro que desea eliminar a ${'${user.name} ${user.lastname}'}',
                           onPressed: () {
-                            FirebaseRealtimeService.deleteUser(id: user.id);
+                            LocalDataService.deleteUser(id: user.id);
                             NotificationsService.showSnackbar(
                                 'Usuario eliminado');
                             Navigator.canPop(context);

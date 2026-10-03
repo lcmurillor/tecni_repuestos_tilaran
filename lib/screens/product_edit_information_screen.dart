@@ -8,8 +8,7 @@ import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
 class ProductEditInformationScreen extends StatelessWidget {
-  const ProductEditInformationScreen({Key? key, required this.product})
-      : super(key: key);
+  const ProductEditInformationScreen({super.key, required this.product});
   final Product product;
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,7 @@ class ProductEditInformationScreen extends StatelessWidget {
 }
 
 class _EditInfoForm extends StatelessWidget {
-  const _EditInfoForm({Key? key, required this.product}) : super(key: key);
+  const _EditInfoForm({required this.product});
   final Product product;
   @override
   Widget build(BuildContext context) {
@@ -136,7 +135,7 @@ class _EditInfoForm extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 decoration:
                     InputStyle.mainInput(hintText: '', icon: Icons.settings),
-                value:
+                initialValue:
                     'spare', //Este será el valor por defecto al dibujar el widget
                 items: const [
                   DropdownMenuItem(
@@ -235,7 +234,7 @@ void _onFormSubmit(EditInfoProductProvider editInfoFormProductProvider, context,
           'No se cumple con las condiciones mínimas para actualizar la información.');
     }
   }).then((value) {
-    FirebaseRealtimeService.updateProduct(product: product);
+    LocalDataService.updateProduct(product: product);
     if (editInfoFormProductProvider.validateForm()) {
       Navigator.pushReplacement(
           context,

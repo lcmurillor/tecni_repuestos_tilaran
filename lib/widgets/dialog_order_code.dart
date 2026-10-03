@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 import 'package:intl/intl.dart';
@@ -51,7 +51,7 @@ class _OrderForm extends StatelessWidget {
               CustomTextInput(
                 height: 20,
                 hintText: 'Código guía',
-                icon: MdiIcons.barcode,
+                icon: Icons.qr_code,
                 onChanged: (value) => orderFormProvider.shippingCode = value,
                 keyboardType: TextInputType.streetAddress,
                 validator: (value) {
@@ -124,7 +124,7 @@ class _OrderForm extends StatelessWidget {
 void _onFormSubmit(
     OrderFormProvider orderFormProvider, context, Order order) async {
   if (orderFormProvider.validateForm()) {
-    FirebaseRealtimeService.updateOrderCode(
+    LocalDataService.updateOrderCode(
             orderId: order.id,
             status: 3,
             shippingCode: orderFormProvider.shippingCode,

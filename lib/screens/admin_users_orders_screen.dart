@@ -1,6 +1,6 @@
-import 'package:firebase_database/firebase_database.dart';
+// Firebase Query sustituido por la consulta local exportada por services.dart.
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
@@ -9,17 +9,17 @@ import '../providers/providers.dart';
 
 class AdminUsersOrdersScreens extends StatelessWidget {
   const AdminUsersOrdersScreens({
-    Key? key,
+    super.key,
     this.user,
-  }) : super(key: key);
+  });
   final User? user;
   @override
   Widget build(BuildContext context) {
     final currentPage = Provider.of<ComeFromProvider>(context);
     currentPage.setScreen(screen: 'adminOrder');
     final Query query = (user == null)
-        ? FirebaseRealtimeService.getOrders()
-        : FirebaseRealtimeService.getOrdersByUserIdSelected(user!.id);
+        ? LocalDataService.getOrders()
+        : LocalDataService.getOrdersByUserIdSelected(user!.id);
     return SafeArea(
       child: ChangeNotifierProvider(
         create: (_) => _NavegacionModel(),
@@ -58,18 +58,19 @@ class _Navegation extends StatelessWidget {
         onTap: (i) => navegacionModel.currentPage = i,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(MdiIcons.archiveClock), label: 'Pendientes'),
+              icon: Icon(Icons.pending_actions), label: 'Pendientes'),
           BottomNavigationBarItem(
-              icon: Icon(MdiIcons.archiveCheck), label: 'Procesados'),
+              icon: Icon(Icons.inventory_2), label: 'Procesados'),
         ]);
   }
 }
 
 class _Pages extends StatelessWidget {
   const _Pages({
-    Key? key,
+    // ignore: unused_element_parameter
+    super.key,
     required this.query,
-  }) : super(key: key);
+  });
   final Query query;
   @override
   Widget build(BuildContext context) {
@@ -90,16 +91,15 @@ class _Pages extends StatelessWidget {
 
 class _ProcessedOrders extends StatelessWidget {
   const _ProcessedOrders({
-    Key? key,
     required this.query,
     required this.isProcessed,
-  }) : super(key: key);
+  });
   final bool isProcessed;
   final Query query;
 
   @override
   Widget build(BuildContext context) {
-    return FirebaseAnimatedList(
+    return LocalAnimatedList(
       ///Recibe la consulta de los usuarios de la base de datos.
       query: query,
       defaultChild: const CustomProgressIndicator(),

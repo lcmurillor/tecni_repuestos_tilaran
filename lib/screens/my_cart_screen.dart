@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:tecni_repuestos/models/models.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
@@ -13,7 +13,7 @@ class MyCartScreen extends StatefulWidget {
   ///La lista es idividual para cada usuario y cada uno solo puede tener una lista de articulos en el carrito.
   ///Los datos de esta lista se mantienen almacenados en la base de datos con la inteción de que pueda ser consultada
   ///por el usuarios al ingresar a su cuenta en cualquier dispositivo.
-  const MyCartScreen({Key? key}) : super(key: key);
+  const MyCartScreen({super.key});
 
   @override
   State<MyCartScreen> createState() => _MyCartScreenState();
@@ -27,12 +27,12 @@ class _MyCartScreenState extends State<MyCartScreen> {
     final myCartInfo = Provider.of<MyCartInfoProvider>(context, listen: false);
 
     Future.delayed(Duration.zero, () async {
-      FirebaseRealtimeService.getCartTotal()
+      LocalDataService.getCartTotal()
           .then((value) => myCartInfo.setTotal(total: value));
     });
-    if (FirebaseAuthService.auth.currentUser != null) {
-      FirebaseRealtimeService.getAddressByUser(
-              uid: FirebaseAuthService.auth.currentUser!.uid)
+    if (DemoAuthService.auth.currentUser != null) {
+      LocalDataService.getAddressByUser(
+              uid: DemoAuthService.auth.currentUser!.uid)
           ?.then((value) {
         myCartInfo.setAddress(address: value);
       });
@@ -55,7 +55,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                 context: context,
                 text: '¿Está seguro que desea vaciar el carrito?',
                 onPressed: () => {
-                  FirebaseRealtimeService.deleteUserCart(),
+                  LocalDataService.deleteUserCart(),
                   Navigator.pushReplacementNamed(context, 'myCart')
                 },
               );
@@ -71,10 +71,10 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       CustomTextStyle.robotoExtraBold.copyWith(fontSize: 40)),
               const SizedBox(height: 10),
               Expanded(
-                child: (FirebaseAuthService.auth.currentUser != null)
-                    ? FirebaseAnimatedList(
+                child: (DemoAuthService.auth.currentUser != null)
+                    ? LocalAnimatedList(
                         ///Resive la consulta de la base de datos.
-                        query: FirebaseRealtimeService.getCart(),
+                        query: LocalDataService.getCart(),
                         defaultChild: const CustomProgressIndicator(),
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, snapshot, animation, index) {
@@ -98,7 +98,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
               ///muestra el costo total de la compra por los productos del carrito y se disponde de
               ///la dirrreción a la cual se entregaría el paquete.
               Container(
-                height: size.height * 0.35,
+                padding: const EdgeInsets.only(bottom: 12),
                 width: size.width,
                 color: Theme.of(context).scaffoldBackgroundColor,
                 child: Column(
@@ -109,17 +109,19 @@ class _MyCartScreenState extends State<MyCartScreen> {
                     PrimaryButton(
                         onPressed: () async {
                           ///Valida si existen prodductos en el carrito.
-                          if (await FirebaseRealtimeService.haveCart()) {
+                          if (await LocalDataService.haveCart()) {
                             ///Valida si el usuario tiene un direción agregada.
                             if (myCartInfo.getAddress().canton != '') {
                               ///Valida si el usuario tiene otra orden No tramidada, si es así, elimina la anterir y define una nueva.
-                              if (await FirebaseRealtimeService
+                              if (await LocalDataService
                                   .validateExistingOrders()) {
-                                FirebaseRealtimeService.deleteOrderStatus0();
+                                LocalDataService.deleteOrderStatus0();
                               }
-                              FirebaseRealtimeService.setOrder(context: context)
+                              // ignore: use_build_context_synchronously
+                              LocalDataService.setOrder(context: context)
                                   .then((value) =>
                                       DialogMyCart.displayMyCartDialog(
+                                          // ignore: use_build_context_synchronously
                                           context: context,
                                           code: value,
                                           total: (myCartInfo.getTotal() * 1.13)
@@ -133,7 +135,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                 'No tiene nungún producto agregado al carrito.');
                           }
                         },
-                        text: "Pagar")
+                        text: "Simular pedido")
                   ],
                 ),
               )
@@ -143,7 +145,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
   }
 
   ///Método que construye el reome de la orden de compra del usuario.
-  _invoiceTotalInfo(BuildContext context) {
+  SizedBox _invoiceTotalInfo(BuildContext context) {
     final formatCurrency = NumberFormat.currency(symbol: "₡ ");
     final myCartInfo = Provider.of<MyCartInfoProvider>(context);
     return SizedBox(
@@ -196,7 +198,7 @@ class CardUserAddress extends StatelessWidget {
   ///Éste widget es un card personalizado el cual es usado para mostrar de manera cómoda
   ///los datos de las diferentes direcciones guardadas por un usuario y junto con estos datos,
   ///las opciones de editar o eliminar la información.
-  const CardUserAddress({Key? key}) : super(key: key);
+  const CardUserAddress({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +213,7 @@ class CardUserAddress extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: Icon(
-              MdiIcons.mapMarkerRadius,
+              Icons.location_on,
               color: ColorStyle.mainRed,
               size: 50,
             ),

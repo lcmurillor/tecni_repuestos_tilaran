@@ -1,7 +1,7 @@
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart'; // Cargas deshabilitadas.
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tecni_repuestos/services/services.dart';
+
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/shared/preferences.dart';
@@ -54,10 +54,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             navigatorOnPressed: () => Navigator.pushNamed(context, 'home'),
           ),
 
-          body: FirebaseAnimatedList(
+          body: LocalAnimatedList(
             ///Resive la consulta de la base de datos.
-            query: FirebaseRealtimeService.getUserQueryByUid(
-                uid: FirebaseAuthService.auth.currentUser!.uid),
+            query: LocalDataService.getUserQueryByUid(
+                uid: DemoAuthService.auth.currentUser!.uid),
             defaultChild: const CustomProgressIndicator(),
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, snapshot, animation, index) {
@@ -74,13 +74,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     child: Stack(
                       children: [
                         CircleAvatar(
-                            child: user.profileImg.startsWith('http')
+                            child: user.profileImg.startsWith('assets/')
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
                                     child: FadeInImage(
                                         placeholder: const AssetImage(
                                             'assets/placeholder-user.png'),
-                                        image: NetworkImage(user.profileImg),
+                                        image: AssetImage(user.profileImg),
                                         placeholderFit: BoxFit.cover,
                                         fit: BoxFit.contain),
                                   )
@@ -130,19 +130,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
                   const SizedBox(height: 20),
                   InfoButton(
-                      icon: MdiIcons.accountEdit,
+                      icon: Icons.manage_accounts,
                       onPressed: () {
                         Navigator.pushNamed(context, 'editInformation');
                       },
                       text: 'Editar mi información'),
                   InfoButton(
-                      icon: MdiIcons.formTextboxPassword,
+                      icon: Icons.password,
                       onPressed: () {
                         Navigator.pushNamed(context, 'passwordChange');
                       },
                       text: 'Cambiar mi contraseña'),
                   InfoButton(
-                      icon: MdiIcons.mapPlus,
+                      icon: Icons.add_location_alt,
                       onPressed: () {
                         Navigator.pushNamed(context, 'addresses');
                       },
@@ -177,23 +177,24 @@ class _EditUserButton extends StatelessWidget {
         color: Colors.white,
         icon: const Icon(Icons.edit, size: 20),
         onPressed: () async {
-          if (FirebaseAuthService.auth.currentUser != null) {
-            User user = await FirebaseRealtimeService.getUserByUid(
-                uid: FirebaseAuthService.auth.currentUser!.uid);
+          if (DemoAuthService.auth.currentUser != null) {
 
-            final result = await FilePicker.platform.pickFiles(
-                allowMultiple: false,
-                type: FileType.custom,
-                allowedExtensions: ['png', 'jpg']);
-            if (result == null) {
-              NotificationsService.showSnackbar(
-                  'No ha selecionado ninguna imagen.');
-            } else {
-              final path = result.files.single.path;
-              final name = user.id;
-              FirebaseStorageService.uploadUserFile(path!, name);
-              refersh;
-            }
+
+            DemoStorageService.notice();
+// final result = await FilePicker.platform.pickFiles(
+//                 allowMultiple: false,
+//                 type: FileType.custom,
+//                 allowedExtensions: ['png', 'jpg']);
+//             if (result == null) {
+//               NotificationsService.showSnackbar(
+//                   'No ha selecionado ninguna imagen.');
+//             } else {
+//               final path = result.files.single.path;
+//               final name = user.id;
+//               DemoStorageService.uploadUserFile(path!, name);
+//               refersh;
+//             }
+
           }
         },
       ),

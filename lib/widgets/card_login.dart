@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:tecni_repuestos/theme/main_theme.dart';
 
 class CardLogin extends StatelessWidget {
@@ -20,7 +20,7 @@ class CardLogin extends StatelessWidget {
                 width: 342,
                 height: 400,
                 child: Text('Iniciar Sesión',
-                    style: GoogleFonts.roboto(
+                    style: TextStyle(
                       fontSize: 44,
                       fontWeight: FontWeight.w600,
                     )),

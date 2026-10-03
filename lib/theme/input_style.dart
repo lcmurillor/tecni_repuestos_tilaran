@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:tecni_repuestos/theme/themes.dart';
 
 class InputStyle {
@@ -26,7 +26,7 @@ class InputStyle {
               ),
             )),
         hintText: hintText,
-        hintStyle: GoogleFonts.roboto(
+        hintStyle: TextStyle(
             fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey[500]),
         fillColor: const Color.fromRGBO(143, 143, 143, 220),
         filled: true,

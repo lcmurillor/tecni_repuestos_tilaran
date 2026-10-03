@@ -7,7 +7,7 @@ import 'package:animate_do/animate_do.dart';
 class HomeScreen extends StatelessWidget {
   ///Corresponde a la pantalla principal donde se pueden ver varios articulos de la tienda
   ///no es necesario estar con una cuenta iniciada para poder ver esta pantalla.
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -16,9 +16,9 @@ class HomeScreen extends StatelessWidget {
         drawer: const CustomDrawer(),
 
         ///Construción de la lista de articulos para la pantalla principal.
-        body: FirebaseAnimatedList(
+        body: LocalAnimatedList(
           ///Resive la consulta de la base de datos.
-          query: FirebaseRealtimeService.getHomeProducts(),
+          query: LocalDataService.getHomeProducts(),
           defaultChild: const CustomProgressIndicator(),
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, snapshot, animation, index) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:tecni_repuestos/models/models.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
@@ -58,7 +58,7 @@ class CustomCard extends StatelessWidget {
                           title: user!.phone,
                           style: CustomTextStyle.robotoMedium),
                       _moldeRowInfo(
-                          icon: MdiIcons.accountCog,
+                          icon: Icons.manage_accounts,
                           title: 'Rol: ',
                           style: CustomTextStyle.robotoMedium,
                           text: (user!.administrator)
@@ -69,7 +69,7 @@ class CustomCard extends StatelessWidget {
                     },
                     if (order != null) ...{
                       _moldeRowInfo(
-                          icon: MdiIcons.barcode,
+                          icon: Icons.qr_code,
                           title: order!.id,
                           style: CustomTextStyle.robotoExtraBold),
 
@@ -145,14 +145,14 @@ Padding _moldeRowInfo(
             size: 30,
           ),
         ),
-        Text(title, style: style),
-        Text(
+        Flexible(child: Text(title, style: style, overflow: TextOverflow.ellipsis)),
+        Flexible(child: Text(
           text,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
           style:
               CustomTextStyle.robotoMedium.copyWith(color: ColorStyle.mainBlue),
-        ),
+        )),
       ],
     ),
   );

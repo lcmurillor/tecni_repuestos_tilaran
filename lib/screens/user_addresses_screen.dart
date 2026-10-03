@@ -38,8 +38,8 @@ class UserAddressesScreen extends StatelessWidget {
                 children: [
                   FutureBuilder(
                     ///Conexión a la base de datos para crear la lista de dirreciones
-                    future: FirebaseRealtimeService.getAddressesByUser(
-                        uid: FirebaseAuthService.auth.currentUser!.uid),
+                    future: LocalDataService.getAddressesByUser(
+                        uid: DemoAuthService.auth.currentUser!.uid),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<Address>> snapshot) {
                       if (snapshot.hasError) {
@@ -72,7 +72,7 @@ class UserAddressesScreen extends StatelessWidget {
                           return GestureDetector(
                               onTap: () {
                                 if (currentScreen.getScreen() == 'myCart') {
-                                  FirebaseRealtimeService.updateLastAddress(
+                                  LocalDataService.updateLastAddress(
                                       address: address[index],
                                       context: context);
                                 }

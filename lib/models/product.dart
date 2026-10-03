@@ -41,13 +41,13 @@ class Product {
   factory Product.fromMap(Map<String, dynamic> json) => Product(
         category: json["category"] ?? 'undefined',
         code: json["code"] ?? 'undefined',
-        cost: json["cost"].toDouble() ?? 0.0,
+        cost: (json["cost"] as num?)?.toDouble() ?? 0.0,
         description: json["description"] ?? 'undefined',
         id: json["id"] ?? 'undefined',
         imageUrl: json["imageUrl"] ?? 'undefined',
         location: json["location"] ?? 'undefined',
-        price: json["price"].toDouble() ?? 0.0,
-        quantity: json["quantity"].toInt() ?? 0,
+        price: (json["price"] as num?)?.toDouble() ?? 0.0,
+        quantity: (json["quantity"] as num?)?.toInt() ?? 0,
         type: json["type"] ?? 'undefined',
       );
 

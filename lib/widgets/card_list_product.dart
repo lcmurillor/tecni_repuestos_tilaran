@@ -54,7 +54,7 @@ class _CardListProductState extends State<CardListProduct> {
                     icon: const Icon(Icons.add_circle_outlined, size: 25),
                     color: ColorStyle.mainGreen,
                     onPressed: (() {
-                      FirebaseRealtimeService.getProductQuantity(
+                      LocalDataService.getProductQuantity(
                               key: widget.cart.productId)
                           .then((value) {
                         if (widget.cart.quantity < value) {
@@ -62,10 +62,10 @@ class _CardListProductState extends State<CardListProduct> {
                             widget.cart.quantity += 1;
                             widget.cart.total =
                                 widget.cart.price * widget.cart.quantity;
-                            FirebaseRealtimeService.updateCartValue(
+                            LocalDataService.updateCartValue(
                                     cart: widget.cart)
                                 .then((value) =>
-                                    FirebaseRealtimeService.getCartTotal().then(
+                                    LocalDataService.getCartTotal().then(
                                         (value) => globalTotal.setTotal(
                                             total: value)));
                           });
@@ -85,10 +85,10 @@ class _CardListProductState extends State<CardListProduct> {
                           widget.cart.quantity -= 1;
                           widget.cart.total =
                               widget.cart.price * widget.cart.quantity;
-                          FirebaseRealtimeService.updateCartValue(
+                          LocalDataService.updateCartValue(
                                   cart: widget.cart)
                               .then((value) =>
-                                  FirebaseRealtimeService.getCartTotal().then(
+                                  LocalDataService.getCartTotal().then(
                                       (value) =>
                                           globalTotal.setTotal(total: value)));
                         });
@@ -104,7 +104,7 @@ class _CardListProductState extends State<CardListProduct> {
                         text:
                             'Está seguro que desea elimianr ${widget.cart.description} del carrito?',
                         onPressed: () {
-                          FirebaseRealtimeService.deleteCart(
+                          LocalDataService.deleteCart(
                                   key: widget.cart.id)
                               .then((value) => Navigator.pushReplacementNamed(
                                   context, 'myCart'));
@@ -131,14 +131,14 @@ Row _moldeRowInfo(
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: CustomTextStyle.robotoExtraBold),
-      Text(
+      Flexible(child: Text(
         value,
         textAlign: TextAlign.center,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style:
             TextStyle(color: color, fontSize: 18, fontWeight: FontWeight.w500),
-      ),
+      )),
     ],
   );
 }

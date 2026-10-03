@@ -1,6 +1,6 @@
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart'; // Cargas deshabilitadas.
 import 'package:flutter/material.dart';
-import 'package:tecni_repuestos/services/services.dart';
+import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
 import 'package:tecni_repuestos/widgets/widgets.dart';
 
@@ -35,27 +35,29 @@ class DialogMyCartVoucher {
                     PrimaryButton(
                       text: 'Agregar imagen',
                       onPressed: () async {
-                        if (FirebaseAuthService.auth.currentUser != null) {
-                          final result = await FilePicker.platform.pickFiles(
-                              allowMultiple: false,
-                              type: FileType.custom,
-                              allowedExtensions: ['png', 'jpg']);
-                          if (result == null) {
-                            NotificationsService.showSnackbar(
-                                'No ha selecionado ninguna imagen.');
-                          } else {
-                            final path = result.files.single.path;
-                            final name = code;
-                            FirebaseStorageService.uploadOrderFile(path!, name)
-                                .then((value) => FirebaseRealtimeService
-                                        .updateOrderStatus(
-                                            orderId: name, status: 1)
-                                    .then((value) =>
-                                        FirebaseRealtimeService.deleteUserCart()
-                                            .then((value) =>
-                                                Navigator.pushReplacementNamed(
-                                                    context, 'myOrder'))));
-                          }
+                        if (DemoAuthService.auth.currentUser != null) {
+                          DemoStorageService.notice();
+// final result = await FilePicker.platform.pickFiles(
+//                               allowMultiple: false,
+//                               type: FileType.custom,
+//                               allowedExtensions: ['png', 'jpg']);
+//                           if (result == null) {
+//                             NotificationsService.showSnackbar(
+//                                 'No ha selecionado ninguna imagen.');
+//                           } else {
+//                             final path = result.files.single.path;
+//                             final name = code;
+//                             DemoStorageService.uploadOrderFile(path!, name)
+//                                 .then((value) => LocalDataService
+//                                         .updateOrderStatus(
+//                                             orderId: name, status: 1)
+//                                     .then((value) =>
+//                                         LocalDataService.deleteUserCart()
+//                                             .then((value) =>
+//                                                 Navigator.pushReplacementNamed(
+//                                                     context, 'myOrder'))));
+//                           }
+
                         }
                       },
                     ),
@@ -64,11 +66,11 @@ class DialogMyCartVoucher {
                       color: ColorStyle.textGrey,
                       text: 'Continuar sin imagen',
                       onPressed: () async {
-                        if (FirebaseAuthService.auth.currentUser != null) {
-                          FirebaseRealtimeService.updateOrderStatus(
+                        if (DemoAuthService.auth.currentUser != null) {
+                          LocalDataService.updateOrderStatus(
                                   orderId: code, status: 1)
                               .then((value) =>
-                                  FirebaseRealtimeService.deleteUserCart().then(
+                                  LocalDataService.deleteUserCart().then(
                                       (value) => Navigator.pushReplacementNamed(
                                           context, 'myOrder')));
                         }

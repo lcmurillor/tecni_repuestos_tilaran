@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/theme/themes.dart';
@@ -77,7 +77,7 @@ class _UpdatePasswordForm extends StatelessWidget {
                 CustomTextInput(
                     hintText: 'Nueva contraseña',
                     obscureText: true,
-                    icon: MdiIcons.formTextboxPassword,
+                    icon: Icons.password,
                     onChanged: (value) =>
                         updatePasswordFormProvider.newPassword = value,
                     validator: (value) {
@@ -92,7 +92,7 @@ class _UpdatePasswordForm extends StatelessWidget {
                 CustomTextInput(
                     hintText: 'Confirmar contraseña',
                     obscureText: true,
-                    icon: MdiIcons.formTextboxPassword,
+                    icon: Icons.password,
                     onChanged: (value) =>
                         updatePasswordFormProvider.confirmNewPassword = value,
                     validator: (value) {
@@ -122,7 +122,7 @@ void _onFormSubmit(
   BuildContext context,
 ) {
   if (updatePasswordFormProvider.validateForm()) {
-    FirebaseAuthService.updatePassword(
+    DemoAuthService.updatePassword(
         updatePasswordFormProvider.currentPassword,
         updatePasswordFormProvider.newPassword,
         context);

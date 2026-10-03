@@ -29,9 +29,9 @@ class Cart {
         description: json["description"] ?? 'undefined',
         id: json["id"] ?? 'undefined',
         productId: json["productId"] ?? 'undefined',
-        price: json["price"].toDouble() ?? 0.0,
-        quantity: json["quantity"].toInt() ?? 0,
-        total: json["total"].toDouble() ?? 0.0,
+        price: (json["price"] as num?)?.toDouble() ?? 0.0,
+        quantity: (json["quantity"] as num?)?.toInt() ?? 0,
+        total: (json["total"] as num?)?.toDouble() ?? 0.0,
         userId: json["userId"] ?? 'undefined',
       );
 

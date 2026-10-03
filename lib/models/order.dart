@@ -34,7 +34,7 @@ class Order {
       address: json["address"] ?? {},
       arrivelDate: json["arrivelDate"] ?? 0,
       attachment: json["attachment"] ?? 'undefined',
-      carts: json["carts"]['cart'] ?? {},
+      carts: Map<String, Map<String, dynamic>>.from((json["carts"] as Map? ?? {}).map((key, value) => MapEntry(key.toString(), Map<String, dynamic>.from(value as Map)))),
       date: json["date"] ?? 0,
       id: json["id"] ?? 'undefined',
       shippingCode: json["shippingCode"] ?? 'undefined',
