@@ -16,102 +16,128 @@ class AboutUsScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-          body: Background(
-              useImg: false,
-              useBackArrow: true,
-              child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      ///Corresponde el espacio en la parte superior para centrar el card.
-                      SizedBox(height: size.height * 0.15),
-                      Card(
-                          child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(children: [
-                          TextButton.icon(
-                            icon: const Icon(Icons.photo_library_outlined),
-                            label: const Text('Créditos de imágenes'),
-                            onPressed: () => Navigator.push(context, MaterialPageRoute(
-                              builder: (_) => const ImageCreditsScreen())),
-                          ),
-                          const SizedBox(height: 10),
-
-                          SvgPicture.asset(
-                            (mainTheme == MainTheme.darkTheme)
-                                ? 'assets/logo-full-white-red.svg'
-                                : 'assets/logo-red.svg',
-                            fit: BoxFit.cover,
-                            height: 80,
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: const Image(
-                              image: AssetImage('assets/tecni-repuestos.jpg'),
-                              fit: BoxFit.cover,
-                              height: 150,
+        body: Background(
+          useImg: false,
+          useBackArrow: true,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                ///Corresponde el espacio en la parte superior para centrar el card.
+                SizedBox(height: size.height * 0.15),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        TextButton.icon(
+                          icon: const Icon(Icons.photo_library_outlined),
+                          label: const Text('Créditos de imágenes'),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ImageCreditsScreen(),
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          _info(Icons.mail, 'tecnirepuestostilaran@gmail.com',
-                              size, mainTheme),
-                          _info(Icons.map, '280 mts norte del Banco Nacional',
-                              size, mainTheme),
-                          _info(
-                              Icons.watch_later_rounded,
-                              'Lunes a Viernes 8:00am a 6:00pm',
-                              size,
-                              mainTheme),
-                          _info(Icons.phone, '2695-5837', size, mainTheme),
-                          const SizedBox(height: 10),
+                        ),
+                        const SizedBox(height: 10),
 
-                          ///Botón para llamar a la tienda, al ser precionado debe salir de la aplicación
-                          ///y enviar el número de teléfono al apartado de llamdas del usuario para que llame a
-                          ///la tienda.
-                          PrimaryButton(
-                              text: 'Llamar',
-                              onPressed: () async {
-                                NotificationsService.showSnackbar('Contacto deshabilitado en el prototipo.');
-//                                 const String phone = 'tel:+50626955837';
-//                                 if (await canLaunchUrlString(phone)) {
-//                                   await launchUrlString(phone);
-//                                 }
+                        SvgPicture.asset(
+                          (mainTheme == MainTheme.darkTheme)
+                              ? 'assets/logo-full-white-red.svg'
+                              : 'assets/logo-red.svg',
+                          fit: BoxFit.cover,
+                          height: 80,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: const Image(
+                            image: AssetImage('assets/tecni-repuestos.jpg'),
+                            fit: BoxFit.cover,
+                            height: 150,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        _info(
+                          Icons.mail,
+                          'tecnirepuestostilaran@gmail.com',
+                          size,
+                          mainTheme,
+                        ),
+                        _info(
+                          Icons.map,
+                          '280 mts norte del Banco Nacional',
+                          size,
+                          mainTheme,
+                        ),
+                        _info(
+                          Icons.watch_later_rounded,
+                          'Lunes a Viernes 8:00am a 6:00pm',
+                          size,
+                          mainTheme,
+                        ),
+                        _info(Icons.phone, '2695-5837', size, mainTheme),
+                        const SizedBox(height: 10),
 
-                              }),
+                        ///Botón para llamar a la tienda, al ser precionado debe salir de la aplicación
+                        ///y enviar el número de teléfono al apartado de llamdas del usuario para que llame a
+                        ///la tienda.
+                        PrimaryButton(
+                          text: 'Llamar',
+                          onPressed: () async {
+                            NotificationsService.showSnackbar(
+                              'Contacto deshabilitado en el prototipo.',
+                            );
+                            //                                 const String phone = 'tel:+50626955837';
+                            //                                 if (await canLaunchUrlString(phone)) {
+                            //                                   await launchUrlString(phone);
+                            //                                 }
+                          },
+                        ),
 
-                          ///Botón para enviar un correo, al ser precionado, debe salir de la aplicación y
-                          ///abrir el cliente de correos electronicos para empezar a redactar un correo a la tienda.
-                          SecundaryButton(
-                              text: 'Enviar un correo',
-                              onPressed: () async {
-                                NotificationsService.showSnackbar('Contacto deshabilitado en el prototipo.');
-//                                 const String emial =
-//                                     'mailto:tecnirepuestostilaran@gmail.com?subject=Consulta&body=Saludos\nTengo una consulta:\n';
-//                                 if (await canLaunchUrlString(emial)) {
-//                                   await launchUrlString(emial);
-//                                 }
-
-                              })
-                        ]),
-                      )),
-                    ],
-                  )))),
+                        ///Botón para enviar un correo, al ser precionado, debe salir de la aplicación y
+                        ///abrir el cliente de correos electronicos para empezar a redactar un correo a la tienda.
+                        SecundaryButton(
+                          text: 'Enviar un correo',
+                          onPressed: () async {
+                            NotificationsService.showSnackbar(
+                              'Contacto deshabilitado en el prototipo.',
+                            );
+                            //                                 const String emial =
+                            //                                     'mailto:tecnirepuestostilaran@gmail.com?subject=Consulta&body=Saludos\nTengo una consulta:\n';
+                            //                                 if (await canLaunchUrlString(emial)) {
+                            //                                   await launchUrlString(emial);
+                            //                                 }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
   /// Permite cargar una fila en la cuel se encuenta in icono y un texto el cual es enciado por parámetro.
   Padding _info(IconData icon, String text, Size size, ThemeData mainTheme) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-        child: Row(children: [
-          Icon(
-            icon,
-            color: mainTheme.colorScheme.primary,
-          ),
+      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+      child: Row(
+        children: [
+          Icon(icon, color: mainTheme.colorScheme.primary),
           const SizedBox(width: 10),
-          Text(text,
-              style: CustomTextStyle.robotoSemiBold
-                  .copyWith(fontSize: size.width * 0.04))
-        ]));
+          Expanded(
+            child: Text(
+              text,
+              style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 14),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,132 +1,158 @@
+import 'package:tecni_repuestos/screens/demo_admin_screen.dart';
+import 'package:tecni_repuestos/screens/demo_customer_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'package:tecni_repuestos/models/models.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
+import 'package:tecni_repuestos/shared/preferences.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
-import 'package:tecni_repuestos/Services/services.dart';
-import 'package:tecni_repuestos/theme/themes.dart';
+import 'package:tecni_repuestos/screens/demo_access_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
-  ///Éste widget corresponde al menú lateral desplegable que permite la navegación
-  ///por la palicación.
   const CustomDrawer({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Drawer(
-          child: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          DrawerHeader(
-            padding: EdgeInsets.zero,
-            child: Container(
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/logo-drawer.png'),
-                      fit: BoxFit.cover)),
+    final scheme = Theme.of(context).colorScheme;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    void open(Widget screen) {
+      final navigator = Navigator.of(context);
+      navigator.pop();
+      navigator.push(MaterialPageRoute(builder: (_) => screen));
+    }
+
+    Widget link(String label, IconData icon, Widget screen) => ListTile(
+      leading: Icon(icon, color: scheme.primary),
+      title: Text(label),
+      trailing: Icon(
+        Icons.chevron_right,
+        color: scheme.onSurfaceVariant,
+        size: 18,
+      ),
+      onTap: () => open(screen),
+    );
+    return Drawer(
+      child: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SvgPicture.asset(
+                    dark
+                        ? 'assets/logo-full-white-red.svg'
+                        : 'assets/logo-red.svg',
+                    height: 60,
+                    alignment: Alignment.centerLeft,
+                  ),
+                  const SizedBox(height: 18),
+                  Text(
+                    'TECNI REPUESTOS',
+                    style: TextStyle(
+                      color: scheme.onSurface,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Tilarán · Catálogo de demostración',
+                    style: TextStyle(
+                      color: scheme.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          _moldelListTile('Inicio', Icons.home, const HomeScreen(), context),
-          _moldelListTile(
+            const Divider(height: 1),
+            link('Inicio', Icons.home_outlined, const HomeScreen()),
+            link(
               'Repuestos',
-              Icons.settings,
+              Icons.build_outlined,
               const CategoryScreen(
-                  title: 'Repuestos', icon: Icons.settings, type: 'spare'),
-              context),
-          _moldelListTile(
+                title: 'Repuestos',
+                icon: Icons.build_outlined,
+                type: 'spare',
+              ),
+            ),
+            link(
               'Accesorios',
-              Icons.sports_motorsports,
+              Icons.sports_motorsports_outlined,
               const CategoryScreen(
-                  title: 'Accesorios',
-                  icon: Icons.sports_motorsports,
-                  type: 'accesorie'),
-              context),
-
-          ///Pirmera condición para evaluar el estado de usuario. Si no se encuentra
-          ///ningún usuario registrado en los archivos del dispositivo el menú solo
-          ///va a mostrar loas funciones más basicas.
-          if (DemoAuthService.auth.currentUser == null ||
-              DemoAuthService.auth.currentUser!.isAnonymous) ...{
-            _moldelListTile('Inicia sesión', Icons.login,
-                const LoginScreen(), context),
-            _moldelListTile(
-                'Regístrate', Icons.person_add, const RegisterScreen(), context)
-          },
-
-          ///Segunda condición para evaluar el estado de usuario. Si existe la instancia
-          ///de un usuario en la aplicación, evaluará el rango de este usuario y ahora
-          ///dispone de la opción de cerrar la sesión.
-          if (DemoAuthService.auth.currentUser != null) ...{
-            FutureBuilder(
-              future: LocalDataService.getUserByUid(
-                  uid: DemoAuthService.auth.currentUser!.uid),
-              builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-                if (snapshot.hasError) {
-                  return NotificationsService.showErrorSnackbar(
-                      'Ha ocurrido un error a la hora de cargar los datos.');
-                }
-
-                if (!snapshot.hasData) {
-                  return Container();
-                }
-
-                final user = snapshot.data!;
-
-                ///Última condición para evaluar el rango de usuario. Si existe la instancia
-                ///de un usuario en la aplicación evaluará el rango de este usuario, si el usuario
-                ///es administrador o vendedor, dispondrá de mas o menos opciones administrativas
-                ///respectivamente.
-                return Column(children: [
-                  if (user.administrator) ...[
-                    _moldelListTile('Administrar pedidos', Icons.inventory,
-                        const AdminUsersOrdersScreens(), context),
-                    _moldelListTile('Administrar usuarios', Icons.manage_accounts,
-                        const AdminUsersScreen(), context),
-                  ] else if (user.vendor) ...[
-                    _moldelListTile(
-                        'Administrar pedidos',
-                        Icons.inventory,
-                        const PlaceholderScreen(text: 'Administrar pedidos'),
-                        context),
-                  ],
-                  _moldelListTile('Mi carrito', Icons.shopping_cart,
-                      const MyCartScreen(), context),
-                  _moldelListTile('Mis pedidos', Icons.inventory_2,
-                      const MyOrderScreen(), context),
-                  _moldelListTile('Mi perfil', Icons.person,
-                      const UserProfileScreen(), context),
-                  _moldelListTile(
-                      'Modo prototipo', Icons.info_outline, null, context),
-                ]);
+                title: 'Accesorios',
+                icon: Icons.sports_motorsports_outlined,
+                type: 'accesorie',
+              ),
+            ),
+            const Divider(indent: 20, endIndent: 20),
+            link(
+              'Mi carrito',
+              Icons.shopping_cart_outlined,
+              const MyCartScreen(),
+            ),
+            link(
+              'Mis pedidos',
+              Icons.inventory_2_outlined,
+              const MyOrderScreen(),
+            ),
+            link('Mi perfil', Icons.person_outline, const UserProfileScreen()),
+            const Divider(indent: 20, endIndent: 20),
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: Text('ADMINISTRACIÓN · DEMO'),
+            ),
+            link(
+              'Administrar usuarios',
+              Icons.manage_accounts_outlined,
+              const AdminUsersScreen(),
+            ),
+            link(
+              'Administrar pedidos',
+              Icons.inventory_outlined,
+              const AdminUsersOrdersScreens(),
+            ),
+            link(
+              'Administrar productos',
+              Icons.edit_outlined,
+              const DemoProductsPage(),
+            ),
+            link('Acceso de ejemplo', Icons.login, const DemoAuthForm()),
+            const Divider(indent: 20, endIndent: 20),
+            SwitchListTile(
+              title: const Text('Tema oscuro'),
+              secondary: Icon(
+                dark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
+                color: scheme.primary,
+              ),
+              value: dark,
+              onChanged: (value) {
+                final provider = context.read<ThemeProvider>();
+                value ? provider.setDarkMode() : provider.setLigthMode();
+                Preferences.isDarkmode = value;
               },
             ),
-          },
-
-          _moldelListTile(
-              'Acerca de', Icons.info, const AboutUsScreen(), context),
-        ],
-      )),
+            link('Acerca de', Icons.info_outline, const AboutUsScreen()),
+            link(
+              'Modo prototipo',
+              Icons.visibility_outlined,
+              const DemoAccessScreen(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Text(
+                'Explora libremente. Todos los pedidos son simulados.',
+                style: TextStyle(
+                  color: scheme.onSurfaceVariant,
+                  fontSize: 12,
+                  height: 1.5,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
-}
-
-///Método que construye los elementos listados del menú lateral.
-ListTile _moldelListTile(
-  String title,
-  IconData icon,
-  Widget? page,
-  BuildContext context,
-) {
-  return ListTile(
-    title: Text(title,
-        style: CustomTextStyle.robotoSemiBold.copyWith(fontSize: 20)),
-    leading: Icon(icon, size: 35),
-    onTap: () {
-      if (page != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
-      } else {
-        DemoAuthService.signOut(context);
-      }
-    },
-  );
 }

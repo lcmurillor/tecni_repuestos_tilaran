@@ -1,3 +1,5 @@
+import 'demo_product_details.dart';
+
 /// Fictional data shipped with the build. No remote images or personal records.
 Map<String, dynamic> demoSeed() {
   final user = <String, dynamic>{
@@ -57,6 +59,7 @@ Map<String, dynamic> demoSeed() {
       'quantity': row[4],
       'location': 'Estante de demostración',
       'imageUrl': 'assets/products/product-${i + 1}.jpg',
+      ...demoProductDetails[i],
     };
   }
   return {

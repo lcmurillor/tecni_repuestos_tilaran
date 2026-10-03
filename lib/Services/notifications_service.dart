@@ -83,10 +83,10 @@ class NotificationsService {
         padding: const EdgeInsets.only(right: 10),
         child: TextButton(
             style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                     const EdgeInsets.all(0)),
                 overlayColor:
-                    MaterialStateProperty.all<Color>(Colors.transparent)),
+                    WidgetStateProperty.all<Color>(Colors.transparent)),
             onPressed: onPressed,
             child: Text(
               'Aceptar',

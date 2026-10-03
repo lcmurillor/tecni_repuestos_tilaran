@@ -45,7 +45,7 @@ class CustomCard extends StatelessWidget {
                     if (user != null) ...{
                       _moldeRowInfo(
                           icon: Icons.person,
-                          title: user!.name + ' ' + user!.lastname,
+                          title: '${user!.name} ${user!.lastname}',
                           style: CustomTextStyle.robotoExtraBold),
 
                       _moldeRowInfo(
@@ -76,6 +76,7 @@ class CustomCard extends StatelessWidget {
                       _moldeRowInfo(
                           icon: Icons.person,
                           title: order!.user['name'] +
+                              // ignore: prefer_interpolation_to_compose_strings
                               ' ' +
                               order!.user['lastname'],
                           style: CustomTextStyle.robotoMedium),

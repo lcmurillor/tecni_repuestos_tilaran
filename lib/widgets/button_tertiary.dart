@@ -5,7 +5,7 @@ class TertiaryButton extends StatelessWidget {
   ///Corresponde al botón con texto negro y una acción indicada en azul
   ///que se encuentra al final de diversos formularios de la aplicación.
   const TertiaryButton(
-      {Key? key,
+      {key,
       required this.text,
       required this.buttonText,
       required this.onPressed})

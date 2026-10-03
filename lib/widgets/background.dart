@@ -14,16 +14,15 @@ class Background extends StatelessWidget {
   ///por parametros el widget el cual se espera construir ensima de este fondo y una indicación
   ///para saber si es necesario mostrar o no el logo de la empresa.
   const Background(
-      {Key? key,
+      {super.key,
       required this.child,
       this.useImg = false,
       this.useBackArrow = false,
-      this.navigatorToHome = false})
-      : super(key: key);
+      this.navigatorToHome = false});
   final boxDecoration = const BoxDecoration(
       gradient: LinearGradient(colors: [
-    Color.fromRGBO(255, 11, 0, 1),
-    Color.fromRGBO(216, 48, 41, 1),
+    Color(0xFF8F1723),
+    Color(0xFFC52C38),
   ], begin: Alignment.bottomLeft, end: Alignment.topRight));
 
   @override
@@ -69,7 +68,7 @@ class Background extends StatelessWidget {
                 ? IconButton(
                     alignment: Alignment.topLeft,
                     color: Colors.white,
-                    iconSize: 40,
+                    iconSize: 28,
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => (navigatorToHome)
                         ? Navigator.pushReplacementNamed(context, 'home')

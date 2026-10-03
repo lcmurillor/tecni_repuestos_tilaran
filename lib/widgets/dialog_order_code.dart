@@ -42,7 +42,7 @@ class _OrderForm extends StatelessWidget {
       builder: (context, child) {
         final orderFormProvider =
             Provider.of<OrderFormProvider>(context, listen: false);
-        final _dataController = TextEditingController();
+        final dataController = TextEditingController();
         return Form(
           key: orderFormProvider.formKey,
           child: Column(
@@ -67,7 +67,7 @@ class _OrderForm extends StatelessWidget {
                   onChanged: (value) =>
                       orderFormProvider.arrivelDate = int.parse(value),
                   keyboardType: TextInputType.datetime,
-                  controller: _dataController
+                  controller: dataController
                     ..text = DateFormat('dd-MM-yyyy').format(
                         DateTime.fromMillisecondsSinceEpoch(order.arrivelDate)),
                   readOnly: true,
@@ -95,7 +95,7 @@ class _OrderForm extends StatelessWidget {
                               child: child!);
                         }).then((selectedDate) {
                       if (selectedDate != null) {
-                        _dataController.text =
+                        dataController.text =
                             DateFormat('dd-MM-yyyy').format(selectedDate);
                         orderFormProvider.arrivelDate =
                             selectedDate.millisecondsSinceEpoch;

@@ -8,7 +8,7 @@ import 'package:tecni_repuestos/widgets/widgets.dart';
 class UserPasswordScreen extends StatelessWidget {
   ///Corresponde a la pantalla en la cual el usuario puede cambiar su contraseña, escibiendo
   ///primeramente su contraseña actual y luego su nueva contraseña dos veces para comprobar que coincida.
-  const UserPasswordScreen({Key? key}) : super(key: key);
+  const UserPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _UpdatePasswordForm extends StatelessWidget {
   ///Éste widget es el formulario el cual permite al usuario registrarse ingresar los datos para cambiar
   ///su contraseña, envía la información a los correspondientes métodos para validar los datos ingresados,
   ///tanto la contraseña actual como la igualdad entre las nuevas contraseñas.
-  const _UpdatePasswordForm({Key? key}) : super(key: key);
+  const _UpdatePasswordForm();
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

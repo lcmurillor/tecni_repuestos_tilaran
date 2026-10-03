@@ -5,11 +5,10 @@ class SecundaryButton extends StatelessWidget {
   ///Corresponde al botón azul secundario que se encuentra al final de algunos formularios
   ///de la aplicación.
   const SecundaryButton(
-      {Key? key,
+      {super.key,
       required this.text,
       required this.onPressed,
-      this.fontSize = 18})
-      : super(key: key);
+      this.fontSize = 18});
   final String text;
   final Function onPressed;
   final double fontSize;

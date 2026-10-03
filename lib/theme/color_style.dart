@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-///Librería de colores para estandarizar el estilo de la palicación.
 class ColorStyle {
-  static Color buttonGray = Colors.black.withOpacity(.05);
-  static Color mainBlue = const Color.fromRGBO(0, 152, 181, 1);
-  static Color mainGreen = const Color.fromRGBO(0, 141, 30, 1);
-  static Color mainGrey = const Color.fromRGBO(69, 69, 69, 1);
-  static Color mainRed = const Color.fromRGBO(214, 39, 31, 1);
-  static Color textGrey = const Color.fromRGBO(143, 143, 143, 1);
-  static Color errorRed = const Color.fromARGB(255, 250, 0, 0);
+  static const buttonGray = Color(0xFFECEFF2);
+  static const mainBlue = Color(0xFF287CB8);
+  static const mainGreen = Color(0xFF22875A);
+  static const mainGrey = Color(0xFF353A42);
+  static const mainRed = Color(0xFFBB202B);
+  static const textGrey = Color(0xFF7A8390);
+  static const errorRed = Color(0xFFB91C2C);
 }

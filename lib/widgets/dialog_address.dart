@@ -133,14 +133,14 @@ void _onFormSubmit(AddressFormProvider addressFormProvider, context,
     ///Si se espera crear una nueva dirección de facturación, la condición entra acá
     ///y se toman unicamente los valores de FormProvider, ya que a este punto, un objeto de tipo "address" no existe.
     if (addressFormProvider.validateForm()) {
-      final _address = Address(
+      final address0 = Address(
           address: addressFormProvider.address,
           canton: addressFormProvider.canton,
           id: 'undefined',
           province: addressFormProvider.province,
           userId: DemoAuthService.auth.currentUser!.uid,
           last: true);
-      LocalDataService.setAddress(address: _address, context: context);
+      LocalDataService.setAddress(address: address0, context: context);
     } else {
       NotificationsService.showErrorSnackbar(
           'No se cumple con las condiciones mínimas para agregar la dirección.');

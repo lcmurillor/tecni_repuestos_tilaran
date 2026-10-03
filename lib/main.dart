@@ -1,3 +1,4 @@
+import 'package:tecni_repuestos/screens/demo_customer_screen.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:tecni_repuestos/providers/providers.dart';
 import 'package:tecni_repuestos/screens/screens.dart';
 import 'package:tecni_repuestos/Services/services.dart';
 import 'package:tecni_repuestos/shared/preferences.dart';
-import 'package:tecni_repuestos/screens/demo_access_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,37 +48,43 @@ class TecniRepuestoTilaran extends StatelessWidget {
       ///Evalúa las diferentes condiciones de los datos en la aplicación, si está
       ///cargando, si a ocurrido un error, si hay un usario registrado o ninguna de las anteriores.
       ///Según el caso, ejecutará una acción u otra.
-      builder: (context, child) => Center(
-        child: SizedBox(
-          width: 480,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Material(
-                color: const Color(0xFF152536),
-                child: SafeArea(
-                  bottom: false,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      'PROTOTIPO · Datos ficticios · Sin compras reales',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
+      builder: (context, child) => ColoredBox(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Center(
+          child: SizedBox(
+            width: 480,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Material(
+                  color: const Color(0xFF152536),
+                  child: SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        'PROTOTIPO · Solo lectura · Datos ficticios',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) => MediaQuery(
-                    data: MediaQuery.of(
-                      context,
-                    ).copyWith(size: constraints.biggest),
-                    child: child!,
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => MediaQuery(
+                      data: MediaQuery.of(
+                        context,
+                      ).copyWith(size: constraints.biggest),
+                      child: child!,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -88,12 +94,12 @@ class TecniRepuestoTilaran extends StatelessWidget {
         'addresses': (_) => const UserAddressesScreen(),
         'editInformation': (_) => const UserInformationScreen(),
         'home': (_) => const HomeScreen(),
-        'login': (_) => const DemoAccessScreen(),
-        'passwordChange': (_) => const DemoAccessScreen(),
-        'passwordRequest': (_) => const DemoAccessScreen(),
-        'changePassword': (_) => const DemoAccessScreen(),
+        'login': (_) => const DemoAuthForm(mode: 'login'),
+        'passwordChange': (_) => const DemoAuthForm(mode: 'change'),
+        'passwordRequest': (_) => const DemoAuthForm(mode: 'recover'),
+        'changePassword': (_) => const DemoAuthForm(mode: 'change'),
         'myOrder': (_) => const MyOrderScreen(),
-        'register': (_) => const DemoAccessScreen(),
+        'register': (_) => const DemoAuthForm(mode: 'register'),
         'myCart': (_) => const MyCartScreen(),
         'profile': (_) => const UserProfileScreen(),
         'adminUser': (_) => const AdminUsersScreen(),

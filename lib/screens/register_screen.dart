@@ -14,7 +14,7 @@ class RegisterScreen extends StatelessWidget {
   ///En esta pantalla un usuario nuevo puede registrarese en la aplicación ingresando su información
   ///personal básica. Estos datos son requeridos para faciliar porcesos de facturación y compras a
   ///niveles administrativos.
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +187,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             borderRadius: BorderRadius.circular(10),
             decoration:
                 InputStyle.mainInput(hintText: '', icon: Icons.assignment_ind),
-            value: 1, //Este será el valor por defecto al dibujar el widget
+            initialValue: 1, //Este será el valor por defecto al dibujar el widget
             items: const [
               DropdownMenuItem(
                 value: 1,

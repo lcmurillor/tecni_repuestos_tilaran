@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 
-
 class CategoryTitle extends StatelessWidget {
-  ///Ésteme método se encarga de construir en la parte superior un encabesado con un icono
-  ///y un texto en grande para hacerle saber al usario siempre que typo de categoria estamos viendo.
-  ///ya sea la categoria de accesorios o la categoria de repuestos.
-  const CategoryTitle(
-      {Key? key, required this.size, required this.text, required this.icon})
-      : super(key: key);
-
+  const CategoryTitle({
+    super.key,
+    required this.size,
+    required this.text,
+    required this.icon,
+  });
   final Size size;
   final String text;
   final IconData icon;
-
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        height:
-            (size.height - Scaffold.of(context).appBarMaxHeight!.toDouble()) *
-                0.10,
-        width: double.infinity,
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(icon, size: 40),
-          const SizedBox(width: 10),
-          Text(text,
-              style:
-                  TextStyle(fontSize: 40, fontWeight: FontWeight.w500))
-        ]));
-  }
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(20),
+    child: Row(
+      children: [
+        Icon(icon, size: 30, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    ),
+  );
 }

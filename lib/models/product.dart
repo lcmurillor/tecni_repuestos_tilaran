@@ -18,6 +18,9 @@ class Product {
     required this.price,
     required this.quantity,
     required this.type,
+    this.summary = '',
+    this.details = '',
+    this.specifications = const {},
   });
 
   String category;
@@ -30,6 +33,9 @@ class Product {
   double price;
   int quantity;
   String type;
+  String summary;
+  String details;
+  Map<String, String> specifications;
 
   factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
 
@@ -39,28 +45,34 @@ class Product {
   ///de un archivo json el cual es el producto, y lo convierte a un objeto de tipo Product para luego ser
   ///usado.
   factory Product.fromMap(Map<String, dynamic> json) => Product(
-        category: json["category"] ?? 'undefined',
-        code: json["code"] ?? 'undefined',
-        cost: (json["cost"] as num?)?.toDouble() ?? 0.0,
-        description: json["description"] ?? 'undefined',
-        id: json["id"] ?? 'undefined',
-        imageUrl: json["imageUrl"] ?? 'undefined',
-        location: json["location"] ?? 'undefined',
-        price: (json["price"] as num?)?.toDouble() ?? 0.0,
-        quantity: (json["quantity"] as num?)?.toInt() ?? 0,
-        type: json["type"] ?? 'undefined',
-      );
+    category: json["category"] ?? 'undefined',
+    code: json["code"] ?? 'undefined',
+    cost: (json["cost"] as num?)?.toDouble() ?? 0.0,
+    description: json["description"] ?? 'undefined',
+    id: json["id"] ?? 'undefined',
+    imageUrl: json["imageUrl"] ?? 'undefined',
+    location: json["location"] ?? 'undefined',
+    price: (json["price"] as num?)?.toDouble() ?? 0.0,
+    quantity: (json["quantity"] as num?)?.toInt() ?? 0,
+    type: json["type"] ?? 'undefined',
+    summary: json['summary'] ?? '',
+    details: json['details'] ?? '',
+    specifications: Map<String, String>.from(json['specifications'] ?? {}),
+  );
 
   Map<String, dynamic> toMap() => {
-        "category": category,
-        "code": code,
-        "cost": cost,
-        "description": description,
-        "id": id,
-        "imageUrl": imageUrl,
-        "location": location,
-        "price": price,
-        "quantity": quantity,
-        "type": type,
-      };
+    "category": category,
+    "code": code,
+    "cost": cost,
+    "description": description,
+    "id": id,
+    "imageUrl": imageUrl,
+    "location": location,
+    "price": price,
+    "quantity": quantity,
+    "type": type,
+    'summary': summary,
+    'details': details,
+    'specifications': specifications,
+  };
 }

@@ -42,13 +42,14 @@ Abrir `http://127.0.0.1:8080`.
 - Catálogo de 12 productos ficticios, categorías de repuestos y accesorios.
 - Búsqueda por descripción, código o categoría, sin distinguir mayúsculas.
 - Ficha del producto al pulsar su nombre, disponibilidad y precios de ejemplo.
-- Carrito: agregar, cambiar cantidades, quitar productos y calcular totales.
-- Simular un pedido y consultar su estado; incluye un pedido de ejemplo.
-- Perfil ficticio, direcciones locales, pantalla informativa de acceso y sección Acerca de.
+- Carrito fijo de ejemplo, confirmación de pedido y vista de comprobante, sin cambios ni cargas.
+- Pedidos de ejemplo y seguimiento de las cinco etapas de envío.
+- Perfil, direcciones y formularios de acceso en solo lectura.
+- Menú de administración: usuarios, roles, pedidos, preparación de envío y edición de productos.
 
 El visitante entra directamente, sin cuenta. Hay un aviso permanente de prototipo. El inicio de sesión, registro, recuperación/cambio de contraseña, cargas de archivos y contactos están deshabilitados. La compra simulada no solicita depósitos, comprobantes ni pagos reales.
 
-Los cambios viven **solo en memoria de la pestaña** y se restablecen al recargar. No se comparten entre visitantes. La preferencia de tema puede guardarse localmente mediante SharedPreferences. Los 12 productos tienen imágenes ilustrativas de Wikimedia Commons incluidas en `assets/products/`; los créditos y licencias están en **Acerca de → Créditos de imágenes**, `assets/products/credits.json` y `docs/IMAGE_CREDITS.md`; la fuente Roboto y su licencia se incluyen en `assets/fonts`, sin descargar fuentes de Google. Los datos comerciales y textos de la pantalla Acerca de son parte del diseño histórico, no una confirmación de información vigente.
+Todos los datos son **de solo lectura**. Los formularios y acciones se pueden recorrer, pero agregar, guardar, eliminar, cambiar roles o confirmar estados solo muestran un aviso de demo. `DemoDatabase.write` bloquea también las escrituras desde los servicios; su implementación anterior está comentada. Los flujos interactivos anteriores se conservan en `docs/*-interactive-legacy.dart.txt`. La preferencia de tema puede guardarse localmente mediante SharedPreferences. Los 12 productos tienen imágenes ilustrativas de Wikimedia Commons incluidas en `assets/products/`; los créditos y licencias están en **Acerca de → Créditos de imágenes**, `assets/products/credits.json` y `docs/IMAGE_CREDITS.md`; la fuente Roboto y su licencia se incluyen en `assets/fonts`, sin descargar fuentes de Google. Los datos comerciales y textos de la pantalla Acerca de son parte del diseño histórico, no una confirmación de información vigente.
 
 ## Datos y Firebase
 

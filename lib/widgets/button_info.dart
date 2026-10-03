@@ -1,71 +1,22 @@
 import 'package:flutter/material.dart';
 
-import 'package:tecni_repuestos/theme/themes.dart';
-
 class InfoButton extends StatelessWidget {
   const InfoButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.icon,
     required this.text,
-    //   required this.faicon,
-  }) : super(key: key);
-  final void Function()? onPressed;
+  });
+  final VoidCallback? onPressed;
   final IconData icon;
   final String text;
-  // final IconData faicon;
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: GestureDetector(
-          child: Container(
-              padding: const EdgeInsets.only(right: 15),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: ColorStyle.buttonGray),
-              width: size.width * 0.80,
-              height: size.width * 0.12,
-              //color: ColorStyle.buttonGray,
-              child: Row(
-                children: [
-                  ///ICONO al costado izquiero
-                  Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 10),
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: ColorStyle.mainRed),
-                        child: Icon(
-                          icon,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      )),
-
-                  ///TEXTO
-                  Expanded(
-                    child: Text(text,
-                        style: CustomTextStyle.robotoMedium.copyWith(
-                            fontSize: 18, color: ColorStyle.textGrey)),
-                  ),
-
-                  ///ICONO en el costado derecho
-                  _faIconButtons(Icons.chevron_right),
-                ],
-              )),
-          onTap: onPressed),
-    );
-  }
-}
-
-Icon _faIconButtons(IconData faicon) {
-  return Icon(
-    faicon,
-    size: 30,
-    color: ColorStyle.textGrey,
+  Widget build(BuildContext context) => Card(
+    child: ListTile(
+      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+      title: Text(text),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: onPressed,
+    ),
   );
 }

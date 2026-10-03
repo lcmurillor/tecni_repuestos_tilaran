@@ -20,25 +20,27 @@ class DemoDatabase extends ChangeNotifier {
     for (final part in path.split('/').where((p) => p.isNotEmpty)) {
       value = value is Map ? value[part] : null;
     }
-    return value;
+    return jsonDecode(jsonEncode(value));
   }
 
   void write(String path, dynamic value, {bool merge = false}) {
-    final parts = path.split('/').where((p) => p.isNotEmpty).toList();
-    Map<String, dynamic> node = _data;
-    for (final part in parts.take(parts.length - 1)) {
-      node =
-          node.putIfAbsent(part, () => <String, dynamic>{})
-              as Map<String, dynamic>;
-    }
-    if (value == null) {
-      node.remove(parts.last);
-    } else if (merge) {
-      (node[parts.last] as Map).addAll(value as Map);
-    } else {
-      node[parts.last] = jsonDecode(jsonEncode(value));
-    }
-    notifyListeners();
+    // Public portfolio demo: all mutation APIs intentionally do nothing.
+    // Original implementation retained below for a future connected version.
+    //     final parts = path.split('/').where((p) => p.isNotEmpty).toList();
+    //     Map<String, dynamic> node = _data;
+    //     for (final part in parts.take(parts.length - 1)) {
+    //       node =
+    //           node.putIfAbsent(part, () => <String, dynamic>{})
+    //               as Map<String, dynamic>;
+    //     }
+    //     if (value == null) {
+    //       node.remove(parts.last);
+    //     } else if (merge) {
+    //       (node[parts.last] as Map).addAll(value as Map);
+    //     } else {
+    //       node[parts.last] = jsonDecode(jsonEncode(value));
+    //     }
+    //     notifyListeners();
   }
 }
 
@@ -101,8 +103,9 @@ class Query {
       a is num && b is num ? a.compareTo(b) : '$a'.compareTo('$b');
   dynamic get value {
     final raw = db.read(path);
-    if (raw is! Map || (order == null && term == null && limit == null))
+    if (raw is! Map || (order == null && term == null && limit == null)) {
       return raw;
+    }
     var rows = raw.entries.where((entry) {
       final field = _field(entry.value);
       if (equal != null && field != equal) return false;
@@ -112,17 +115,20 @@ class Query {
         final item = entry.value as Map;
         if (!'${item['description']} ${item['code']} ${item['category']}'
             .toLowerCase()
-            .contains(term!))
+            .contains(term!)) {
           return false;
+        }
       }
       return true;
     }).toList();
-    if (order != null)
+    if (order != null) {
       rows.sort((a, b) => _compare(_field(a.value), _field(b.value)));
-    if (limit != null && rows.length > limit!)
+    }
+    if (limit != null && rows.length > limit!) {
       rows = last
           ? rows.sublist(rows.length - limit!)
           : rows.take(limit!).toList();
+    }
     return rows.isEmpty
         ? null
         : Map<String, dynamic>.fromEntries(
@@ -141,18 +147,20 @@ class LocalAnimatedList extends StatelessWidget {
     required this.itemBuilder,
     this.defaultChild,
     this.physics,
+    this.shrinkWrap = false,
   });
   final Query query;
   final Widget Function(BuildContext, DataSnapshot, Animation<double>, int)
   itemBuilder;
   final Widget? defaultChild;
   final ScrollPhysics? physics;
+  final bool shrinkWrap;
   @override
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: query.db,
     builder: (context, _) {
       final rows = (query.value as Map?)?.values.toList() ?? [];
-      if (rows.isEmpty)
+      if (rows.isEmpty) {
         return const Center(
           child: Padding(
             padding: EdgeInsets.all(24),
@@ -162,8 +170,10 @@ class LocalAnimatedList extends StatelessWidget {
             ),
           ),
         );
+      }
       return ListView.builder(
         physics: physics,
+        shrinkWrap: shrinkWrap,
         itemCount: rows.length,
         itemBuilder: (context, i) => itemBuilder(
           context,

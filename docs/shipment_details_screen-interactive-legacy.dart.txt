@@ -1,0 +1,239 @@
+import 'package:flutter/material.dart';
+import 'package:tecni_repuestos/models/models.dart';
+import 'package:tecni_repuestos/providers/providers.dart';
+import 'package:tecni_repuestos/Services/services.dart';
+import 'package:tecni_repuestos/theme/themes.dart';
+import 'package:tecni_repuestos/widgets/widgets.dart';
+import 'package:intl/intl.dart';
+
+class ShipmentDetailScreen extends StatelessWidget {
+  ///Ésta widget corresponde a la pantalla en la cual se muestran los detalles del estado del envío
+  ///de cada orden efectuada por el usuario. En esta el usuario puede hacer un seguimiento de su orden
+  ///y una vez recibida la orden, puede marcar el paquete como recibido.
+  const ShipmentDetailScreen({super.key, required this.order});
+  final Order order;
+  @override
+  Widget build(BuildContext context) {
+    final currentPage = Provider.of<ComeFromProvider>(context);
+    return Builder(
+      builder: (context) {
+        return SafeArea(
+          child: Scaffold(
+            body: Background(
+              useBackArrow: true,
+              useImg: false,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 110),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Detalles del envío',
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyle.robotoMedium.copyWith(
+                                fontSize: 28,
+                              ),
+                            ),
+                            _orderInfo(context: context, order: order),
+                            for (var i = 0; i < 4; i++)
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                leading: Icon(
+                                  order.status >= i + 2
+                                      ? Icons.check_circle
+                                      : Icons.radio_button_unchecked,
+                                  color: order.status >= i + 2
+                                      ? Theme.of(context).colorScheme.tertiary
+                                      : Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
+                                ),
+                                title: Text(
+                                  [
+                                    'En proceso',
+                                    'Enviado',
+                                    'En camino',
+                                    'Entregado',
+                                  ][i],
+                                ),
+                                subtitle: Text(
+                                  order.status >= i + 2
+                                      ? 'Completado'
+                                      : 'Pendiente',
+                                ),
+                                trailing:
+                                    (currentPage.getScreen() == 'adminOrder' ||
+                                            (order.status == 4 && i == 3)) &&
+                                        order.status == i + 1
+                                    ? _ActionButton(
+                                        order: order,
+                                        currentPage: currentPage,
+                                        process: i + 2,
+                                        title: [
+                                          'Procesar',
+                                          'Enviar',
+                                          'En camino',
+                                          'Recibido',
+                                        ][i],
+                                      )
+                                    : null,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  ///Corresponde al espacio en la parte superior donde se muestra información relacionada al envío.
+  SizedBox _orderInfo({required BuildContext context, required Order order}) {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const SizedBox(height: 30),
+          _moldeRowInfo(
+            title: 'Fecha estimada de llegada: ',
+            value: DateFormat(
+              'dd-MM-yyyy',
+            ).format(DateTime.fromMillisecondsSinceEpoch(order.arrivelDate)),
+          ),
+          const SizedBox(height: 10),
+          _moldeRowInfo(title: 'Medio de envío: ', value: order.shippingMethod),
+          const SizedBox(height: 10),
+          _moldeRowInfo(title: 'Código guía: ', value: order.shippingCode),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+
+  Wrap _moldeRowInfo({
+    required String title,
+    required String value,
+    Color color = const Color.fromRGBO(143, 143, 143, 1),
+  }) {
+    return Wrap(
+      children: [
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: CustomTextStyle.robotoExtraBold,
+        ),
+        Text(
+          value,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: color,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
+    required this.order,
+    required this.currentPage,
+    this.title = 'Recibido',
+    required this.process,
+  });
+
+  final Order order;
+  final ComeFromProvider currentPage;
+  final String title;
+  final int process;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: ColorStyle.mainGreen,
+      child: SizedBox(
+        width: 90,
+        height: 40,
+        child: Center(
+          child: Text(
+            title,
+            style: CustomTextStyle.robotoMedium.copyWith(
+              fontSize: 17,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      onPressed: () {
+        if (order.status < 2 && process == 2) {
+          NotificationsService.displayDeleteDialog(
+            context: context,
+            title: 'Confirmar',
+            text:
+                '¿Está seguro que desea indicar el inicio de proceso de trámite de la orden: ${order.id}?',
+            onPressed: () {
+              LocalDataService.updateOrderStatus(
+                orderId: order.id,
+                status: process,
+              ).then(
+                (value) => Navigator.pushReplacementNamed(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  currentPage.getScreen(),
+                ),
+              );
+            },
+          );
+        } else if (order.status < 3 && process == 3) {
+          DialogOrderCode.displaySetVoucher(context: context, order: order);
+        } else if (order.status < 4 && process == 4) {
+          LocalDataService.updateOrderStatus(
+            orderId: order.id,
+            status: process,
+          ).then(
+            (value) => Navigator.pushReplacementNamed(
+              // ignore: use_build_context_synchronously
+              context,
+              currentPage.getScreen(),
+            ),
+          );
+        } else if (order.status < 5 && process == 5) {
+          NotificationsService.displayDeleteDialog(
+            context: context,
+            title: 'Confirmar',
+            text:
+                '¿Está seguro que desea indicar que le ha llegado la orden ${order.id}?',
+            onPressed: () {
+              LocalDataService.updateOrderStatus(
+                orderId: order.id,
+                status: process,
+              ).then(
+                (value) => Navigator.pushReplacementNamed(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  currentPage.getScreen(),
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+}

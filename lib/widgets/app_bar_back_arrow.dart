@@ -6,7 +6,7 @@ class CustomAppBarBackArrow extends StatelessWidget
   ///para permitir la navegación a pantallas anterires. Disponde de una flecha para retroceder y un botón adicional que
   ///puede cambiar su acción o desactivarse, según la pantalla lo necesite.
   const CustomAppBarBackArrow({
-    Key? key,
+    super.key,
     this.editIcon = true,
     this.useActions = true,
     this.icon,
@@ -15,9 +15,9 @@ class CustomAppBarBackArrow extends StatelessWidget
     this.navigatorOnPressed,
     this.iconColor1,
     this.iconColor,
-    this.size = 40,
-    this.size1 = 40,
-  }) : super(key: key);
+    this.size = 26,
+    this.size1 = 26,
+  });
   final bool editIcon;
   final bool useActions;
   final IconData? icon;
@@ -32,19 +32,21 @@ class CustomAppBarBackArrow extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: 87,
+      toolbarHeight: kToolbarHeight,
       iconTheme: IconThemeData(color: iconColor),
-      backgroundColor: Colors.transparent,
+
       elevation: 0,
 
       leading: (editIcon)
           ? IconButton(
-              onPressed: navigatorOnPressed,
+              onPressed:
+                  navigatorOnPressed ?? () => Navigator.maybePop(context),
               icon: const Icon(Icons.arrow_back_outlined),
               iconSize: size,
             )
           : IconButton(
-              onPressed: navigatorOnPressed,
+              onPressed:
+                  navigatorOnPressed ?? () => Navigator.maybePop(context),
               icon: Icon(icon, color: iconColor1),
               iconSize: size,
             ),
@@ -57,7 +59,7 @@ class CustomAppBarBackArrow extends StatelessWidget
                 onPressed: onPressed,
                 icon: Icon(actionIcon, color: iconColor),
                 iconSize: size1,
-              )
+              ),
             ]
           : null,
     );

@@ -13,7 +13,7 @@ class UserProfileScreen extends StatefulWidget {
   ///Esta pantalla muestra la información básica del usuario correspondiente a su perfil
   ///junto con botones los cuales lo redirigen a más opciones de personalización relacionadas
   ///con su información personal.
-  const UserProfileScreen({Key? key}) : super(key: key);
+  const UserProfileScreen({super.key});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -74,6 +74,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     child: Stack(
                       children: [
                         CircleAvatar(
+                            backgroundColor: ColorStyle.mainGrey,
+                            maxRadius: 58,
                             child: user.profileImg.startsWith('assets/')
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
@@ -85,17 +87,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         fit: BoxFit.contain),
                                   )
                                 : Text(
-                                    user.name.substring(0, 1).toUpperCase() +
-                                        '' +
-                                        user.lastname
+                                    '${user.name.substring(0, 1).toUpperCase()}${user.lastname
                                             .substring(0, 1)
-                                            .toUpperCase(),
+                                            .toUpperCase()}',
                                     style: CustomTextStyle.robotoMedium
                                         .copyWith(
                                             fontSize: 50, color: Colors.white),
-                                  ),
-                            backgroundColor: ColorStyle.mainGrey,
-                            maxRadius: 58),
+                                  )),
                         Positioned(
                             bottom: 0,
                             right: 0,
@@ -109,9 +107,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                      user.name.toUpperCase() +
-                          ' ' +
-                          user.lastname.toUpperCase(),
+                      '${user.name.toUpperCase()} ${user.lastname.toUpperCase()}',
                       style: CustomTextStyle.robotoExtraBold
                           .copyWith(fontSize: 20)),
                   const SizedBox(height: 7),
@@ -119,7 +115,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       style: CustomTextStyle.robotoSemiBold
                           .copyWith(fontSize: 15, color: ColorStyle.textGrey)),
                   const SizedBox(height: 7),
-                  Text('+506 ' + user.phone,
+                  Text('+506 ${user.phone}',
                       style: CustomTextStyle.robotoSemiBold
                           .copyWith(fontSize: 16, color: ColorStyle.mainRed)),
                   const SizedBox(height: 7),
@@ -159,9 +155,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
 class _EditUserButton extends StatelessWidget {
   const _EditUserButton({
-    Key? key,
     required this.refersh,
-  }) : super(key: key);
+  });
   final void Function() refersh;
 
   @override

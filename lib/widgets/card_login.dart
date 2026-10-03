@@ -19,16 +19,16 @@ class CardLogin extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 width: 342,
                 height: 400,
-                child: Text('Iniciar Sesión',
-                    style: TextStyle(
-                      fontSize: 44,
-                      fontWeight: FontWeight.w600,
-                    )),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
                   color: Colors.white,
                   boxShadow: [MainTheme.cardShadow],
                 ),
+                child: Text('Iniciar Sesión',
+                    style: TextStyle(
+                      fontSize: 44,
+                      fontWeight: FontWeight.w600,
+                    )),
               ),
             ],
           ),

@@ -9,11 +9,10 @@ class ProductsFilterScreen extends StatelessWidget {
   ///es enviada como parámetro, cumple la misma función que la pantalala princial, muestra
   ///los cards de productos, solo que estos estan filtrados por la categoría.
   const ProductsFilterScreen(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.icon,
-      required this.category})
-      : super(key: key);
+      required this.category});
   final String title;
   final IconData icon;
   final Category category;
